@@ -1,0 +1,2042 @@
+<!-- @ai: claude-fable-5-1 | full -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eveo · Design System</title>
+<meta name="description" content="Design System da eveo para os painéis de nuvem privada. Tokens, glass, componentes, feedback ao usuário, progresso de operações, topologia dinâmica e rodapé de ferramentas, alinhados ao app-private-enterprise-cloudstack (branch dev, 29/09/2026)." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+/* ============================================================
+   eveo · Design System
+   Fonte + cores: Pocket Guide (Hanken Grotesk / paleta EVEO)
+   Componentes, feedback, progresso, topologia e rodapé:
+   app-private-enterprise-cloudstack (branch dev, 29/09/2026)
+   ============================================================ */
+
+/* ---------- Tokens (light default, .dark overrides) ---------- */
+:root{
+  /* EVEO brand palette (Pocket Guide) */
+  --eveo-red:      #E2001B;   /* principal · Pantone 2035 C */
+  --eveo-red-pure: #FF0000;   /* vívido   · Pantone 2347 C */
+  --eveo-wine:     #8B0D19;   /* escuro   · Pantone 1805 C */
+  --eveo-ink:      #1C1D1E;   /* quase-preto */
+  --eveo-gray:     #808080;
+  --eveo-gray-2:   #D1D1D1;
+  --eveo-gray-3:   #F4F4F4;
+
+  /* Semantic · light */
+  --bg:            #F4F4F4;
+  --bg-2:          #ECECEC;
+  --surface:       #FFFFFF;
+  --surface-2:     #FAFAFA;
+  --surface-raised:#F1F1F1;
+  --fg:            #1C1D1E;
+  --fg-soft:       #3A3B3D;
+  --muted:         #F1F1F1;
+  --muted-fg:      #6E6F71;
+  --subtle-fg:     #767779;
+  --border:        #E3E3E3;
+  --border-strong: #D1D1D1;
+
+  --primary:       #E2001B;
+  --primary-hover: #C40017;
+  --primary-press: #8B0D19;
+  --primary-fg:    #FFFFFF;
+  --primary-muted: rgba(226,0,27,.10);
+  --ring:          rgba(226,0,27,.38);
+  --focus:         #E2001B;
+  --focus-width:   .2rem;
+  --focus-offset:  .2rem;
+
+  /* Tons de estado (AA sobre --surface, tokens.css do painel) */
+  --success:       #1E7F4B;
+  --warning:       #8A5E00;
+  --danger:        #E2001B;
+  --danger-hover:  #A01020;
+  --info:          #2563EB;
+  --success-muted: rgba(30,158,90,.14);
+  --warning-muted: rgba(201,138,0,.16);
+  --danger-muted:  rgba(226,0,27,.10);
+  --info-muted:    rgba(37,99,235,.14);
+
+  /* Acentos de categoria (redes na topologia, tags, operações) */
+  --accent-orange:       #C97A00;
+  --accent-orange-muted: rgba(201,122,0,.14);
+  --accent-purple:       #7C3AED;
+  --accent-purple-muted: rgba(124,58,237,.14);
+  --accent-teal:         #0E9AA7;
+  --accent-teal-muted:   rgba(14,154,167,.14);
+
+  /* Glass (borda 10%, fundo translúcido, blur 24px) */
+  --glass-bg:      rgba(255,255,255,.55);
+  --glass-border:  rgba(28,29,30,.10);
+  --glass-blur:    24px;
+
+  /* Radius scale */
+  --radius:        .625rem;
+  --radius-sm:     calc(var(--radius) - 4px);
+  --radius-md:     calc(var(--radius) - 2px);
+  --radius-lg:     var(--radius);
+  --radius-xl:     1rem;
+  --radius-2xl:    1.5rem;
+  --radius-pill:   999px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,.05);
+  --shadow-md: 0 1px 3px 0 rgba(0,0,0,.10), 0 1px 2px -1px rgba(0,0,0,.10);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.10), 0 4px 6px -4px rgba(0,0,0,.10);
+  --shadow-soft:
+     0 0 0 1px rgba(0,0,0,.05),
+     0 1px 1px -.5px rgba(0,0,0,.05),
+     0 3px 3px -1.5px rgba(0,0,0,.05),
+     0 6px 6px -3px rgba(0,0,0,.05),
+     0 12px 12px -6px rgba(0,0,0,.05),
+     0 24px 24px -12px rgba(0,0,0,.05);
+  --shadow-red: 0 8px 24px -8px rgba(226,0,27,.45);
+
+  /* Movimento (durações do painel) */
+  --t-hover:   .16s;   /* hover de botão, aba, item de menu */
+  --t-surgir:  .16s;   /* diálogo, janela flutuante entrando */
+  --t-barra:   120ms;  /* suavização da largura da barra de uso */
+  --t-contagem:650ms;  /* barra sobe do zero até a leitura (ease-out cúbico) */
+  --t-indet:   1.2s;   /* barra indeterminada */
+  --t-pulso:   1.6s;   /* skeleton */
+  --t-ampulheta:4.6s;  /* ciclo da ampulheta de Operações */
+
+  /* Rodapé de ferramentas: altura medida (versão + anel de foco) */
+  --rodape-h:  2.25rem;
+
+  --sp: 4px; /* spacing unit */
+  color-scheme: light;
+}
+
+html.dark{
+  --bg:            #161718;
+  --bg-2:          #101112;
+  --surface:       #202122;
+  --surface-2:     #1A1B1C;
+  --surface-raised:#26282A;
+  --fg:            #F4F4F4;
+  --fg-soft:       #C9CACB;
+  --muted:         #26282A;
+  --muted-fg:      #A5A6A8;
+  --subtle-fg:     #8E9092;
+  --border:        rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.16);
+
+  --primary:       #FF2233;
+  --primary-hover: #FF3B49;
+  --primary-press: #C40017;
+  --primary-fg:    #FFFFFF;
+  --primary-muted: rgba(255,34,51,.16);
+  --ring:          rgba(255,34,51,.45);
+  --focus:         #FF4D5A;
+
+  --success:       #2FBE72;
+  --warning:       #E0A64B;
+  --danger:        #FF4D5A;
+  --info:          #60A5FA;
+  --success-muted: rgba(47,190,114,.16);
+  --warning-muted: rgba(224,166,75,.18);
+  --danger-muted:  rgba(255,77,90,.16);
+  --info-muted:    rgba(96,165,250,.16);
+
+  --accent-orange:       #E0954B;
+  --accent-orange-muted: rgba(224,149,75,.16);
+  --accent-purple:       #A78BFA;
+  --accent-purple-muted: rgba(167,139,250,.18);
+  --accent-teal:         #35C4CE;
+  --accent-teal-muted:   rgba(53,196,206,.16);
+
+  --glass-bg:      rgba(32,33,34,.48);
+  --glass-border:  rgba(255,255,255,.12);
+
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,.4);
+  --shadow-md: 0 1px 3px 0 rgba(0,0,0,.5), 0 1px 2px -1px rgba(0,0,0,.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.55), 0 4px 6px -4px rgba(0,0,0,.5);
+  --shadow-soft:
+     0 0 0 1px rgba(0,0,0,.6),
+     0 1px 1px -.5px rgba(0,0,0,.5),
+     0 3px 3px -1.5px rgba(0,0,0,.45),
+     0 6px 6px -3px rgba(0,0,0,.4),
+     0 12px 12px -6px rgba(0,0,0,.4),
+     0 24px 24px -12px rgba(0,0,0,.5),
+     inset 0 1px 0 rgba(255,255,255,.05);
+  --shadow-red: 0 8px 28px -6px rgba(255,34,51,.5);
+  color-scheme: dark;
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  font-family:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--fg);
+  line-height:1.5;
+  letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  transition:background .35s ease,color .35s ease;
+  overflow-x:hidden;
+  padding-bottom:calc(var(--rodape-h) + 8px); /* rodapé de ferramentas fixo */
+}
+::selection{ background:var(--primary); color:#fff; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; }
+svg{ display:block; }
+svg.lucide{ width:1em; height:1em; stroke-width:2; vertical-align:middle; }
+:focus-visible{ outline:var(--focus-width) solid var(--focus); outline-offset:var(--focus-offset); }
+/* Texto só para leitor de tela */
+.sr{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ambient brand glow */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(226,0,27,.10), transparent 60%),
+    radial-gradient(48vw 48vw at -6% 12%, rgba(139,13,25,.07), transparent 60%);
+}
+html.dark body::before{
+  background:
+    radial-gradient(60vw 60vw at 82% -8%, rgba(255,34,51,.14), transparent 60%),
+    radial-gradient(52vw 52vw at -6% 10%, rgba(139,13,25,.16), transparent 62%);
+}
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:1200px; margin-inline:auto; padding-inline:24px; }
+section{ padding:72px 0 8px; scroll-margin-top:88px; }
+.grid{ display:grid; gap:16px; }
+.cols-2{ grid-template-columns:repeat(2,1fr); }
+.cols-3{ grid-template-columns:repeat(3,1fr); }
+.cols-4{ grid-template-columns:repeat(4,1fr); }
+.row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+@media(max-width:900px){ .cols-3,.cols-4{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:620px){ .cols-2,.cols-3,.cols-4{ grid-template-columns:1fr; } }
+
+/* ---------- Type ---------- */
+.eyebrow{
+  font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--primary); display:inline-flex; align-items:center; gap:8px;
+}
+.h-sec{ font-size:clamp(26px,3.4vw,38px); font-weight:800; letter-spacing:-.03em; margin-top:10px; }
+.h-sec.caps{ text-transform:uppercase; }
+.sub{ color:var(--muted-fg); max-width:62ch; margin-top:10px; font-size:16px; }
+.mono{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+.code{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85em; background:var(--muted); padding:1px 6px; border-radius:4px; }
+.label{ font-size:12.5px; font-weight:600; color:var(--muted-fg); letter-spacing:.01em; }
+.divider{ height:1px; background:var(--border); margin:56px 0 0; }
+.rule{ display:flex; gap:10px; align-items:flex-start; font-size:13.5px; padding:8px 0; border-bottom:1px dashed var(--border); }
+.rule:last-child{ border-bottom:0; }
+.rule svg.lucide{ color:var(--primary); font-size:16px; margin-top:3px; flex:none; }
+.rule b{ color:var(--fg); }
+
+/* ---------- eveo mark (3 stacked slabs) ---------- */
+.eveo-mark{ width:1.55em; height:1.1em; color:var(--primary); fill:currentColor; flex:none; }
+.eveo-lockup{ display:inline-flex; align-items:center; gap:.5em; font-weight:800; letter-spacing:-.04em; }
+.eveo-word{ font-size:1.15em; }
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-soft);
+  padding:22px;
+}
+.card.pad-lg{ padding:28px; }
+.card-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+.card-title{ font-weight:700; font-size:15px; letter-spacing:-.01em; }
+
+/* ---------- Glass ---------- */
+.glass{
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-xl);
+  -webkit-backdrop-filter:blur(var(--glass-blur));
+  backdrop-filter:blur(var(--glass-blur));
+  box-shadow:var(--shadow-soft);
+}
+
+/* ---------- Topbar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:var(--glass-bg);
+  border-bottom:1px solid var(--glass-border);
+  -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+}
+.topbar-inner{ height:62px; display:flex; align-items:center; gap:20px; }
+.brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; }
+.brand .eveo-word{ font-size:18px; }
+.brand .tag{
+  font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted-fg); padding-left:12px; margin-left:2px; border-left:1px solid var(--border-strong);
+}
+.nav{ display:flex; gap:4px; margin-left:auto; }
+.nav a{
+  font-size:13.5px; font-weight:600; color:var(--muted-fg);
+  padding:8px 12px; border-radius:var(--radius-md); transition:var(--t-hover);
+}
+.nav a:hover{ color:var(--fg); background:var(--muted); }
+@media(max-width:1060px){ .nav{ display:none; } }
+
+/* ---------- Buttons ---------- */
+.btn{
+  --_bg:var(--surface); --_fg:var(--fg); --_bd:var(--border-strong);
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-size:14px; font-weight:600; letter-spacing:-.01em; line-height:1;
+  padding:0 16px; height:40px; border-radius:var(--radius-md);
+  background:var(--_bg); color:var(--_fg); border:1px solid var(--_bd);
+  cursor:pointer; transition:var(--t-hover) ease; white-space:nowrap; user-select:none;
+}
+.btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md); }
+.btn:active{ transform:translateY(0); }
+.btn:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--ring); }
+.btn svg.lucide{ font-size:16px; }
+.btn.primary{ --_bg:var(--primary); --_fg:var(--primary-fg); --_bd:transparent; box-shadow:var(--shadow-red); }
+.btn.primary:hover{ --_bg:var(--primary-hover); }
+.btn.secondary{ --_bg:var(--muted); --_bd:transparent; }
+.btn.outline{ --_bg:transparent; }
+.btn.ghost{ --_bg:transparent; --_bd:transparent; }
+.btn.ghost:hover{ --_bg:var(--muted); box-shadow:none; }
+.btn.destructive{ --_bg:var(--danger); --_fg:#fff; --_bd:transparent; }
+.btn.destructive:hover{ --_bg:var(--danger-hover); }
+.btn.sm{ height:32px; font-size:13px; padding:0 12px; border-radius:var(--radius-sm); }
+.btn.xs{ height:26px; font-size:12px; padding:0 8px; border-radius:var(--radius-sm); }
+.btn.lg{ height:48px; font-size:15px; padding:0 22px; }
+.btn.icon{ width:40px; padding:0; }
+.btn.icon.sm{ width:32px; }
+.btn[disabled]{ opacity:.55; pointer-events:none; }
+.spin{ animation:spin 1s linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+/* ---------- Badges / chips ---------- */
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; font-weight:600; letter-spacing:.01em;
+  padding:3px 10px; border-radius:var(--radius-pill);
+  background:var(--muted); color:var(--fg-soft); border:1px solid transparent;
+}
+.badge.dot::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+.badge.red{ background:var(--primary-muted); color:var(--primary); border-color:color-mix(in srgb,var(--primary) 30%,transparent); }
+.badge.wine{ background:color-mix(in srgb,var(--eveo-wine) 16%,transparent); color:var(--eveo-wine); }
+html.dark .badge.wine{ color:#ff8b96; }
+.badge.success{ background:var(--success-muted); color:var(--success); border-color:color-mix(in srgb,var(--success) 30%,transparent); }
+.badge.warn{ background:var(--warning-muted); color:var(--warning); border-color:color-mix(in srgb,var(--warning) 30%,transparent); }
+.badge.err{ background:var(--danger-muted); color:var(--danger); border-color:color-mix(in srgb,var(--danger) 30%,transparent); }
+.badge.info{ background:var(--info-muted); color:var(--info); border-color:color-mix(in srgb,var(--info) 30%,transparent); }
+.badge.outline{ background:transparent; border-color:var(--border-strong); color:var(--muted-fg); }
+.badge.solid{ background:var(--primary); color:#fff; }
+.badge.soon{ font-size:9.5px; text-transform:uppercase; letter-spacing:.06em; padding:1px 6px; color:var(--subtle-fg); border-color:var(--border); background:var(--surface-raised); }
+
+/* ---------- Inputs ---------- */
+.field{ display:flex; flex-direction:column; gap:7px; }
+.input, .select, .textarea{
+  width:100%; font:inherit; font-size:14px; color:var(--fg);
+  background:var(--surface-2); border:1px solid var(--border-strong);
+  border-radius:var(--radius-md); padding:10px 12px; transition:var(--t-hover); outline:none;
+}
+.textarea{ min-height:92px; resize:vertical; }
+.input::placeholder,.textarea::placeholder{ color:var(--muted-fg); }
+.input:focus,.select:focus,.textarea:focus{ border-color:var(--primary); box-shadow:0 0 0 3px var(--ring); }
+.input.err{ border-color:var(--danger); }
+.input.err:focus{ box-shadow:0 0 0 3px var(--danger-muted); }
+.ferr{ font-size:12px; font-weight:600; color:var(--danger); }
+.input-icon{ position:relative; }
+.input-icon svg.lucide{ position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--muted-fg); font-size:16px; }
+.input-icon .input{ padding-left:38px; }
+.hint{ font-size:12px; color:var(--muted-fg); }
+
+/* switch */
+.switch{ position:relative; width:44px; height:26px; flex:none; cursor:pointer; }
+.switch input{ position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:inherit; z-index:1; }
+.switch .track{ position:absolute; inset:0; border-radius:var(--radius-pill); background:var(--border-strong); transition:.2s; }
+.switch .thumb{ position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:var(--shadow-sm); transition:.2s; }
+.switch input:checked ~ .track{ background:var(--primary); }
+.switch input:checked ~ .thumb{ transform:translateX(18px); }
+.switch:has(input:focus-visible) .track{ outline:var(--focus-width) solid var(--focus); outline-offset:var(--focus-offset); }
+
+/* checkbox / radio */
+.check{ display:inline-flex; align-items:center; gap:10px; font-size:14px; cursor:pointer; }
+.check input{ appearance:none; -webkit-appearance:none; width:20px; height:20px; border:1.5px solid var(--border-strong); border-radius:6px; transition:.15s; background:var(--surface-2); background-position:center; background-repeat:no-repeat; cursor:pointer; flex:none; }
+.check input[type=radio]{ border-radius:50%; }
+.check input[type=checkbox]:checked{ border-color:var(--primary); background-color:var(--primary); background-size:13px 13px; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>"); }
+.check input[type=radio]:checked{ border-color:var(--primary); background:radial-gradient(circle at center, #fff 0 30%, var(--primary) 34% 100%); }
+
+/* slider */
+.slider{ -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:var(--radius-pill); background:var(--border-strong); outline:none; }
+.slider::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--primary); border:3px solid var(--surface); box-shadow:var(--shadow-md); cursor:pointer; }
+.slider::-moz-range-thumb{ width:18px; height:18px; border-radius:50%; background:var(--primary); border:3px solid var(--surface); cursor:pointer; }
+
+/* ---------- Color swatches ---------- */
+.swatch{
+  border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;
+  background:var(--surface); box-shadow:var(--shadow-sm); cursor:pointer; transition:.18s;
+}
+.swatch:hover{ transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.swatch .chip{ height:96px; }
+.swatch.sm .chip{ height:56px; }
+.swatch .meta{ padding:12px 14px; }
+.swatch .nm{ font-weight:700; font-size:13.5px; }
+.swatch .hx{ font-size:12.5px; color:var(--muted-fg); margin-top:2px; }
+.tone{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface-2); font-size:13px; }
+.tone i{ width:22px; height:22px; border-radius:6px; flex:none; border:1px solid color-mix(in srgb,currentColor 30%,transparent); }
+.tone .hx{ margin-left:auto; font-size:12px; color:var(--muted-fg); }
+
+/* ---------- Type specimen ---------- */
+.weights{ display:flex; flex-wrap:wrap; gap:8px 22px; align-items:baseline; }
+.weights span{ font-size:30px; letter-spacing:-.02em; color:var(--fg); }
+.scale-row{ display:flex; align-items:baseline; gap:18px; padding:12px 0; border-bottom:1px dashed var(--border); }
+.scale-row:last-child{ border-bottom:0; }
+.scale-row .meta{ font-size:12px; color:var(--muted-fg); width:120px; flex:none; }
+
+/* ---------- Icon grid ---------- */
+.icons{ display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:10px; }
+.ico{
+  display:flex; flex-direction:column; align-items:center; gap:9px;
+  padding:16px 8px; border:1px solid var(--border); border-radius:var(--radius-md);
+  background:var(--surface-2); color:var(--fg); transition:var(--t-hover);
+}
+.ico:hover{ color:var(--primary); border-color:color-mix(in srgb,var(--primary) 40%,var(--border)); transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.ico svg.lucide{ font-size:22px; }
+.ico small{ font-size:10.5px; color:var(--muted-fg); }
+
+/* ---------- Stat widget ---------- */
+.stat{ padding:20px; }
+.stat .top{ display:flex; align-items:center; justify-content:space-between; }
+.stat .ic{ width:38px; height:38px; border-radius:var(--radius-md); display:grid; place-content:center; background:var(--primary-muted); color:var(--primary); }
+.stat .ic svg.lucide{ font-size:19px; }
+.stat .num{ font-size:30px; font-weight:800; letter-spacing:-.03em; margin-top:14px; }
+.stat .lb{ font-size:13px; color:var(--muted-fg); margin-top:2px; }
+.delta{ font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:3px; padding:3px 7px; border-radius:var(--radius-pill); }
+.delta.up{ color:var(--success); background:var(--success-muted); }
+.delta.down{ color:var(--primary); background:var(--primary-muted); }
+.delta svg.lucide{ font-size:13px; }
+
+/* ---------- Table ---------- */
+.tbl{ width:100%; border-collapse:collapse; font-size:14px; }
+.tbl th{ text-align:left; font-size:11.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-fg); padding:10px 14px; }
+.tbl td{ padding:12px 14px; border-top:1px solid var(--border); vertical-align:middle; }
+.tbl tbody tr{ transition:.14s; }
+.tbl tbody tr:hover{ background:var(--muted); }
+.tbl .num-col, .tbl th.num-col{ text-align:right; }
+
+/* avatars */
+.ava{ width:38px; height:38px; border-radius:50%; display:grid; place-content:center; font-weight:700; font-size:14px; color:#fff; border:2px solid var(--surface); }
+.ava-group{ display:flex; }
+.ava-group .ava{ margin-left:-10px; }
+.ava-group .ava:first-child{ margin-left:0; }
+
+/* tabs */
+.tabs{ display:inline-flex; padding:4px; gap:4px; background:var(--muted); border-radius:var(--radius-md); }
+.tab{ font-size:13.5px; font-weight:600; color:var(--muted-fg); padding:7px 14px; border-radius:var(--radius-sm); cursor:pointer; transition:var(--t-hover); border:none; background:transparent; }
+.tab.active{ background:var(--surface); color:var(--fg); box-shadow:var(--shadow-sm); }
+
+/* alerts (bloco estático) */
+.alert{ display:flex; gap:12px; padding:14px 16px; border-radius:var(--radius-lg); border:1px solid var(--border); background:var(--surface-2); }
+.alert svg.lucide{ font-size:18px; flex:none; margin-top:1px; }
+.alert .at{ font-weight:700; font-size:14px; }
+.alert .ad{ font-size:13px; color:var(--muted-fg); margin-top:2px; }
+.alert.info{ border-color:color-mix(in srgb,var(--info) 40%,var(--border)); }
+.alert.info svg.lucide{ color:var(--info); }
+.alert.success{ border-color:color-mix(in srgb,var(--success) 40%,var(--border)); }
+.alert.success svg.lucide{ color:var(--success); }
+.alert.error{ border-color:color-mix(in srgb,var(--danger) 45%,var(--border)); }
+.alert.error svg.lucide{ color:var(--danger); }
+
+/* segmented sample surfaces */
+.tile{ padding:12px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface-2); text-align:center; font-size:12px; color:var(--muted-fg); }
+.radius-demo{ height:64px; border-radius:var(--_r); background:linear-gradient(135deg,var(--primary),var(--eveo-wine)); box-shadow:var(--shadow-md); }
+.shadow-demo{ height:80px; border-radius:var(--radius-lg); background:var(--surface); display:grid; place-content:center; font-size:12px; color:var(--muted-fg); }
+
+/* glass stage */
+.glass-stage{
+  position:relative; border-radius:var(--radius-2xl); overflow:hidden; padding:34px;
+  background:
+    radial-gradient(40% 60% at 20% 20%, rgba(255,0,0,.9), transparent 60%),
+    radial-gradient(50% 70% at 85% 30%, rgba(139,13,25,.95), transparent 62%),
+    radial-gradient(60% 80% at 60% 100%, rgba(226,0,27,.9), transparent 60%),
+    linear-gradient(120deg,#2a0308,#12080a);
+  box-shadow:var(--shadow-soft);
+}
+
+/* ============================================================
+   FEEDBACK AO USUÁRIO · toasts, faixas, erros, skeleton
+   ============================================================ */
+
+/* Toasts: pilha fixa acima do rodapé de ferramentas, canto inferior direito */
+.toasts{ position:fixed; right:1.25rem; bottom:calc(1.25rem + var(--rodape-h)); display:flex; flex-direction:column; gap:.5rem; z-index:80; }
+.toast{
+  display:flex; align-items:flex-start; gap:.625rem;
+  background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--border-strong);
+  border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:.75rem 1rem;
+  min-width:17rem; max-width:24rem; font-size:13px;
+  animation:surgir var(--t-surgir) ease-out;
+}
+.toast[data-tom=ok]{ border-left-color:var(--success); }
+.toast[data-tom=err]{ border-left-color:var(--danger); }
+.toast[data-tom=warn]{ border-left-color:var(--warning); }
+.toast[data-tom=info]{ border-left-color:var(--info); }
+.toast .tic{ flex:none; display:inline-flex; font-size:15px; line-height:1; margin-top:2px; }
+.toast[data-tom=ok] .tic{ color:var(--success); }
+.toast[data-tom=err] .tic{ color:var(--danger); }
+.toast[data-tom=warn] .tic{ color:var(--warning); }
+.toast[data-tom=info] .tic{ color:var(--info); }
+.toast .tbody{ flex:1; min-width:0; }
+.toast .ttl{ font-size:13px; font-weight:700; margin:0; overflow-wrap:anywhere; }
+.toast .top{ font-size:9.5px; color:var(--subtle-fg); margin:.188rem 0 .375rem; }   /* linha "Rótulo · recurso" */
+.toast .tsb{ font-size:12px; color:var(--muted-fg); margin:.125rem 0 0; overflow-wrap:anywhere; }
+.toast .btn.xs{ margin-top:6px; }
+.toast .tx{ flex:none; }
+@keyframes surgir{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+
+/* Faixa informativa da tela (info / warn) */
+.ia{ display:flex; align-items:flex-start; gap:.75rem; border-radius:var(--radius-lg); padding:.875rem 1rem; font-size:13px; }
+.ia > div{ flex:1; min-width:0; color:var(--fg); }
+.ia strong{ display:block; font-weight:700; margin-bottom:.125rem; color:inherit; }
+.ia .ic{ display:grid; place-items:center; flex:none; width:1.75rem; height:1.75rem; border-radius:50%; }
+.ia .ic svg.lucide{ font-size:16px; }
+.ia.warn{ background:var(--warning-muted); border:1px solid color-mix(in srgb,var(--warning) 35%,transparent); color:var(--warning); }
+.ia.warn .ic{ background:color-mix(in srgb,var(--warning) 20%,transparent); }
+.ia.info{ background:var(--info-muted); border:1px solid color-mix(in srgb,var(--info) 30%,transparent); color:var(--info); }
+.ia.info .ic{ background:color-mix(in srgb,var(--info) 18%,transparent); }
+.ia .btn{ align-self:center; }
+
+/* Erro de leitura (tela) e erro de formulário (login) */
+.falha{ text-align:center; padding:2rem 1.5rem; color:var(--muted-fg); font-size:14px; }
+.falha .corr{ font-family:ui-monospace,monospace; font-size:12px; margin-top:6px; }
+.login-err{ background:var(--danger-muted); border:1px solid color-mix(in srgb,var(--danger) 35%,transparent); color:var(--danger); font-size:12px; font-weight:600; border-radius:var(--radius-md); padding:.563rem .75rem; }
+.dr-falha{ border:1px solid color-mix(in srgb,var(--warning) 35%,transparent); background:var(--warning-muted); border-radius:var(--radius-lg); padding:.875rem 1rem; font-size:12.5px; }
+.dr-falha strong{ display:block; font-size:13px; margin-bottom:.125rem; }
+.dr-falha p{ margin:0 0 .5rem; }
+
+/* ID de correlação: só quando o gateway mandou, com botão de copiar */
+.corr-box{ margin-top:12px; padding-top:10px; border-top:1px solid var(--border); font-size:12px; color:var(--subtle-fg); }
+.corr-box code{ display:block; margin:3px 0 9px; font-family:ui-monospace,monospace; font-size:11.5px; color:var(--fg); overflow-wrap:anywhere; user-select:text; }
+
+/* Tabela técnico → humano */
+.tbl.map td:first-child{ font-family:ui-monospace,monospace; font-size:12px; color:var(--muted-fg); }
+.tbl.map td:nth-child(2){ font-weight:600; }
+
+/* Skeleton */
+.sk{ display:block; min-width:0; }
+.sk-bloco{ display:block; height:.75rem; border-radius:var(--radius-sm); background:var(--border); animation:sk-pulso var(--t-pulso) ease-in-out infinite; }
+@keyframes sk-pulso{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
+.sk-th,.sk-tr{ display:grid; gap:.875rem; align-items:center; padding:.688rem .875rem; border-bottom:1px solid var(--border); }
+.sk-th{ padding:.625rem .875rem; }
+.sk-th .sk-bloco{ height:.5rem; max-width:5rem; }
+.sk-tr:last-child{ border-bottom:none; }
+.sk-cartao{ display:flex; flex-direction:column; gap:.625rem; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:.75rem .875rem; }
+.sk-cartao .rot,.sk-cartao .sub2{ height:.5rem; }
+.sk-cartao .val{ height:1.5rem; }
+.sk-grafico{ display:flex; align-items:flex-end; gap:.375rem; height:7rem; padding:.5rem .875rem 0; border-bottom:1px solid var(--border); }
+.sk-grafico .sk-bloco{ flex:1; border-radius:var(--radius-sm) var(--radius-sm) 0 0; }
+.sk-linha{ display:flex; flex-direction:column; gap:.625rem; padding:.25rem 0; }
+.sk-inline{ display:inline-block; width:1.25rem; height:.75rem; vertical-align:middle; }
+
+/* ============================================================
+   PROGRESSO · barras, anéis, operações
+   ============================================================ */
+
+/* Barra de indicador (mini-card): 0.375rem, determinada ou indeterminada */
+.bar{ height:.375rem; border-radius:var(--radius-pill); background:var(--surface-raised); overflow:hidden; margin-top:.5rem; }
+.bar-fill{ display:block; height:100%; border-radius:var(--radius-pill); background:var(--primary); width:0; transition:width var(--t-barra) linear, background-color .2s ease; }
+.bar.indet .bar-fill{ width:40%; background:var(--accent-teal); animation:bar-slide var(--t-indet) ease-in-out infinite; transition:none; }
+@keyframes bar-slide{ 0%{ transform:translateX(-100%); } 100%{ transform:translateX(250%); } }
+
+/* Barra de uso (célula de tabela e cartões): trilha + preenchimento + número */
+.rb{ display:inline-flex; align-items:center; gap:.5rem; min-width:7.5rem; }
+.rt{ flex:1; height:.5rem; min-width:3.125rem; background:var(--surface-raised); border-radius:var(--radius-pill); overflow:hidden; }
+.rf{ display:block; height:100%; width:0; border-radius:var(--radius-pill); background:var(--success); transition:width var(--t-barra) linear, background-color .2s ease; }
+.rp{ font-size:11px; min-width:2.125rem; text-align:right; font-weight:600; font-variant-numeric:tabular-nums; }
+.fill-ok{ background:var(--success); }      .txt-ok{ color:var(--success); }
+.fill-atencao{ background:var(--warning); } .txt-atencao{ color:var(--warning); }
+.fill-critico{ background:var(--danger); }  .txt-critico{ color:var(--danger); }
+.mini-card{ background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:.75rem .875rem; }
+.mc-label{ font-size:11px; color:var(--muted-fg); text-transform:uppercase; letter-spacing:.06em; font-weight:700; }
+.mc-val{ font-size:1.5rem; font-weight:800; letter-spacing:-.02em; margin-top:.25rem; }
+.mc-sub{ font-size:11px; color:var(--subtle-fg); margin-top:.125rem; }
+.mc-unit{ font-size:13px; font-weight:600; color:var(--subtle-fg); }
+
+/* Anel de saúde (topbar 2rem; coluna 2.25rem) */
+.health-pill{ display:inline-flex; align-items:center; gap:.5rem; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-pill); padding:.188rem .813rem .188rem .25rem; }
+.ring{ position:relative; width:2rem; height:2rem; flex:none; }
+.ring.lg{ width:2.25rem; height:2.25rem; }
+.ring.xl{ width:6.5rem; height:6.5rem; }
+.ring svg{ position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
+.ring .track{ stroke:var(--surface-raised); }
+.ring .arc{ stroke:currentColor; stroke-linecap:round; transition:stroke .2s ease; }
+.ring .n{ position:absolute; inset:0; display:grid; place-items:center; font-size:10px; font-weight:800; line-height:1; font-variant-numeric:tabular-nums; }
+.ring.lg .n{ font-size:10.5px; }
+.ring.xl .n{ font-size:20px; }
+.hm-ok{ color:var(--success); } .hm-atencao{ color:var(--warning); } .hm-alerta{ color:var(--accent-orange); } .hm-critico{ color:var(--danger); }
+.health-label{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted-fg); line-height:1.2; }
+.health-sub{ font-size:10px; color:var(--subtle-fg); font-weight:700; line-height:1.2; }
+
+/* Botão de ícone da topbar + ping */
+.tb-icon{ width:2.25rem; height:2.25rem; border-radius:var(--radius-md); display:grid; place-items:center; color:var(--muted-fg); position:relative; transition:.18s; border:none; background:none; cursor:pointer; }
+.tb-icon:hover{ background:var(--surface-raised); color:var(--fg); }
+.tb-icon svg.lucide{ font-size:18px; }
+.ping{ position:absolute; top:.438rem; right:.5rem; width:.375rem; height:.375rem; border-radius:50%; background:var(--warning); border:2px solid var(--surface); }
+.ping.jobs{ background:var(--accent-teal); }
+
+/* Ampulheta de Operações: a areia desce, acumula e a ampulheta vira */
+.hourglass{ overflow:visible; }
+.hourglass .body{ transform-origin:12px 12px; }
+.hourglass .sand{ opacity:0; }
+.hourglass .lower{ transform:scaleY(0); transform-origin:12px 19px; }
+.hourglass[data-active=true]{ color:var(--accent-teal); }
+.hourglass[data-active=true] .sand{ opacity:1; }
+.hourglass[data-active=true] .body{ animation:hg-turn var(--t-ampulheta) ease-in-out infinite; }
+.hourglass[data-active=true] .upper{ animation:hg-drain var(--t-ampulheta) linear infinite; }
+.hourglass[data-active=true] .lower{ animation:hg-fill var(--t-ampulheta) linear infinite; }
+.hourglass[data-active=true] .stream{ animation:hg-grains .35s linear infinite, hg-flow var(--t-ampulheta) linear infinite; }
+@keyframes hg-turn{ 0%,80%{ transform:rotate(0deg); } 100%{ transform:rotate(180deg); } }
+@keyframes hg-drain{ 0%{ transform:translateY(0); } 78%,100%{ transform:translateY(6px); } }
+@keyframes hg-fill{ 0%{ transform:scaleY(0); } 78%,100%{ transform:scaleY(1); } }
+@keyframes hg-grains{ to{ stroke-dashoffset:-2.5; } }
+@keyframes hg-flow{ 0%,78%,100%{ opacity:0; } 5%,74%{ opacity:1; } }
+
+/* Painel de Operações */
+.jobs-panel{ width:min(22.5rem,100%); background:var(--surface); border:1px solid var(--border-strong); border-radius:var(--radius-xl); box-shadow:0 16px 48px rgba(0,0,0,.2); overflow:hidden; }
+.jobs-head{ display:flex; align-items:center; gap:.625rem; padding:.875rem 1.125rem; border-bottom:1px solid var(--border); background:var(--surface-2); }
+.jobs-head .ct{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted-fg); }
+.jobs-list{ max-height:22rem; overflow-y:auto; }
+.jobs-item{ padding:.625rem .875rem; border-bottom:1px solid var(--border); }
+.jobs-item:last-child{ border-bottom:none; }
+.jobs-linha{ display:flex; align-items:center; gap:.5rem; }
+.jobs-titulo{ font-size:12px; font-weight:600; flex:1; min-width:0; }
+.jobs-hora{ font-size:11px; color:var(--subtle-fg); }
+.jobs-comando{ font-size:9.5px; color:var(--subtle-fg); margin:.188rem 0 .375rem; }
+.jobs-motivo{ margin:.375rem 0 0; font-size:12px; color:var(--danger); }
+.jobs-secao{ margin:0; padding:.5rem .875rem .25rem; font-size:10.5px; font-weight:600; text-transform:uppercase; color:var(--subtle-fg); border-top:1px solid var(--border); }
+.jobs-vazio{ margin:0; padding:.875rem; color:var(--muted-fg); font-size:13px; }
+.bx{ display:inline-flex; align-items:center; gap:.313rem; font-size:11px; font-weight:600; border-radius:var(--radius-pill); padding:.125rem .5rem; border:1px solid transparent; white-space:nowrap; }
+.bx-ok{ background:var(--success-muted); color:var(--success); border-color:color-mix(in srgb,var(--success) 30%,transparent); }
+.bx-warn{ background:var(--warning-muted); color:var(--warning); border-color:color-mix(in srgb,var(--warning) 30%,transparent); }
+.bx-err{ background:var(--danger-muted); color:var(--danger); border-color:color-mix(in srgb,var(--danger) 30%,transparent); }
+.bx-info{ background:var(--info-muted); color:var(--info); border-color:color-mix(in srgb,var(--info) 30%,transparent); }
+.bx-brand{ background:var(--primary-muted); color:var(--primary); border-color:color-mix(in srgb,var(--primary) 30%,transparent); }
+.bx-neutral{ background:var(--surface-raised); color:var(--muted-fg); border-color:var(--border); }
+
+/* Trilha de etapas (deploy): aceito → provisionando → pronta */
+.trilha{ margin-top:.5rem; }
+.trilha ol{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.188rem; }
+.etapa{ display:flex; align-items:center; gap:.375rem; font-size:11.5px; font-weight:600; color:var(--subtle-fg); }
+.etapa .ei{ display:grid; place-items:center; flex:none; }
+.etapa .ei svg.lucide{ font-size:13px; }
+.etapa[data-state=ok]{ color:var(--muted-fg); }    .etapa[data-state=ok] .ei{ color:var(--success); }
+.etapa[data-state=atual]{ color:var(--fg); }       .etapa[data-state=atual] .ei{ color:var(--accent-teal); }
+.etapa[data-state=erro]{ color:var(--danger); }    .etapa[data-state=erro] .ei{ color:var(--danger); }
+.etapa .es{ margin-left:auto; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--subtle-fg); }
+.etapa[data-state=erro] .es{ color:var(--danger); }
+
+/* Passos do wizard (trilha lateral) */
+.wz-step{ display:flex; align-items:center; gap:.625rem; padding:.563rem; border-radius:var(--radius-md); font-size:12.5px; font-weight:600; color:var(--subtle-fg); border:1px solid transparent; background:none; width:100%; text-align:left; transition:var(--t-hover); }
+.wz-step[data-state=current]{ background:var(--surface); color:var(--fg); border-color:var(--border); box-shadow:var(--shadow-sm); }
+.wz-step[data-state=done]{ color:var(--muted-fg); }
+.wz-num{ width:1.375rem; height:1.375rem; border-radius:50%; display:grid; place-items:center; font-size:10px; font-weight:800; background:var(--surface-raised); border:1.5px solid var(--border-strong); flex:none; }
+.wz-step[data-state=current] .wz-num{ background:var(--primary); color:#fff; border-color:var(--primary); }
+.wz-step[data-state=done] .wz-num{ background:transparent; color:var(--success); border-color:var(--success); }
+
+/* ============================================================
+   TOPOLOGIA DINÂMICA (SVG gerado por dados)
+   ============================================================ */
+.topo-wrap{ display:grid; gap:1rem; }
+.topo-svg{ width:100%; display:block; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); font-family:inherit; }
+.topo-no{ cursor:default; outline:none; }
+.topo-foco{ stroke:var(--focus); stroke-width:var(--focus-width); opacity:0; fill:none; }
+.topo-no:focus-visible .topo-foco{ opacity:1; }
+.topo-no,.topo-lig{ transition:opacity 120ms ease; }
+.topo-legenda{ display:flex; flex-wrap:wrap; gap:.75rem 2rem; padding:.875rem 1rem; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface-2); font-size:13px; }
+.topo-legenda ul{ display:flex; flex-wrap:wrap; gap:.375rem 1rem; margin-top:.375rem; list-style:none; padding:0; }
+.topo-legenda li{ display:inline-flex; align-items:center; gap:.375rem; }
+.topo-legenda .cor{ display:inline-block; width:.875rem; height:.875rem; border:1.5px solid; border-radius:50%; }
+.topo-notas{ flex-basis:100%; color:var(--muted-fg); font-size:12.5px; }
+.topo-notas p + p{ margin-top:4px; }
+.topo-toolbar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+/* ============================================================
+   SHELL: topbar do painel, sidebar, rodapé de ferramentas
+   ============================================================ */
+.shell{ display:grid; grid-template-columns:11.5rem 1fr; grid-template-rows:3.875rem 1fr auto; height:520px; border:1px solid var(--border); border-radius:var(--radius-2xl); overflow:hidden; box-shadow:var(--shadow-soft); background:var(--bg); position:relative; }
+.sh-top{ grid-column:1/-1; height:3.875rem; background:var(--glass-bg); border-bottom:1px solid var(--glass-border); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); display:flex; align-items:center; z-index:2; }
+.sh-brand{ display:flex; align-items:center; gap:.625rem; padding:0 1.125rem; border-right:1px solid var(--border); height:100%; }
+.sh-mark{ width:1.875rem; height:1.875rem; border-radius:var(--radius-md); background:var(--primary); color:#fff; display:grid; place-items:center; font-weight:800; font-size:14px; box-shadow:var(--shadow-red); }
+.sh-logo{ font-size:16px; font-weight:800; line-height:1.05; letter-spacing:-.03em; }
+.sh-sub{ font-size:9px; text-transform:uppercase; letter-spacing:.12em; color:var(--subtle-fg); font-weight:700; }
+.sh-actions{ flex:1; display:flex; align-items:center; gap:.5rem; padding:0 .875rem; min-width:0; }
+.sh-proj{ display:flex; align-items:center; gap:.5rem; height:100%; padding:0 .875rem; border-right:1px solid var(--border); font-size:12px; font-weight:600; }
+.sh-proj .pm{ width:1.875rem; height:1.875rem; border-radius:var(--radius-md); background:var(--accent-purple); color:#fff; display:grid; place-items:center; font-weight:800; font-size:13px; box-shadow:var(--shadow-red); }
+.tb-alert{ display:inline-flex; align-items:center; gap:.438rem; background:var(--warning-muted); border:1px solid color-mix(in srgb,var(--warning) 40%,transparent); color:var(--warning); font-size:11px; font-weight:700; border-radius:var(--radius-pill); padding:.313rem .75rem; transition:.18s; }
+.tb-alert:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md); }
+.zone-seg{ display:flex; background:var(--surface-raised); border:1px solid var(--border); border-radius:var(--radius-md); padding:.188rem; }
+.zone-seg button{ display:inline-flex; align-items:center; gap:.375rem; padding:.313rem .75rem; border-radius:var(--radius-sm); font-size:11px; font-weight:600; color:var(--muted-fg); transition:var(--t-hover); border:none; background:none; cursor:pointer; }
+.zone-seg button[aria-pressed=true]{ background:var(--surface); color:var(--fg); box-shadow:var(--shadow-sm); }
+.dot{ width:.438rem; height:.438rem; border-radius:50%; display:inline-block; }
+.dot-on{ background:var(--success); } .dot-warn{ background:var(--warning); } .dot-off{ background:var(--subtle-fg); }
+.sh-search{ display:flex; align-items:center; gap:.438rem; background:var(--surface-2); border:1px solid var(--border-strong); border-radius:var(--radius-md); padding:.438rem .75rem; width:13rem; color:var(--subtle-fg); font-size:12.5px; }
+.sh-search svg.lucide{ font-size:14px; }
+.sh-avatar{ width:2rem; height:2rem; border-radius:50%; background:var(--primary); color:#fff; display:grid; place-items:center; font-weight:700; font-size:12px; }
+.sh-side{ background:var(--surface-2); border-right:1px solid var(--border); padding:.75rem 0; display:flex; flex-direction:column; overflow:hidden; }
+.sb-sec{ font-size:9.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--subtle-fg); font-weight:700; padding:.75rem 1rem .375rem; }
+.sb-item{ display:flex; align-items:center; gap:.625rem; padding:.5rem 1rem; font-size:13px; color:var(--muted-fg); border-left:2px solid transparent; transition:var(--t-hover); cursor:pointer; }
+.sb-item svg.lucide{ font-size:16px; flex:none; }
+.sb-item:hover{ background:var(--surface-raised); color:var(--fg); }
+.sb-item[aria-current=page]{ background:var(--primary-muted); color:var(--primary); border-left-color:var(--primary); font-weight:600; }
+.sb-item[data-embreve=true]{ opacity:.45; cursor:default; }
+.sb-item .badge.soon{ margin-left:auto; }
+.sh-main{ overflow-y:auto; min-width:0; padding:1.25rem; }
+.sh-main .ph{ font-size:1.25rem; font-weight:800; letter-spacing:-.02em; }
+.sh-main .phs{ font-size:13px; color:var(--muted-fg); margin:.25rem 0 1rem; }
+
+/* Rodapé de ferramentas (padrão para toda ferramenta EVEO):
+   [tema | PT EN ES | versão]   [tarja de teste]   [feedback] */
+.rodape{
+  grid-column:1/-1; min-height:var(--rodape-h);
+  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:.75rem;
+  padding:.125rem .875rem; background:var(--surface-2); border-top:1px solid var(--border);
+  font-size:11px; color:var(--muted-fg);
+}
+.rodape.fixo{ position:fixed; left:0; right:0; bottom:0; z-index:70; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); background:color-mix(in srgb,var(--surface-2) 88%,transparent); }
+.rd-inicio{ justify-self:start; display:flex; align-items:center; gap:.375rem; min-width:0; }
+.rd-tema{ display:inline-grid; place-items:center; padding:.125rem .375rem .125rem .125rem; border:0; border-right:1px solid var(--border); border-radius:0; background:none; color:var(--muted-fg); cursor:pointer; }
+.rd-tema:hover{ color:var(--fg); }
+.rd-tema svg.lucide{ font-size:12px; }
+.rd-idioma{ display:inline-flex; align-items:center; gap:.125rem; padding:0 .375rem 0 .125rem; border-right:1px solid var(--border); }
+.rd-opcao{ padding:.125rem .25rem; border:0; border-radius:var(--radius-sm); background:none; color:var(--muted-fg); font-size:11px; line-height:1.35; cursor:pointer; font-family:inherit; }
+.rd-opcao:hover{ color:var(--fg); }
+.rd-opcao[aria-pressed=true]{ color:var(--fg); font-weight:600; }
+.rd-versao{ padding:.125rem .25rem; border:0; border-radius:var(--radius-sm); background:none; color:var(--muted-fg); font-size:11px; line-height:1.35; font-variant-numeric:tabular-nums; cursor:pointer; font-family:inherit; white-space:nowrap; }
+.rd-versao:hover{ color:var(--fg); text-decoration:underline; }
+.rd-tarja{ justify-self:center; display:flex; align-items:center; justify-content:center; gap:.375rem; text-align:center; line-height:1.35; }
+.rd-tarja .ic{ color:var(--warning); display:inline-flex; flex:none; }
+.rd-tarja svg.lucide{ font-size:12px; }
+.rd-fim{ justify-self:end; display:flex; align-items:center; gap:.5rem; min-width:0; }
+.rd-feedback{ display:inline-flex; align-items:center; gap:.3125rem; padding:.125rem .25rem; border:0; border-radius:var(--radius-sm); background:none; color:var(--muted-fg); font-size:11px; line-height:1.35; white-space:nowrap; cursor:pointer; font-family:inherit; }
+.rd-feedback:hover{ color:var(--fg); }
+.rd-feedback:hover span{ text-decoration:underline; }
+.rd-feedback svg.lucide{ font-size:12px; }
+@media(max-width:640px){ .rd-tarja span:last-child, .rd-feedback span{ display:none; } }
+
+/* Modal (notas de versão, feedback) */
+.ov{ position:fixed; inset:0; background:rgba(0,0,0,.45); -webkit-backdrop-filter:blur(.25rem); backdrop-filter:blur(.25rem); z-index:90; display:grid; place-items:safe center; padding:1rem; overflow-y:auto; }
+.ov[hidden]{ display:none; }
+.modal{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-2xl); box-shadow:var(--shadow-lg); width:min(34rem,100%); max-height:90vh; display:flex; flex-direction:column; overflow:hidden; animation:surgir var(--t-surgir) ease-out; }
+.modal .mi{ padding:1.25rem; overflow-y:auto; flex:1 1 auto; min-height:0; }
+.modal .mt{ font-size:16px; font-weight:800; margin:0 0 .375rem; }
+.modal .mb2{ font-size:13px; color:var(--muted-fg); }
+.modal .ma{ display:flex; flex-wrap:wrap; gap:.5rem; justify-content:flex-end; padding:.875rem 1.25rem; border-top:1px solid var(--border); flex-shrink:0; }
+.modal .selo{ width:2.875rem; height:2.875rem; border-radius:50%; display:grid; place-items:center; margin-bottom:.875rem; }
+.modal .selo svg.lucide{ font-size:20px; }
+.selo.perigo{ background:var(--danger-muted); color:var(--danger); }
+.selo.aviso{ background:var(--warning-muted); color:var(--warning); }
+.notas-cab{ display:flex; align-items:baseline; gap:.5rem; margin:.875rem 0 .75rem; font-size:14px; font-weight:800; }
+.notas-data{ font-size:11px; font-weight:600; color:var(--muted-fg); }
+.notas-grupo{ margin:.875rem 0 .375rem; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--subtle-fg); }
+.notas-lista{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.5rem; }
+.notas-item{ display:flex; align-items:flex-start; gap:.5rem; font-size:13px; line-height:1.45; }
+.notas-ico{ flex:none; width:1.25rem; height:1.25rem; margin-top:1px; border-radius:50%; display:grid; place-items:center; }
+.notas-ico svg.lucide{ font-size:12px; }
+.notas-item[data-tipo=novo] .notas-ico{ background:var(--success-muted); color:var(--success); }
+.notas-item[data-tipo=corrigido] .notas-ico{ background:var(--info-muted); color:var(--info); }
+.notas-item[data-tipo=alterado] .notas-ico{ background:var(--warning-muted); color:var(--warning); }
+
+/* Movimento: amostras */
+.motion-tile{ padding:14px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface-2); font-size:12.5px; transition:var(--t-hover); cursor:default; }
+.motion-tile:hover{ transform:translateY(-1px); box-shadow:var(--shadow-md); }
+.motion-tile b{ display:block; font-size:13px; }
+.motion-tile .mono{ color:var(--muted-fg); font-size:11.5px; }
+
+/* mini dashboard (composição antiga) */
+.bars{ display:flex; align-items:flex-end; gap:10px; height:130px; padding-top:8px; }
+.bars i{ flex:1; border-radius:6px 6px 3px 3px; background:linear-gradient(180deg,var(--primary),var(--eveo-wine)); opacity:.9; height:0; transition:height var(--t-contagem) cubic-bezier(.33,1,.68,1); }
+.bars i:nth-child(even){ opacity:.55; }
+
+/* footer da página */
+footer.pagefoot{ margin-top:80px; border-top:1px solid var(--border); padding:34px 0 40px; color:var(--muted-fg); font-size:13px; }
+.usage{ display:flex; gap:10px; align-items:flex-start; font-size:13.5px; padding:9px 0; }
+.usage svg.lucide{ color:var(--primary); font-size:17px; margin-top:2px; flex:none; }
+.usage b{ color:var(--fg); }
+.pin{ position:fixed; right:18px; bottom:calc(var(--rodape-h) + 18px); z-index:60; }
+.to-top{ width:44px; height:44px; border-radius:50%; display:grid; place-content:center; background:var(--primary); color:#fff; box-shadow:var(--shadow-red); border:none; cursor:pointer; }
+
+/* ---------- Specular button · WebGL (reactbits) ---------- */
+.spec-stage{
+  display:flex; gap:24px; flex-wrap:wrap; justify-content:center; align-items:center;
+  padding:52px 24px; border-radius:var(--radius-lg);
+  background:
+    radial-gradient(55% 130% at 50% 0%, rgba(226,0,27,.18), transparent 62%),
+    linear-gradient(180deg,#161516,#0b0b0c);
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+.specular-button{
+  --sb-radius:16px; --sb-text-color:#f5f5f5;
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  border:none; margin:0; font-family:inherit; font-weight:600; letter-spacing:.01em; line-height:1;
+  color:var(--sb-text-color); background:transparent; border-radius:var(--sb-radius);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 8px 24px rgba(0,0,0,.35);
+  cursor:pointer; outline:none; transition:transform .15s ease;
+}
+.specular-button:active{ transform:scale(.97); }
+.specular-button:focus-visible{ outline:2px solid color-mix(in srgb,var(--sb-text-color) 60%,transparent); outline-offset:3px; }
+.specular-button--lg{ font-size:1.1rem; padding:17px 38px; }
+.specular-button__fx{ position:absolute; inset:-20px; pointer-events:none; z-index:1; }
+.specular-button__fx canvas{ display:block; width:100%; height:100%; }
+.specular-button__label{ position:relative; z-index:2; display:inline-flex; align-items:center; gap:9px; }
+.specular-button__label svg.lucide{ font-size:1.05em; }
+
+/* ---------- Movimento reduzido: corta o supérfluo, não o componente ---------- */
+@media (prefers-reduced-motion: reduce){
+  .sk-bloco, .hourglass .body, .hourglass .upper, .hourglass .lower, .hourglass .stream, .bar.indet .bar-fill{ animation:none; }
+  .hourglass .stream{ display:none; }
+  .rf, .bar-fill, .bars i, .topo-no, .topo-lig{ transition:none; }
+  .toast, .modal{ animation:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- reusable eveo mark svg (3 stacked slabs) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="eveo-slabs" viewBox="0 0 100 72">
+    <polygon points="16,0 100,0 84,13 0,13"/>
+    <polygon points="16,29 100,29 84,42 0,42"/>
+    <polygon points="16,58 100,58 84,71 0,71"/>
+  </symbol>
+  <!-- ampulheta de Operações (src/ui/operations-hourglass.tsx) -->
+  <symbol id="hourglass-sym" viewBox="0 0 24 24">
+    <defs><clipPath id="hg-clip"><path d="M7.5 5h9L12 10Z"/></clipPath></defs>
+    <g class="body">
+      <g class="sand" fill="currentColor">
+        <path class="stream" d="M12 10.5V19" fill="none" stroke="currentColor" stroke-dasharray="1 1.5" stroke-linecap="round" stroke-width="1"/>
+        <g clip-path="url(#hg-clip)"><rect class="upper" height="6" width="10" x="7" y="4.5"/></g>
+        <path class="lower" d="M7.5 19h9L12 14Z"/>
+      </g>
+      <path d="M5 3h14M5 21h14M6 3v4l6 5-6 5v4M18 3v4l-6 5 6 5v4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+    </g>
+  </symbol>
+</svg>
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top">
+      <span class="eveo-word">eveo</span>
+      <svg class="eveo-mark"><use href="#eveo-slabs"/></svg>
+      <span class="tag">Design System</span>
+    </a>
+    <nav class="nav">
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#superficies">Superfícies</a>
+      <a href="#icones">Ícones</a>
+      <a href="#componentes">Componentes</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#progresso">Progresso</a>
+      <a href="#topologia">Topologia</a>
+      <a href="#shell">Shell</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+  <!-- ============ HERO ============ -->
+  <section style="padding-top:56px">
+    <span class="eyebrow"><svg class="eveo-mark" style="width:1.1em;height:.8em"><use href="#eveo-slabs"/></svg> Private Cloud · Pocket Guide v01 · painel dev 29/09/2026</span>
+    <h1 class="h-sec" style="font-size:clamp(38px,6vw,68px);line-height:1.02;margin-top:14px">
+      Design System<br><span style="color:var(--muted-fg);font-weight:700">da eveo</span>
+    </h1>
+    <p class="sub" style="font-size:18px">
+      A linguagem visual dos painéis de nuvem privada: <b style="color:var(--fg);font-weight:800">glassmorphism</b>, widgets,
+      feedback ao usuário, progresso de operações e topologia dinâmica, vestidos com a
+      <b style="color:var(--fg);font-weight:800">paleta</b> e a tipografia <b style="color:var(--fg);font-weight:800">Hanken&nbsp;Grotesk</b> da marca.
+    </p>
+    <div class="row" style="margin-top:26px">
+      <a href="#feedback" class="btn primary lg"><i data-lucide="message-square-warning"></i> Feedback ao usuário</a>
+      <a href="#progresso" class="btn outline lg"><i data-lucide="hourglass"></i> Progresso de operações</a>
+      <a href="#topologia" class="btn outline lg"><i data-lucide="network"></i> Topologia</a>
+    </div>
+
+    <div class="grid cols-3" style="margin-top:34px">
+      <div class="glass" style="padding:20px">
+        <div class="stat" style="padding:0">
+          <div class="top"><div class="ic"><i data-lucide="server"></i></div><span class="delta up"><i data-lucide="trending-up"></i>12%</span></div>
+          <div class="num mono">248</div><div class="lb">Instâncias ativas</div>
+          <div class="rb" style="margin-top:12px;display:flex" data-alvo="62" aria-label="vCPU alocada"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></div>
+        </div>
+      </div>
+      <div class="glass" style="padding:20px">
+        <div class="stat" style="padding:0">
+          <div class="top"><div class="ic"><i data-lucide="hard-drive"></i></div><span class="badge err">crítico</span></div>
+          <div class="num mono">1,2<span style="font-size:16px;color:var(--muted-fg)"> PB</span></div><div class="lb">Storage provisionado</div>
+          <div class="rb" style="margin-top:12px;display:flex" data-alvo="91" aria-label="Storage"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></div>
+        </div>
+      </div>
+      <div class="glass" style="padding:20px">
+        <div class="stat" style="padding:0">
+          <div class="top"><div class="ic"><i data-lucide="shield-check"></i></div><span class="delta up"><i data-lucide="check"></i>OK</span></div>
+          <div class="num mono">99,98<span style="font-size:16px;color:var(--muted-fg)">%</span></div><div class="lb">Uptime · 30d</div>
+          <div class="rb" style="margin-top:12px;display:flex" data-alvo="34" aria-label="Memória"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FUNDAMENTOS ============ -->
+  <section id="fundamentos">
+    <span class="eyebrow"><i data-lucide="layers"></i> Fundamentos</span>
+    <h2 class="h-sec">Cores</h2>
+    <p class="sub">Paleta cromática do Pocket Guide. Clique em um swatch para copiar o hex.</p>
+
+    <div class="label" style="margin:22px 0 10px">Marca</div>
+    <div class="grid cols-3">
+      <div class="swatch"><div class="chip" style="background:#E2001B"></div><div class="meta"><div class="nm">Vermelho eveo</div><div class="hx mono">#E2001B · RGB 226,0,27</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#FF0000"></div><div class="meta"><div class="nm">Vermelho vívido</div><div class="hx mono">#FF0000 · RGB 255,0,0</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#8B0D19"></div><div class="meta"><div class="nm">Vinho</div><div class="hx mono">#8B0D19 · RGB 139,13,25</div></div></div>
+    </div>
+    <div class="label" style="margin:22px 0 10px">Neutros</div>
+    <div class="grid cols-4">
+      <div class="swatch"><div class="chip" style="background:#1C1D1E"></div><div class="meta"><div class="nm">Quase-preto</div><div class="hx mono">#1C1D1E</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#808080"></div><div class="meta"><div class="nm">Cinza</div><div class="hx mono">#808080</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#D1D1D1"></div><div class="meta"><div class="nm">Cinza claro</div><div class="hx mono">#D1D1D1</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#F4F4F4;box-shadow:inset 0 0 0 1px var(--border)"></div><div class="meta"><div class="nm">Off-white</div><div class="hx mono">#F4F4F4</div></div></div>
+    </div>
+
+    <div class="label" style="margin:22px 0 10px">Tons de estado e acentos · cada um com par <span class="code">-muted</span> e versão escura</div>
+    <div class="grid cols-3" style="gap:10px">
+      <div class="tone" style="color:var(--success)"><i style="background:var(--success)"></i><b>success</b><span class="hx mono">#1E7F4B · dark #2FBE72</span></div>
+      <div class="tone" style="color:var(--warning)"><i style="background:var(--warning)"></i><b>warning</b><span class="hx mono">#8A5E00 · dark #E0A64B</span></div>
+      <div class="tone" style="color:var(--danger)"><i style="background:var(--danger)"></i><b>danger</b><span class="hx mono">#E2001B · dark #FF4D5A</span></div>
+      <div class="tone" style="color:var(--info)"><i style="background:var(--info)"></i><b>info</b><span class="hx mono">#2563EB · dark #60A5FA</span></div>
+      <div class="tone" style="color:var(--accent-teal)"><i style="background:var(--accent-teal)"></i><b>accent-teal</b><span class="hx mono">#0E9AA7 · operações</span></div>
+      <div class="tone" style="color:var(--accent-purple)"><i style="background:var(--accent-purple)"></i><b>accent-purple</b><span class="hx mono">#7C3AED · roteador</span></div>
+      <div class="tone" style="color:var(--accent-orange)"><i style="background:var(--accent-orange)"></i><b>accent-orange</b><span class="hx mono">#C97A00 · IP público</span></div>
+      <div class="tone" style="color:var(--danger)"><i style="background:var(--danger-hover)"></i><b>danger-hover</b><span class="hx mono">#A01020 · nos dois temas</span></div>
+      <div class="tone" style="color:var(--primary)"><i style="background:var(--primary-muted)"></i><b>primary-muted</b><span class="hx mono">rgba(226,0,27,.10)</span></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Regras de cor do painel</span><span class="badge outline">gate do design system</span></div>
+      <div class="rule"><i data-lucide="ban"></i><div><b>Hexadecimal só em tokens.</b> Componentes, CSS e TSX leem <span class="code">var(--token)</span>; um teste reprova qualquer hex fora do arquivo de tokens, com arquivo e linha.</div></div>
+      <div class="rule"><i data-lucide="eye"></i><div><b>Cor nunca é o único sinal.</b> Tom de estado sempre acompanha ícone, texto ou selo (WCAG 1.4.1): o toast tem borda <i>e</i> ícone, a etapa tem cor <i>e</i> rótulo.</div></div>
+      <div class="rule"><i data-lucide="contrast"></i><div><b>AA contra a superfície.</b> Os tons de estado foram escurecidos no claro (success #1E7F4B, warning #8A5E00) para passar 4,5:1 sobre <span class="code">--surface</span>; o texto dos chips de tag usa <span class="code">color-mix</span> local, sem tocar o token.</div></div>
+      <div class="rule"><i data-lucide="sun-moon"></i><div><b>Tema claro é o padrão do produto.</b> O escuro só entra por escolha explícita da pessoa, persistida; o painel não segue <span class="code">prefers-color-scheme</span>. A cor de destaque do cliente (whitelabel) é recalculada contra a superfície do tema ativo para o texto do botão continuar legível.</div></div>
+    </div>
+
+    <!-- Tipografia -->
+    <div class="divider"></div>
+    <h2 class="h-sec" style="margin-top:36px">Tipografia</h2>
+    <p class="sub">Família <b style="color:var(--fg)">Hanken Grotesk</b>: sans-serif geométrica, do Pocket Guide. Corpo do painel em 13px (0.813rem), números sempre com <span class="code">tabular-nums</span>.</p>
+
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Espécime & pesos</span><span class="badge outline">6 pesos</span></div>
+        <div style="font-size:56px;font-weight:800;letter-spacing:-.04em;line-height:1">Hanken<br>Grotesk</div>
+        <div class="weights" style="margin-top:22px">
+          <span style="font-weight:400">Regular</span>
+          <span style="font-weight:500">Medium</span>
+          <span style="font-weight:600">Semibold</span>
+          <span style="font-weight:700">Bold</span>
+          <span style="font-weight:800">Extrabold</span>
+          <span style="font-weight:900">Black</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Escala tipográfica</span></div>
+        <div class="scale-row"><span class="meta mono">Display · 60/900</span><span style="font-size:34px;font-weight:900;letter-spacing:-.03em">Ag</span></div>
+        <div class="scale-row"><span class="meta mono">Título de tela · 22/800</span><span style="font-size:22px;font-weight:800;letter-spacing:-.02em">Nuvem privada</span></div>
+        <div class="scale-row"><span class="meta mono">Título de card · 11/700 caps</span><span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-fg)">Instâncias</span></div>
+        <div class="scale-row"><span class="meta mono">Body · 13/400</span><span style="font-size:13px;font-weight:400">o jeito que o seu negócio precisa</span></div>
+        <div class="scale-row"><span class="meta mono">Apoio · 11/600</span><span style="font-size:11px;font-weight:600;color:var(--muted-fg)">texto de apoio · versão · rodapé</span></div>
+        <div class="scale-row"><span class="meta mono">Mono · 11.5</span><span class="code mono">a1b2c3d4-9f</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Formas de uso · regras do guia</span></div>
+      <div class="grid cols-2" style="gap:10px 32px">
+        <div class="usage"><i data-lucide="type"></i><div><b>Chamadas de destaque</b>: allcaps, peso Bold ou Extrabold.</div></div>
+        <div class="usage"><i data-lucide="align-left"></i><div><b>Textos</b>: lowercase; Regular acima de 24pt, Medium abaixo.</div></div>
+        <div class="usage"><i data-lucide="arrow-down-narrow-wide"></i><div><b>Hierarquia</b>: sempre pular um peso (Regular para Semibold).</div></div>
+        <div class="usage"><i data-lucide="highlighter"></i><div><b>Destaque de palavras</b>: usar <b style="font-weight:800">Extrabold</b>.</div></div>
+      </div>
+    </div>
+
+    <!-- Radius, spacing, elevation, motion -->
+    <div class="divider"></div>
+    <h2 class="h-sec" style="margin-top:36px">Raio, espaçamento, elevação & movimento</h2>
+    <div class="grid cols-3" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Border radius</span></div>
+        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:12px">
+          <div><div class="radius-demo" style="--_r:var(--radius-sm)"></div><div class="tile" style="border:0;margin-top:6px">sm</div></div>
+          <div><div class="radius-demo" style="--_r:var(--radius-lg)"></div><div class="tile" style="border:0;margin-top:6px">lg · .625rem</div></div>
+          <div><div class="radius-demo" style="--_r:var(--radius-2xl)"></div><div class="tile" style="border:0;margin-top:6px">2xl</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Espaçamento · 4px</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="row" style="gap:8px"><span style="width:4px;height:16px;background:var(--primary);border-radius:2px"></span><span class="hint mono">4 · xs</span></div>
+          <div class="row" style="gap:8px"><span style="width:8px;height:16px;background:var(--primary);border-radius:2px"></span><span class="hint mono">8 · sm</span></div>
+          <div class="row" style="gap:8px"><span style="width:16px;height:16px;background:var(--primary);border-radius:2px"></span><span class="hint mono">16 · md</span></div>
+          <div class="row" style="gap:8px"><span style="width:24px;height:16px;background:var(--primary);border-radius:2px"></span><span class="hint mono">24 · lg</span></div>
+          <div class="row" style="gap:8px"><span style="width:40px;height:16px;background:var(--primary);border-radius:2px"></span><span class="hint mono">40 · xl</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Elevação</span></div>
+        <div class="grid" style="gap:12px">
+          <div class="shadow-demo" style="box-shadow:var(--shadow-sm)">sm</div>
+          <div class="shadow-demo" style="box-shadow:var(--shadow-md)">md</div>
+          <div class="shadow-demo" style="box-shadow:var(--shadow-soft)">soft · assinatura</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Movimento · durações do painel</span><span class="badge outline">prefers-reduced-motion respeitado</span></div>
+      <p class="hint" style="margin:-8px 0 14px">Passe o mouse nos blocos. Toda animação é curta, tem função e tem versão sem movimento: com <span class="code">prefers-reduced-motion</span> o skeleton para, a ampulheta congela e a barra entrega o valor final na hora. Nunca se inventa progresso: se a nuvem não reporta percentual, a barra é indeterminada.</p>
+      <div class="grid cols-4" style="gap:10px">
+        <div class="motion-tile"><b>Hover</b><span class="mono">.16s · translateY(-1px) + shadow-md</span></div>
+        <div class="motion-tile"><b>Surgir</b><span class="mono">.16s ease-out · diálogo, toast, janela</span></div>
+        <div class="motion-tile"><b>Barra de uso</b><span class="mono">650ms ease-out cúbico · 0 até o valor</span></div>
+        <div class="motion-tile"><b>Suavização da barra</b><span class="mono">120ms linear · width</span></div>
+        <div class="motion-tile"><b>Indeterminada</b><span class="mono">1.2s ease-in-out · 40% de largura</span></div>
+        <div class="motion-tile"><b>Skeleton</b><span class="mono">1.6s pulso · opacity 1 → .45</span></div>
+        <div class="motion-tile"><b>Ampulheta</b><span class="mono">4.6s ciclo · vira aos 80%</span></div>
+        <div class="motion-tile"><b>Destaque na topologia</b><span class="mono">120ms · opacity dos vizinhos</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUPERFÍCIES / GLASS ============ -->
+  <section id="superficies">
+    <span class="eyebrow"><i data-lucide="sparkles"></i> Superfícies</span>
+    <h2 class="h-sec">Vidro & transparência</h2>
+    <p class="sub">A textura de vidro do painel: borda a 10%, fundo translúcido e <b style="color:var(--fg)">backdrop-blur de 24px</b>. No painel o vidro vive na topbar e no cartão da sessão; o conteúdo fica em superfície opaca.</p>
+
+    <div class="glass-stage" style="margin-top:22px">
+      <div class="grid cols-3" style="gap:16px;position:relative;z-index:2">
+        <div class="glass" style="padding:20px">
+          <div class="row" style="justify-content:space-between">
+            <div style="width:38px;height:38px;border-radius:10px;display:grid;place-content:center;background:rgba(255,255,255,.16);color:#fff"><i data-lucide="cpu"></i></div>
+            <span class="badge" style="background:rgba(255,255,255,.18);color:#fff">live</span>
+          </div>
+          <div style="color:#fff;font-size:26px;font-weight:800;margin-top:14px" class="mono">64%</div>
+          <div style="color:rgba(255,255,255,.8);font-size:13px">uso de CPU · cluster A</div>
+          <div class="bar" style="margin-top:12px;background:rgba(255,255,255,.2)"><span class="bar-fill" style="width:64%;background:#fff"></span></div>
+        </div>
+        <div class="glass" style="padding:20px;color:#fff">
+          <div class="row" style="gap:10px"><div class="ava" style="background:linear-gradient(135deg,#FF0000,#8B0D19)">EP</div><div><div style="font-weight:700;font-size:14px">Edge Node · SP</div><div style="font-size:12px;color:rgba(255,255,255,.75)">online há 42 dias</div></div></div>
+          <div style="height:1px;background:rgba(255,255,255,.16);margin:14px 0"></div>
+          <div class="row" style="justify-content:space-between;font-size:13px;color:rgba(255,255,255,.9)"><span>latência</span><b class="mono">3,4 ms</b></div>
+          <div class="row" style="justify-content:space-between;font-size:13px;color:rgba(255,255,255,.9);margin-top:6px"><span>throughput</span><b class="mono">18,6 Gb/s</b></div>
+        </div>
+        <div class="glass" style="padding:20px;color:#fff">
+          <div class="row" style="gap:10px;margin-bottom:12px"><i data-lucide="bell" style="font-size:18px"></i><b style="font-size:14px">Notificações</b></div>
+          <div style="font-size:13px;color:rgba(255,255,255,.9);display:flex;flex-direction:column;gap:10px">
+            <div class="row" style="gap:8px"><span class="badge dot" style="background:transparent;color:#7CFFB0;padding:0"></span> Backup concluído</div>
+            <div class="row" style="gap:8px"><span class="badge dot" style="background:transparent;color:#FFD27C;padding:0"></span> Snapshot agendado 02:00</div>
+            <div class="row" style="gap:8px"><span class="badge dot" style="background:transparent;color:#fff;padding:0"></span> Novo projeto provisionado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:12px"><span class="code">.glass</span> <span class="mono">border:1px rgba(28,29,30,.10) · background:rgba(255,255,255,.55) · backdrop-filter:blur(24px)</span>. Atenção: <span class="code">backdrop-filter</span> cria bloco de contenção; popover dentro de uma superfície de vidro deve ser portalizado para o <span class="code">body</span>.</p>
+  </section>
+
+  <!-- ============ ÍCONES ============ -->
+  <section id="icones">
+    <span class="eyebrow"><i data-lucide="shapes"></i> Ícones</span>
+    <h2 class="h-sec">Biblioteca de ícones</h2>
+    <p class="sub">Conjunto <b style="color:var(--fg)">Lucide</b>: traço de 2px, cantos arredondados. Sempre <span class="code">aria-hidden</span> com nome acessível no controle. Tamanhos do painel: 18 na topbar, 16 no menu, 14 em botão pequeno, 12 no rodapé.</p>
+    <div class="card" style="margin-top:22px">
+      <div class="icons" id="icon-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ COMPONENTES ============ -->
+  <section id="componentes">
+    <span class="eyebrow"><i data-lucide="component"></i> Componentes</span>
+    <h2 class="h-sec">Widgets & controles</h2>
+    <p class="sub">Os blocos de construção do painel: botões, campos, seleção e dados. O feedback e o progresso têm seções próprias mais abaixo.</p>
+
+    <!-- Specular button (WebGL) -->
+    <div class="card" style="margin-top:22px;overflow:hidden">
+      <div class="card-head"><span class="card-title">Botão especular · WebGL</span><span class="badge red dot">reactbits · só em marketing</span></div>
+      <p class="hint" style="margin:-8px 0 16px">Brilho especular renderizado em GPU que percorre a borda e segue o cursor. Fica fora do painel operacional; vale para landing e apresentações.</p>
+      <div class="spec-stage">
+        <button class="specular-button specular-button--lg" data-sb-line="#ffffff" data-sb-base="#5a5a5a" data-sb-radius="16">
+          <span class="specular-button__fx" aria-hidden="true"></span>
+          <span class="specular-button__label"><i data-lucide="sparkles"></i> Provisionar cluster</span>
+        </button>
+        <button class="specular-button specular-button--lg" data-sb-line="#FF2E43" data-sb-base="#8B0D19" data-sb-radius="16">
+          <span class="specular-button__fx" aria-hidden="true"></span>
+          <span class="specular-button__label">Começar agora</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Botões</span><span class="badge red">primário = vermelho eveo</span></div>
+        <div class="row"><button class="btn primary">Primário</button><button class="btn">Padrão</button><button class="btn ghost">Fantasma</button><button class="btn destructive">Excluir</button></div>
+        <div class="row" style="margin-top:12px"><button class="btn primary xs">xs</button><button class="btn primary sm">sm</button><button class="btn primary">md</button><button class="btn primary lg">lg</button></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary"><i data-lucide="plus"></i> Nova instância</button>
+          <button class="btn outline"><i data-lucide="download"></i> Exportar</button>
+          <button class="btn icon outline" aria-label="Mais ações"><i data-lucide="ellipsis"></i></button>
+          <button class="btn primary" disabled><i data-lucide="loader-circle" class="spin"></i> Salvando</button>
+        </div>
+        <p class="hint" style="margin-top:12px">Destrutivo usa <span class="code">--danger</span> com hover <span class="code">--danger-hover</span> (vinho, nos dois temas). Ações de linha ficam num menu de três pontos sempre visível: revelar por hover deixaria Iniciar/Parar/Excluir inalcançáveis por teclado.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Selos & chips</span></div>
+        <div class="row"><span class="bx bx-ok">concluído</span><span class="bx bx-info">em andamento</span><span class="bx bx-warn">parcial</span><span class="bx bx-err">falhou</span><span class="bx bx-brand">EVEO</span><span class="bx bx-neutral">v0.2.0</span><span class="badge soon">Em breve</span></div>
+        <p class="hint" style="margin:10px 0 0"><span class="code">brand</span> é tom de marca, não de erro: diz "isto é da EVEO". Selo "Em breve" fica visível e inerte no menu e nas abas; sumir com ele pareceria regressão.</p>
+        <div class="card-head" style="margin:22px 0 14px"><span class="card-title">Abas</span></div>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="0">Visão geral</button>
+          <button class="tab" data-tab="1">Rede</button>
+          <button class="tab" data-tab="2">Backups</button>
+          <button class="tab" disabled>Métricas <span class="badge soon">Em breve</span></button>
+        </div>
+        <div style="margin-top:14px;font-size:14px;color:var(--muted-fg)" id="tab-body">Métricas de cluster, uso de recursos e status de nós.</div>
+      </div>
+    </div>
+
+    <!-- Inputs + selection -->
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Campos de formulário</span></div>
+        <div class="grid" style="gap:14px">
+          <div class="field"><label class="label" style="text-transform:uppercase;font-size:11.5px">Nome da instância</label><input class="input err" value="Web Prod 01" aria-invalid="true" aria-describedby="e-nome" /><span class="ferr" id="e-nome">Use letras minúsculas, números e hífen, começando por letra.</span></div>
+          <div class="field"><label class="label" style="text-transform:uppercase;font-size:11.5px">Buscar recurso</label><div class="input-icon"><i data-lucide="search"></i><input class="input" placeholder="Instância, volume, snapshot…" /></div></div>
+          <div class="field"><label class="label" style="text-transform:uppercase;font-size:11.5px">Região</label>
+            <select class="select"><option value="">Selecione…</option><option>São Paulo · SP1</option><option>São Paulo · SP2</option><option disabled>Rio de Janeiro · não contratada</option></select>
+          </div>
+          <div class="field"><label class="label" style="text-transform:uppercase;font-size:11.5px">Observações</label><textarea class="textarea" placeholder="Notas de provisionamento…"></textarea><span class="hint">Rótulo em caixa alta pelo CSS: o leitor de tela continua ouvindo a grafia original. Opção vazia inicial no select é obrigatória; sem ela o navegador escolheria por você.</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Seleção & sliders</span></div>
+        <div class="row" style="justify-content:space-between"><span style="font-size:14px">Alta disponibilidade</span><label class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label></div>
+        <div class="row" style="justify-content:space-between;margin-top:14px"><span style="font-size:14px">Backups automáticos</span><label class="switch"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label></div>
+        <div style="height:1px;background:var(--border);margin:18px 0"></div>
+        <label class="check"><input type="checkbox" checked> Criptografia em repouso (AES-256)</label><br style="line-height:2.4">
+        <label class="check" style="margin-top:10px"><input type="checkbox"> Replicação entre regiões</label>
+        <div style="height:1px;background:var(--border);margin:18px 0"></div>
+        <div class="row" style="gap:22px">
+          <label class="check"><input type="radio" name="plan" checked> Standard</label>
+          <label class="check"><input type="radio" name="plan"> Enterprise</label>
+        </div>
+        <div class="field" style="margin-top:20px"><label class="label">vCPU alocada · 8</label><input class="slider" type="range" min="1" max="32" value="8" /></div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card" style="margin-top:16px;padding:0;overflow:hidden">
+      <div class="card-head" style="padding:20px 22px 0"><span class="card-title">Instâncias</span><div class="row"><span class="hint">barras carregam do zero a cada abertura</span><button class="btn sm outline" data-replay="#tbl-inst"><i data-lucide="refresh-cw"></i> Recarregar</button></div></div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table class="tbl" id="tbl-inst">
+          <thead><tr><th>Nome</th><th>Região</th><th>CPU</th><th>Memória</th><th>Saúde</th><th>Status</th><th style="text-align:center">Ações</th></tr></thead>
+          <tbody>
+            <tr><td><b>web-01</b><br><span class="hint mono">4 vCPU · 16 GB</span></td><td>SP1</td><td><span class="rb" data-alvo="0.4"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="rb" data-alvo="32"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg" data-alvo="96" data-ring><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td><span class="bx bx-ok">executando</span></td><td style="text-align:center"><button class="btn icon sm outline" aria-label="Ações de web-01"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b>db-primary</b><br><span class="hint mono">8 vCPU · 64 GB</span></td><td>SP1</td><td><span class="rb" data-alvo="68"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="rb" data-alvo="88"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg" data-alvo="74" data-ring><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td><span class="bx bx-ok">executando</span></td><td style="text-align:center"><button class="btn icon sm outline" aria-label="Ações de db-primary"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b>cache-02</b><br><span class="hint mono">2 vCPU · 8 GB</span></td><td>SP2</td><td><span class="rb" data-alvo="52"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="rb" data-alvo="41"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg" data-alvo="58" data-ring><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td><span class="bx bx-info">reiniciando</span></td><td style="text-align:center"><button class="btn icon sm outline" aria-label="Ações de cache-02"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b>backup-node</b><br><span class="hint mono">4 vCPU · 32 GB</span></td><td>SP2</td><td><span class="hint">parada</span></td><td><span class="hint">parada</span></td><td><span class="ring lg" data-alvo="38" data-ring><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td><span class="bx bx-neutral">parada</span></td><td style="text-align:center"><button class="btn icon sm outline" aria-label="Ações de backup-node"><i data-lucide="ellipsis"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint" style="padding:12px 22px 18px">Faixas da barra de uso: verde até 50%, âmbar de 50 a 85%, vermelho a partir de 85%. Valor entre 0 e 1% vira <span class="code">&lt;1%</span> com piso de 0,25rem; zero de verdade fica em 0% e barra vazia; instância parada mostra texto, não barra. O tom vem do valor final, nunca do valor animado. Anel de saúde: quatro faixas (≥85 verde, ≥70 âmbar, ≥50 laranja, resto vermelho). Coluna de ações fixa à direita (<span class="code">position:sticky</span>) para nunca sair da tela.</p>
+    </div>
+  </section>
+
+  <!-- ============ FEEDBACK AO USUÁRIO ============ -->
+  <section id="feedback">
+    <span class="eyebrow"><i data-lucide="message-square-warning"></i> Feedback ao usuário</span>
+    <h2 class="h-sec">Toasts, faixas, erros humanos e skeleton</h2>
+    <p class="sub">Toda escrita responde em três lugares: o toast (agora), o painel de Operações (histórico da sessão) e a linha do recurso (estado). Falha nunca some sozinha e nunca chega em vocabulário técnico.</p>
+
+    <!-- Toasts -->
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Toasts</span><span class="badge outline">canto inferior direito · acima do rodapé</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="toast" data-tom="ok"><span class="tic"><i data-lucide="circle-check"></i></span><div class="tbody"><p class="ttl">Instância web-03 criada</p><p class="top">Deploy de instância · web-03</p><p class="tsb">Senha inicial disponível em Operações.</p></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="info"><span class="tic"><i data-lucide="info"></i></span><div class="tbody"><p class="ttl">Bem-vindo, rodrigo</p><p class="tsb">Role Admin · eveo.com.br</p></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="warn"><span class="tic"><i data-lucide="triangle-alert"></i></span><div class="tbody"><p class="ttl">Operação terminou pela metade</p><p class="top">Mover para projeto · db-primary</p><p class="tsb">A Private Cloud não informou o que ficou pendente. Confira o estado do recurso antes de pedir de novo.</p><button class="btn ghost xs">Ver em Operações</button></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="err"><span class="tic"><i data-lucide="ban"></i></span><div class="tbody"><p class="ttl">A instância não pôde ser criada</p><p class="top">Deploy de instância · web-04</p><p class="tsb">O deploy excede a quota do projeto em vCPU: reduza os recursos ou solicite aumento em Gestão de Quotas.</p><button class="btn ghost xs">Ver em Operações</button></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn sm" data-toast="ok">Disparar ok</button>
+          <button class="btn sm" data-toast="info">info</button>
+          <button class="btn sm" data-toast="warn">warn</button>
+          <button class="btn sm" data-toast="err">err</button>
+          <button class="btn sm primary" data-toast="deploy"><i data-lucide="rocket"></i> Simular deploy</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Regras do toast</span></div>
+        <div class="rule"><i data-lucide="clock"></i><div><b>ok e info expiram em 8 s.</b> err e warn ficam até a pessoa dispensar, com o atalho "Ver em Operações"; o painel abre sem nova consulta.</div></div>
+        <div class="rule"><i data-lucide="layers"></i><div><b>Uma linha por job.</b> O aviso é identificado pelo <span class="code">job_id</span>: aceite e desfecho do mesmo job evoluem na mesma caixa em vez de empilhar duas.</div></div>
+        <div class="rule"><i data-lucide="hourglass"></i><div><b>Job em andamento não expira.</b> O deploy leva cerca de 40 s; quem tira o toast é o desfecho ou a pessoa.</div></div>
+        <div class="rule"><i data-lucide="tag"></i><div><b>Linha de operação em linguagem do painel.</b> "Parar · vm01", nunca o comando da nuvem (<span class="code">stopVirtualMachine</span>). Ação desconhecida vira "Operação na nuvem", nunca o slug cru.</div></div>
+        <div class="rule"><i data-lucide="shapes"></i><div><b>Tom com borda e ícone.</b> ok = <span class="code">circle-check</span>, err = <span class="code">ban</span>, warn = <span class="code">triangle-alert</span>, info = <span class="code">info</span>; a pilha é <span class="code">aria-live="polite"</span>.</div></div>
+        <div class="rule"><i data-lucide="key-round"></i><div><b>Segredo nunca no toast.</b> Senha inicial e chave de API vivem só em Operações, em memória, com Copiar e Baixar; fechar a mensagem apaga.</div></div>
+      </div>
+    </div>
+
+    <!-- Faixas e erros de tela -->
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Faixa informativa da tela</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="ia info"><span class="ic"><i data-lucide="lightbulb"></i></span><div><strong>O que é uma VPC</strong>A sua rede privada isolada. Sub-redes, ACLs e IPs públicos vivem dentro dela.</div><a class="btn sm outline" href="#topologia">Ver topologia</a></div>
+          <div class="ia warn" role="status"><span class="ic"><i data-lucide="triangle-alert"></i></span><div><strong>Região SP2 não contratada</strong>A escolha foi desfeita. Recursos nessa região aparecem, mas não podem ser criados nesta conta.</div></div>
+        </div>
+        <p class="hint" style="margin-top:12px"><span class="code">role="status"</span> só quando a faixa aparece em resposta a uma ação que desfaz algo: quem usa leitor de tela precisa ouvir o porquê. Faixa estática desde a montagem não é live region.</p>
+        <div class="card-head" style="margin:22px 0 12px"><span class="card-title">Estados de erro da tela</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="login-err" role="alert">Usuário ou senha incorretos. Confira os dados e tente de novo.</div>
+          <div class="falha" role="alert" style="border:1px dashed var(--border);border-radius:var(--radius-lg)">Não foi possível carregar os dados. Tente novamente. O painel continua disponível.<div class="corr">ID de correlação: 7f3a9c1e-42b0</div></div>
+          <div class="dr-falha"><strong>Métricas indisponíveis nesta aba</strong><p>As outras abas do painel continuam funcionando. Tente de novo em instantes.</p><button class="btn xs">Tentar de novo</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Modelo de mensagem de erro</span><span class="badge red">humano antes de técnico</span></div>
+        <div class="rule"><i data-lucide="user"></i><div><b>Diz o que aconteceu para a pessoa, não para o sistema.</b> "A instância não pôde ser criada." e não "deployVirtualMachine failed (431)".</div></div>
+        <div class="rule"><i data-lucide="compass"></i><div><b>Diz o próximo passo quando existe.</b> "reduza os recursos ou solicite aumento em Gestão de Quotas"; recusa que cita um campo ganha atalho para o passo e o controle certos.</div></div>
+        <div class="rule"><i data-lucide="search-x"></i><div><b>Só nomeia o que o texto distingue.</b> "Unable to create a deployment" cobre capacidade, afinidade e planejador: tratar como storage é inventar causa. Sem causa, o texto diz que a nuvem não a informou.</div></div>
+        <div class="rule"><i data-lucide="eye-off"></i><div><b>O texto cru da nuvem nunca vai à tela.</b> Fica no console do navegador para diagnóstico; o gateway já traduziu o envelope RFC 7807 e o painel ramifica pelo <span class="code">type</span>, nunca pelo status HTTP.</div></div>
+        <div class="rule"><i data-lucide="fingerprint"></i><div><b>ID de correlação só quando o gateway mandou.</b> Um identificador fabricado no cliente não acha nada no log. É o que a pessoa leva ao suporte, com botão de copiar.</div></div>
+        <div class="rule"><i data-lucide="case-lower"></i><div><b>Sem vocabulário do fornecedor.</b> "Private Cloud", "região", "instância", "imagem", "sub-rede". O gate de termos falha a esteira se o nome do fornecedor aparecer em texto de cliente.</div></div>
+        <div class="corr-box">ID de correlação<code>7f3a9c1e-42b0-4d31-9d5a-0e6d2b7f8c11</code><button class="btn xs" data-copy="7f3a9c1e-42b0-4d31-9d5a-0e6d2b7f8c11"><i data-lucide="copy"></i> Copiar ID</button> <span class="hint" role="status" data-copy-status></span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;padding:0;overflow:hidden">
+      <div class="card-head" style="padding:20px 22px 0"><span class="card-title">Técnico → humano · exemplos do painel</span></div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table class="tbl map">
+          <thead><tr><th>O que a nuvem devolve</th><th>O que a pessoa lê</th><th>Próximo passo</th></tr></thead>
+          <tbody>
+            <tr><td>Maximum number of resources of type 'cpu' for account exceeded</td><td>O deploy excede a quota do projeto em vCPU.</td><td>Reduza os recursos ou solicite aumento em Gestão de Quotas.</td></tr>
+            <tr><td>InsufficientStorageCapacityException</td><td>Sem capacidade de storage no momento.</td><td>Sem atalho: é estado da Private Cloud, não do formulário.</td></tr>
+            <tr><td>Unable to use service offering … not available in zone</td><td>A oferta de serviço não está disponível nesta região.</td><td>Atalho: passo Computação › Tamanho.</td></tr>
+            <tr><td>Template … not compatible with hypervisor</td><td>A imagem não é compatível com a oferta ou com a região.</td><td>Atalho: passo Sistema e região › Imagem.</td></tr>
+            <tr><td>Invalid value for API arg: name</td><td>A Private Cloud não aceitou o valor de "Nome da instância".</td><td>Regra do campo: minúsculas, números e hífen, começando por letra.</td></tr>
+            <tr><td>InsufficientCapacityException (sem detalhe)</td><td>Não foi possível determinar a causa. A Private Cloud recusou por falta de capacidade, sem distinguir se é storage, CPU ou memória.</td><td>Nada a corrigir no formulário; ID de correlação para o suporte.</td></tr>
+            <tr><td>queryAsyncJobResult sem resposta (10 tentativas)</td><td>Não foi possível consultar o andamento. A operação pode ainda estar em execução na cloud.</td><td>Estado "parcial" em Operações; confira o recurso antes de repetir.</td></tr>
+            <tr><td>HTTP 403 "fora do teto de permissões"</td><td>Item some do menu; URL direta continua respondendo com a recusa.</td><td>Único 403 que vira veredito de menu; outro 403 mostra o detalhe do gateway.</td></tr>
+            <tr><td>fetch falhou (rede)</td><td>Gateway indisponível.</td><td>Tela continua; sessão expirada (401) redireciona uma vez só, mesmo com várias chamadas simultâneas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Skeleton · a silhueta do conteúdo</span><div class="row"><span class="badge outline">role="status" · "Carregando conteúdo"</span><button class="btn sm outline" id="sk-toggle"><i data-lucide="refresh-cw"></i> Simular carregamento</button></div></div>
+      <p class="hint" style="margin:-8px 0 14px">Quatro formatos fechados: tabela, cartão, gráfico e linha. Larguras cicladas por índice, nunca sorteadas, para dois renders desenharem o mesmo e a animação não reiniciar. O <span class="code">aria-busy</span> fica no contêiner que recebe o conteúdo, não na silhueta. Sem tempo mínimo de exibição.</p>
+      <div class="grid cols-3" id="sk-stage" style="align-items:start">
+        <div>
+          <div class="label" style="margin-bottom:8px">tabela · 4 colunas</div>
+          <div class="sk" data-sk role="status" aria-label="Carregando conteúdo"><span class="sr">Carregando conteúdo</span>
+            <div class="sk-th" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:72%"></span><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span><span class="sk-bloco" style="width:90%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span><span class="sk-bloco" style="width:90%"></span><span class="sk-bloco" style="width:40%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <table class="tbl"><thead><tr><th>Nome</th><th>Região</th><th>vCPU</th><th>Status</th></tr></thead><tbody><tr><td><b>web-01</b></td><td>SP1</td><td>4</td><td><span class="bx bx-ok">executando</span></td></tr><tr><td><b>db-01</b></td><td>SP1</td><td>8</td><td><span class="bx bx-ok">executando</span></td></tr><tr><td><b>cache-02</b></td><td>SP2</td><td>2</td><td><span class="bx bx-neutral">parada</span></td></tr></tbody></table>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">cartão + linha</div>
+          <div class="sk" data-sk aria-hidden="true">
+            <div class="sk-cartao"><span class="sk-bloco rot" style="width:40%"></span><span class="sk-bloco val" style="width:55%"></span><span class="sk-bloco sub2" style="width:70%"></span></div>
+            <div class="sk-linha" style="margin-top:12px"><span class="sk-bloco" style="width:72%"></span><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <div class="mini-card"><div class="mc-label">vCPU alocada</div><div class="mc-val mono">62 <span class="mc-unit">/ 100</span></div><div class="mc-sub">projeto acme-prod</div><div class="bar"><span class="bar-fill" data-alvo-bar="62"></span></div></div>
+            <div style="margin-top:12px;font-size:13px;display:flex;flex-direction:column;gap:6px"><span>Snapshot diário concluído</span><span>Regra de firewall atualizada</span><span>Novo membro no projeto</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">gráfico · 12 barras</div>
+          <div class="sk" data-sk aria-hidden="true">
+            <div class="sk-grafico"><span class="sk-bloco" style="height:40%"></span><span class="sk-bloco" style="height:65%"></span><span class="sk-bloco" style="height:50%"></span><span class="sk-bloco" style="height:80%"></span><span class="sk-bloco" style="height:35%"></span><span class="sk-bloco" style="height:70%"></span><span class="sk-bloco" style="height:55%"></span><span class="sk-bloco" style="height:90%"></span><span class="sk-bloco" style="height:45%"></span><span class="sk-bloco" style="height:60%"></span><span class="sk-bloco" style="height:75%"></span><span class="sk-bloco" style="height:50%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <div class="bars" style="height:7rem" data-bars><i data-h="40"></i><i data-h="62"></i><i data-h="48"></i><i data-h="75"></i><i data-h="58"></i><i data-h="88"></i><i data-h="66"></i><i data-h="94"></i><i data-h="52"></i><i data-h="70"></i><i data-h="60"></i><i data-h="82"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRESSO DE OPERAÇÕES ============ -->
+  <section id="progresso">
+    <span class="eyebrow"><i data-lucide="hourglass"></i> Progresso</span>
+    <h2 class="h-sec">Barras, anéis e o painel de Operações</h2>
+    <p class="sub">Duas famílias: <b style="color:var(--fg)">medição</b> (barra de uso e anel de saúde, sempre com número, sobem do zero até a leitura a cada carregamento) e <b style="color:var(--fg)">operação</b> (job assíncrono: barra indeterminada, trilha de etapas, ampulheta). Percentual só quando a fonte o tem.</p>
+
+    <div class="grid cols-3" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Barra de uso</span><button class="btn xs outline" data-replay="#uso-demo"><i data-lucide="refresh-cw"></i></button></div>
+        <div id="uso-demo" style="display:flex;flex-direction:column;gap:14px">
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Storage · SP1</span></div><span class="rb" style="display:flex" data-alvo="91"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Memória</span></div><span class="rb" style="display:flex" data-alvo="67"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">CPU</span></div><span class="rb" style="display:flex" data-alvo="23"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">CPU ociosa</span></div><span class="rb" style="display:flex" data-alvo="0.4"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Sem consumo</span></div><span class="rb" style="display:flex" data-alvo="0"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+        </div>
+        <p class="hint" style="margin-top:14px">650 ms, ease-out cúbico; o número acompanha a barra e termina exatamente no rótulo de sempre. <span class="code">aria-valuenow</span> leva o valor medido, nunca o intermediário.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Anéis de saúde</span><button class="btn xs outline" data-replay="#ring-demo"><i data-lucide="refresh-cw"></i></button></div>
+        <div id="ring-demo">
+          <div class="row" style="justify-content:center;margin:6px 0 18px">
+            <span class="ring xl" data-alvo="82" data-ring><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.4"/><circle class="arc" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.4"/></svg><span class="n mono">0</span></span>
+          </div>
+          <div class="row" style="justify-content:center;gap:16px">
+            <div class="health-pill"><span class="ring" data-alvo="97" data-ring><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Saúde</div><div class="health-sub" style="color:var(--success)">excelente</div></div></div>
+            <div class="health-pill"><span class="ring" data-alvo="46" data-ring><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Saúde</div><div class="health-sub" style="color:var(--danger)">crítico</div></div></div>
+            <div class="health-pill"><span class="ring hm-atencao"><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">n/d</span></span><div><div class="health-label">Saúde</div><div class="health-sub">indisponível</div></div></div>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:14px">SVG gira -90° para o traço começar no topo; <span class="code">width/height:100%</span> prendem o SVG ao contêiner em rem, senão o número sai torto dentro do anel. Sem score, o número é um traço e o anel fica vazio: nada de inventar 0.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Operação assíncrona</span></div>
+        <div class="label" style="margin-bottom:6px">indeterminada · não sabemos quanto falta</div>
+        <div class="bar indet" role="progressbar" aria-label="Progresso" aria-valuetext="em andamento"><span class="bar-fill"></span></div>
+        <div class="label" style="margin:18px 0 6px">determinada · a nuvem reportou "Baixando imagem… 42%"</div>
+        <div class="bar" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"><span class="bar-fill" data-alvo-bar="42"></span></div>
+        <div class="label" style="margin:18px 0 6px">trilha de etapas do deploy</div>
+        <div class="trilha" id="trilha-demo">
+          <ol>
+            <li class="etapa" data-state="ok"><span class="ei"><i data-lucide="circle-check"></i></span>Aceito<span class="es">concluída</span></li>
+            <li class="etapa" data-state="atual"><span class="ei"><i data-lucide="hourglass"></i></span>Provisionando<span class="es">em andamento</span></li>
+            <li class="etapa" data-state="pendente"><span class="ei"><i data-lucide="circle"></i></span>Pronta<span class="es">pendente</span></li>
+          </ol>
+          <div class="bar indet" role="progressbar" aria-label="Progresso"><span class="bar-fill"></span></div>
+        </div>
+        <div class="row" style="margin-top:12px"><button class="btn xs" data-trilha="ok">desfecho ok</button><button class="btn xs" data-trilha="erro">falhou</button><button class="btn xs" data-trilha="parcial">parcial</button><button class="btn xs" data-trilha="andamento">reiniciar</button></div>
+        <p class="hint" style="margin-top:12px">Três marcos observáveis: aceito (202 com job), provisionando (job sem desfecho), pronta. Percentual não existe na fonte, então não se desenha; a etapa tem ícone, cor e a palavra do estado.</p>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Painel de Operações</span><span class="badge outline">histórico da sessão · sobrevive ao F5</span></div>
+        <div class="row" style="margin-bottom:14px">
+          <span class="hint">Botão da topbar:</span>
+          <button class="tb-icon" id="hg-btn" aria-label="Operações em andamento" aria-pressed="true" style="border:1px solid var(--border)"><svg class="hourglass" data-active="true" width="18" height="18" aria-hidden="true"><use href="#hourglass-sym"/></svg><span class="ping jobs" id="hg-ping"></span></button>
+          <span class="hint">ativo: areia desce, acumula e a ampulheta vira · clique para alternar</span>
+        </div>
+        <div class="jobs-panel">
+          <div class="jobs-head"><span class="ct">Operações</span><span class="hint">2 em andamento</span></div>
+          <div class="jobs-list">
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Nova instância: web-03</span><span class="jobs-hora mono">14:32</span><span class="bx bx-info">em andamento</span></div>
+              <p class="jobs-comando">Deploy de instância · web-03</p>
+              <div class="bar indet" role="progressbar" aria-label="Progresso"><span class="bar-fill"></span></div>
+              <p class="hint" style="margin-top:6px">Baixando imagem… 42%</p>
+            </div>
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Parar · cache-02</span><span class="jobs-hora mono">14:31</span><span class="bx bx-info">em andamento</span></div>
+              <div class="bar indet" role="progressbar" aria-label="Progresso"><span class="bar-fill"></span></div>
+            </div>
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Criar snapshot · vol-data-01</span><span class="jobs-hora mono">14:20</span><span class="bx bx-err">falhou</span></div>
+              <p class="jobs-motivo">A instância precisa estar parada para criar o snapshot deste volume.</p>
+              <div class="corr-box">ID de correlação<code>c2d4…8f11</code><button class="btn xs"><i data-lucide="copy"></i> Copiar ID</button></div>
+              <button class="btn sm" style="margin-top:10px">Revisar parada para criar snapshot</button>
+            </div>
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Mover para projeto · db-primary</span><span class="jobs-hora mono">14:05</span><span class="bx bx-warn">parcial</span></div>
+              <p class="jobs-motivo">Não foi possível consultar o andamento. A operação pode ainda estar em execução na cloud.</p>
+            </div>
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Excluir volume · vol-tmp</span><span class="jobs-hora mono">13:58</span><span class="bx bx-ok">concluído</span></div>
+            </div>
+            <p class="jobs-secao">Segurança</p>
+            <div class="jobs-item">
+              <div class="jobs-linha"><span class="jobs-titulo">Senha redefinida por e-mail · maria</span><span class="bx bx-brand">Segurança</span></div>
+              <p class="jobs-comando">29/09/2026 14:02 · origem 200.10.x.x</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Regras de progresso</span></div>
+        <div class="rule"><i data-lucide="list-checks"></i><div><b>Toda escrita vira linha em Operações.</b> Job assíncrono, sucesso síncrono e recusa síncrona (4xx/5xx que nunca vira job); o toast expira, a linha fica. Até 100 entradas por identidade, em <span class="code">sessionStorage</span>, separado por tenant e usuário.</div></div>
+        <div class="rule"><i data-lucide="gauge"></i><div><b>Consulta com teto.</b> No máximo 6 jobs consultados ao mesmo tempo; o resto espera vaga. 10 falhas seguidas de consulta viram "parcial" com a mensagem de andamento inacessível, nunca "falhou".</div></div>
+        <div class="rule"><i data-lucide="fingerprint"></i><div><b>Correlação do pedido, não da leitura.</b> O ID que vale é o do 202 que abriu o job; toast e painel mostram o mesmo.</div></div>
+        <div class="rule"><i data-lucide="rotate-ccw"></i><div><b>Retoma após F5.</b> Entrada "em andamento" no histórico é reconsultada na montagem; sem isso ficaria "em andamento" para sempre.</div></div>
+        <div class="rule"><i data-lucide="bar-chart-3"></i><div><b>Barra de medição sempre parte do zero.</b> Tabela, cartão, anel e gráfico animam do zero ao valor real em toda montagem da tela (650 ms). A cor vem do valor final: um disco em 90% não pisca verde e âmbar antes do vermelho.</div></div>
+        <div class="rule"><i data-lucide="accessibility"></i><div><b><span class="code">role="progressbar"</span> sempre.</b> Determinada com <span class="code">aria-valuenow</span>; indeterminada só com <span class="code">aria-valuetext="em andamento"</span>: é como se diz "está acontecendo e não sei quanto falta" sem inventar número.</div></div>
+        <div class="card-head" style="margin:22px 0 12px"><span class="card-title">Trilha de passos do wizard</span></div>
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px;display:flex;flex-direction:column;gap:4px;max-width:260px">
+          <div class="wz-step" data-state="done"><span class="wz-num">1</span>Sistema e região</div>
+          <div class="wz-step" data-state="done"><span class="wz-num">2</span>Computação</div>
+          <div class="wz-step" data-state="current"><span class="wz-num">3</span>Armazenamento</div>
+          <div class="wz-step"><span class="wz-num">4</span>Rede e sub-rede</div>
+          <div class="wz-step"><span class="wz-num">5</span>Revisão</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOPOLOGIA DINÂMICA ============ -->
+  <section id="topologia">
+    <span class="eyebrow"><i data-lucide="network"></i> Topologia</span>
+    <h2 class="h-sec">Desenho dinâmico da rede</h2>
+    <p class="sub">O grafo é gerado a partir dos dados da conta: uma forma por tipo, ligações atrás dos nós, manchas cobrindo cada rede e a VPC inteira. Passar o ponteiro ou o foco por um nó acende as ligações dele e esmaece o resto. O mesmo componente renderiza a tela e o PNG exportado.</p>
+
+    <div class="card" style="margin-top:22px">
+      <div class="card-head">
+        <span class="card-title">VPC acme-prod · SP1</span>
+        <div class="topo-toolbar">
+          <button class="btn sm outline" id="topo-add-rede"><i data-lucide="plus"></i> Sub-rede</button>
+          <button class="btn sm outline" id="topo-add-vm"><i data-lucide="server"></i> Instância</button>
+          <button class="btn sm outline" id="topo-toggle-lb"><i data-lucide="scale"></i> Load balancer</button>
+          <button class="btn sm ghost" id="topo-reset"><i data-lucide="rotate-ccw"></i> Reset</button>
+        </div>
+      </div>
+      <div class="topo-wrap">
+        <div id="topo-host"></div>
+        <aside class="topo-legenda" aria-label="Legenda da topologia" id="topo-legenda"></aside>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Gramática das formas</span></div>
+        <div class="rule"><i data-lucide="globe"></i><div><b>Círculo grande · Internet</b> (info). Entra à esquerda; dela sai o IP público.</div></div>
+        <div class="rule"><i data-lucide="map-pin"></i><div><b>Pílula · IP público</b> (laranja), com o endereço escrito dentro. NAT de origem da VPC.</div></div>
+        <div class="rule"><i data-lucide="router"></i><div><b>Hexágono · Roteador da VPC</b> (roxo). Centro do desenho; tudo passa por ele.</div></div>
+        <div class="rule"><i data-lucide="arrow-right-left"></i><div><b>Escudo · VPN site-to-site</b> (verde), ligação tracejada ao roteador.</div></div>
+        <div class="rule"><i data-lucide="network"></i><div><b>Hub · Rede ou sub-rede</b>, uma cor por rede (info, teal, roxo, laranja, verde, cíclico), cadeado no canto quando há ACL própria.</div></div>
+        <div class="rule"><i data-lucide="server"></i><div><b>Quadrado · Instância</b> (neutro), em arco abaixo da rede; ⚠ na primeira linha do rótulo quando está fora de execução.</div></div>
+        <div class="rule"><i data-lucide="scale"></i><div><b>Losango · Load balancer</b> (teal), abaixo das instâncias que atende.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Regras do desenho</span></div>
+        <div class="rule"><i data-lucide="layers"></i><div><b>Três camadas.</b> Manchas (VPC tracejada por baixo, redes coloridas por cima), depois ligações, depois nós; a forma tem fundo opaco para cobrir o trecho de linha que passa por dentro dela.</div></div>
+        <div class="rule"><i data-lucide="mouse-pointer"></i><div><b>Destaque nasce do nó.</b> Nó ativo engrossa o traço; ligações dele ficam no tom do texto (2.4px); vizinhos permanecem; o resto cai a 25% (nós) e 12% (linhas). Nós são focáveis por teclado com anel de foco próprio, porque <span class="code">outline</span> em SVG não é consistente.</div></div>
+        <div class="rule"><i data-lucide="type"></i><div><b>Rótulo legível sobre tudo.</b> Texto com contorno na cor do fundo (<span class="code">paint-order:stroke</span>), primeira linha 600, detalhes em 11px no tom apagado.</div></div>
+        <div class="rule"><i data-lucide="palette"></i><div><b>Cores por token.</b> Na tela o SVG usa <span class="code">var(--token)</span> e acompanha o tema; na exportação as variáveis são resolvidas em rgb pelo próprio navegador antes de rasterizar.</div></div>
+        <div class="rule"><i data-lucide="maximize"></i><div><b>Escala natural.</b> 1 unidade do viewBox = 1px, nunca ampliado; em card estreito encolhe proporcionalmente. Sem física, sem animação de força: o layout é determinístico e a mesma conta desenha sempre o mesmo grafo.</div></div>
+        <div class="rule"><i data-lucide="accessibility"></i><div><b>Cada nó é <span class="code">role="img"</span></b> com <span class="code">aria-label</span> composto (tipo, nome, detalhes, alerta) e um <span class="code">&lt;title&gt;</span>; a legenda repete nome e cor de cada rede porque cor sozinha não é sinal.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SHELL: COMPOSIÇÃO ============ -->
+  <section id="shell">
+    <span class="eyebrow"><i data-lucide="layout-dashboard"></i> Shell</span>
+    <h2 class="h-sec">Topbar, sidebar e rodapé de ferramentas</h2>
+    <p class="sub">A grade do painel tem três linhas: topbar de vidro (3.875rem), conteúdo com a sidebar, e o rodapé. O rodapé é a <b style="color:var(--fg)">terceira linha da grade</b>, não <span class="code">position:fixed</span>: quem rola é o conteúdo, e nenhuma tela precisa reservar espaço para a faixa.</p>
+
+    <div class="shell" style="margin-top:22px" id="shell-demo">
+      <header class="sh-top">
+        <div class="sh-brand"><span class="sh-mark">eV</span><span><span class="sh-logo" style="display:block">eveo</span><span class="sh-sub" style="display:block">Private Cloud</span></span></div>
+        <div class="sh-actions">
+          <div class="sh-proj"><span class="pm">A</span><span>acme-prod</span><i data-lucide="chevron-down" style="font-size:14px;color:var(--muted-fg)"></i></div>
+          <span class="tb-alert"><i data-lucide="triangle-alert" style="font-size:13px"></i> 2 alertas</span>
+          <div class="zone-seg"><button aria-pressed="true">Todas</button><button><span class="dot dot-on"></span> SP1</button><button><span class="dot dot-warn"></span> SP2</button></div>
+          <div class="sh-search"><i data-lucide="search"></i> Buscar recurso…</div>
+          <span style="flex:1"></span>
+          <button class="btn sm primary"><i data-lucide="plus"></i> Nova instância</button>
+          <div class="health-pill"><span class="ring" data-alvo="88" data-ring><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Saúde</div><div class="health-sub" style="color:var(--success)">bom</div></div></div>
+          <button class="tb-icon" aria-label="Operações em andamento"><svg class="hourglass" data-active="true" width="18" height="18" aria-hidden="true"><use href="#hourglass-sym"/></svg><span class="ping jobs"></span></button>
+          <button class="tb-icon" aria-label="Alertas"><i data-lucide="bell"></i><span class="ping"></span></button>
+          <button class="tb-icon" aria-label="Ajuda e documentação"><i data-lucide="circle-help"></i></button>
+          <span class="sh-avatar">RT</span>
+        </div>
+      </header>
+      <nav class="sh-side" aria-label="Domínios">
+        <div class="sb-item" aria-current="page"><i data-lucide="layout-dashboard"></i> Visão geral</div>
+        <div class="sb-item"><i data-lucide="server"></i> Computação</div>
+        <div class="sb-item"><i data-lucide="hard-drive"></i> Armazenamento</div>
+        <div class="sb-item"><i data-lucide="network"></i> Conectividade</div>
+        <div class="sb-item"><i data-lucide="database-backup"></i> Backup</div>
+        <div class="sb-item"><i data-lucide="shield"></i> Governança</div>
+        <div class="sb-item" data-embreve="true"><i data-lucide="boxes"></i> Kubernetes <span class="badge soon">Em breve</span></div>
+        <div class="sb-item"><i data-lucide="wrench"></i> Ferramentas</div>
+        <div class="glass" style="margin:auto 12px 8px;padding:11px 13px;font-size:10.5px;color:var(--muted-fg);border-radius:var(--radius-lg)"><b style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--fg);margin-bottom:3px"><span class="dot dot-on"></span> Sessão ativa</b>rodrigo · Admin<br>SP1 ok · SP2 atenção</div>
+      </nav>
+      <main class="sh-main">
+        <div class="ph">Visão geral</div>
+        <div class="phs">projeto acme-prod · São Paulo</div>
+        <div class="ia warn" style="margin-bottom:14px"><span class="ic"><i data-lucide="triangle-alert"></i></span><div><strong>Região SP2 com capacidade reduzida</strong>Deploys novos podem ser recusados por storage até a manutenção terminar.</div></div>
+        <div class="grid cols-3" style="gap:12px" id="shell-cards">
+          <div class="mini-card"><div class="mc-label">Instâncias</div><div class="mc-val mono">24 <span class="mc-unit">/ 40</span></div><div class="mc-sub">quota do projeto</div><div class="bar"><span class="bar-fill" data-alvo-bar="60"></span></div></div>
+          <div class="mini-card"><div class="mc-label">vCPU</div><div class="mc-val mono">92 <span class="mc-unit">/ 100</span></div><div class="mc-sub">quota do projeto</div><div class="bar"><span class="bar-fill" data-alvo-bar="92" data-tom></span></div></div>
+          <div class="mini-card"><div class="mc-label">Storage</div><div class="mc-val mono">3,1 <span class="mc-unit">/ 8 TB</span></div><div class="mc-sub">primário</div><div class="bar"><span class="bar-fill" data-alvo-bar="39"></span></div></div>
+        </div>
+        <div class="card" style="margin-top:12px;padding:0;box-shadow:var(--shadow-sm)">
+          <div class="jobs-head"><span class="ct">Eventos recentes</span><span class="hint">últimas 24 h</span></div>
+          <div style="padding:4px 0">
+            <div class="jobs-item" style="display:flex;gap:10px;align-items:flex-start"><span class="bx bx-ok" style="padding:0;width:20px;height:20px;justify-content:center;border-radius:50%"><i data-lucide="check" style="font-size:11px"></i></span><div style="flex:1;font-size:13px"><b>Snapshot diário concluído</b><br><span class="hint">vol-data-01 · 02:00</span></div><span class="jobs-hora mono">02:00</span></div>
+            <div class="jobs-item" style="display:flex;gap:10px;align-items:flex-start"><span class="bx bx-warn" style="padding:0;width:20px;height:20px;justify-content:center;border-radius:50%"><i data-lucide="triangle-alert" style="font-size:11px"></i></span><div style="flex:1;font-size:13px"><b>cache-02 reiniciada pelo host</b><br><span class="hint">SP2 · balanceamento automático</span></div><span class="jobs-hora mono">01:12</span></div>
+          </div>
+        </div>
+      </main>
+      <footer class="rodape">
+        <div class="rd-inicio">
+          <button class="rd-tema" type="button" aria-label="Usar tema escuro" data-shell-theme><i data-lucide="moon"></i></button>
+          <div class="rd-idioma" role="radiogroup" aria-label="Idioma do painel">
+            <button class="rd-opcao" aria-pressed="true" lang="pt-BR" title="Português (Brasil)">PT</button>
+            <button class="rd-opcao" aria-pressed="false" lang="en" title="English">EN</button>
+            <button class="rd-opcao" aria-pressed="false" lang="es" title="Español">ES</button>
+          </div>
+          <button class="rd-versao" type="button" aria-haspopup="dialog" data-open-notes>Versão 0.2.0</button>
+        </div>
+        <p class="rd-tarja"><span class="ic"><i data-lucide="triangle-alert"></i></span><span>Versão de teste: ambiente de avaliação. O painel pode apresentar comportamento inesperado e mudar sem aviso.</span></p>
+        <div class="rd-fim"><button class="rd-feedback" type="button" aria-label="Enviar feedback"><i data-lucide="message-square"></i><span>Enviar feedback</span></button></div>
+      </footer>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Rodapé de ferramentas · padrão para toda ferramenta EVEO</span></div>
+        <div class="rule"><i data-lucide="panel-bottom"></i><div><b>Três colunas, pontas em <span class="code">1fr</span>.</b> Esquerda: tema, idiomas e versão numa caixa só; centro: tarja de ambiente, centrada na janela; direita: feedback. Um quarto filho solto quebraria o centro.</div></div>
+        <div class="rule"><i data-lucide="ruler"></i><div><b>2,25rem é medida, não gosto.</b> Botão de versão de 1,18rem mais o anel de foco global (0,4rem de cada lado). Encolher a faixa decepa o foco por teclado.</div></div>
+        <div class="rule"><i data-lucide="sun-moon"></i><div><b>Tema no rodapé, não flutuante.</b> O botão redondo no canto inferior esquerdo ficava por cima do conteúdo; a faixa já reúne os metadados do painel. Glifo de 12px para ficar do tamanho da versão.</div></div>
+        <div class="rule"><i data-lucide="languages"></i><div><b>Idioma: três siglas, rádios nativos.</b> Nome acessível é o endônimo; a ativa ganha peso e cor, além de <span class="code">aria-pressed</span>. Trocar o idioma remonta a árvore abaixo do provider: sessão, tema e branding sobrevivem.</div></div>
+        <div class="rule"><i data-lucide="file-text"></i><div><b>Versão é botão que abre as notas.</b> <span class="code">aria-haspopup="dialog"</span>; o diálogo é irmão do <span class="code">&lt;footer&gt;</span>, não filho, senão o texto inteiro entra no <span class="code">contentinfo</span>. Abre sozinho uma vez por login enquanto houver tarja de teste.</div></div>
+        <div class="rule"><i data-lucide="triangle-alert"></i><div><b>Tarja: atenção no ícone, texto neutro.</b> Cor sozinha não é sinal e âmbar sobre a superfície passa raspando; a tarja também sai na impressão de propósito.</div></div>
+        <div class="rule"><i data-lucide="message-square"></i><div><b>Feedback com print.</b> Abre um diálogo com texto, captura da tela de origem e prévia; no celular sobra só o ícone, o nome acessível fica.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Topbar e sidebar</span></div>
+        <div class="rule"><i data-lucide="panel-top"></i><div><b>Ordem fixa da topbar:</b> marca · projeto ativo (mesma forma do selo da marca) · alertas · seletor de região com bolinha de disponibilidade · busca global · Nova instância · saúde · Operações · sino · ajuda · perfil.</div></div>
+        <div class="rule"><i data-lucide="map-pin"></i><div><b>Região sempre visível.</b> Tela que não separa por região mantém o seletor inerte (opacidade .45) em vez de sumir: a topbar não pode pular de largura a cada navegação.</div></div>
+        <div class="rule"><i data-lucide="menu"></i><div><b>Sidebar em acordeão.</b> Abrir um grupo fecha os demais; item ativo com borda esquerda em primário; o 403 do gateway tira o item, nunca a seção em volta; "Em breve" fica visível e inerte.</div></div>
+        <div class="rule"><i data-lucide="id-card"></i><div><b>Cartão da sessão em vidro</b> no pé da sidebar: quem está logado, papel e estado das regiões.</div></div>
+        <div class="rule"><i data-lucide="printer"></i><div><b>Impressão.</b> Topbar, sidebar e ações somem; a grade vira blocos; tema escuro redeclara os tokens claros para o papel sair igual nos dois temas.</div></div>
+        <div class="card-head" style="margin:22px 0 12px"><span class="card-title">Diálogo de confirmação com selo</span></div>
+        <div class="modal" style="width:100%;animation:none;box-shadow:var(--shadow-soft)">
+          <div class="mi"><span class="selo perigo"><i data-lucide="trash-2"></i></span><h3 class="mt">Excluir a instância web-03?</h3><p class="mb2">Os discos e os snapshots dela também serão removidos. Esta ação não pode ser desfeita.</p><div class="field" style="margin-top:12px"><label class="label" style="text-transform:uppercase;font-size:11.5px">Digite o nome da instância para confirmar</label><input class="input" placeholder="web-03"></div></div>
+          <div class="ma"><button class="btn">Cancelar</button><button class="btn destructive" disabled>Excluir</button></div>
+        </div>
+        <p class="hint" style="margin-top:10px">Modal não fecha no clique fora nem no Esc quando há formulário: um clique perdido descartava o preenchimento inteiro. Drawer mantém clique-fora porque ali não há preenchimento a perder. Foco preso, devolvido ao gatilho com <span class="code">preventScroll</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <div class="row" style="justify-content:space-between">
+      <div class="eveo-lockup"><span class="eveo-word" style="font-size:20px">eveo</span><svg class="eveo-mark"><use href="#eveo-slabs"/></svg></div>
+      <div style="text-align:right">Design System · Private Cloud<br><span style="color:var(--fg-soft)">Cores & Hanken Grotesk do Pocket Guide v01 · componentes, feedback, progresso e topologia do painel (branch dev, 29/09/2026)</span></div>
+    </div>
+  </footer>
+</main>
+
+<div class="pin"><button class="to-top" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Topo"><i data-lucide="arrow-up"></i></button></div>
+
+<!-- Pilha de toasts da página -->
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- Rodapé de ferramentas da própria página (padrão EVEO) -->
+<footer class="rodape fixo" id="rodape">
+  <div class="rd-inicio">
+    <button class="rd-tema" type="button" id="theme" aria-label="Usar tema escuro" aria-pressed="false"><i data-lucide="moon" class="i-moon"></i><i data-lucide="sun" class="i-sun" style="display:none"></i></button>
+    <div class="rd-idioma" role="radiogroup" aria-label="Idioma" id="idioma">
+      <button class="rd-opcao" data-lang="pt-BR" aria-pressed="true" lang="pt-BR" title="Português (Brasil)">PT</button>
+      <button class="rd-opcao" data-lang="en" aria-pressed="false" lang="en" title="English">EN</button>
+      <button class="rd-opcao" data-lang="es" aria-pressed="false" lang="es" title="Español">ES</button>
+    </div>
+    <button class="rd-versao" type="button" aria-haspopup="dialog" data-open-notes data-i18n="versao">Versão 2.0.0</button>
+  </div>
+  <p class="rd-tarja"><span class="ic"><i data-lucide="triangle-alert"></i></span><span data-i18n="tarja">Documento vivo: referência do painel na branch dev de 29/09/2026. Pode mudar sem aviso.</span></p>
+  <div class="rd-fim"><button class="rd-feedback" type="button" data-i18n-label="feedback" aria-label="Enviar feedback" data-toast="feedback"><i data-lucide="message-square"></i><span data-i18n="feedback">Enviar feedback</span></button></div>
+</footer>
+
+<!-- Notas de versão -->
+<div class="ov" id="notes" hidden role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="notes-title" tabindex="-1">
+    <div class="mi">
+      <h2 class="mt" id="notes-title">Notas de versão</h2>
+      <p class="mb2">O que mudou nesta versão do Design System. Cada linha é conferível no painel de referência.</p>
+      <div class="notas-cab">2.0.0 <span class="notas-data">30 de setembro de 2026</span></div>
+      <div class="notas-grupo">Novidades</div>
+      <ul class="notas-lista">
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Seção Feedback: toasts por tom, faixas informativas, modelo de mensagem de erro humana e skeleton.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Seção Progresso: barra de uso e anel de saúde animados do zero, barra indeterminada, trilha de etapas, ampulheta e painel de Operações.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Topologia dinâmica gerada por dados, com destaque de vizinhos e legenda.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Shell completo com topbar, sidebar e rodapé de ferramentas (tema, idiomas, versão, tarja, feedback).</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Tokens de estado com par muted, acentos teal/roxo/laranja, danger-hover e durações de movimento.</li>
+      </ul>
+      <div class="notas-grupo">Correções</div>
+      <ul class="notas-lista">
+        <li class="notas-item" data-tipo="corrigido"><span class="notas-ico"><i data-lucide="bug"></i></span>Tons de estado no tema claro passam AA sobre a superfície (success e warning escurecidos).</li>
+        <li class="notas-item" data-tipo="corrigido"><span class="notas-ico"><i data-lucide="bug"></i></span>Switch e checkbox agora recebem foco por teclado (o input deixou de ser escondido com display:none).</li>
+      </ul>
+      <div class="notas-grupo">Mudanças de comportamento</div>
+      <ul class="notas-lista">
+        <li class="notas-item" data-tipo="alterado"><span class="notas-ico"><i data-lucide="refresh-cw"></i></span>Tema claro é o padrão; o escuro só por escolha explícita, sem seguir o sistema.</li>
+        <li class="notas-item" data-tipo="alterado"><span class="notas-ico"><i data-lucide="refresh-cw"></i></span>O alternador de tema saiu da topbar e foi para o rodapé de ferramentas, com idioma e versão.</li>
+        <li class="notas-item" data-tipo="alterado"><span class="notas-ico"><i data-lucide="refresh-cw"></i></span>Botões "secundário" e "outline" deixaram de ser variantes: padrão, primário, fantasma e destrutivo.</li>
+      </ul>
+    </div>
+    <div class="ma"><button class="btn" data-close-notes>Fechar</button></div>
+  </div>
+</div>
+
+<script>
+/* ---- icon grid (build before render) ---- */
+const ICONS=['server','hard-drive','cpu','database','network','shield-check','cloud','activity',
+'layout-dashboard','users','bell','settings','search','folder','terminal','git-branch',
+'lock','key-round','globe','wifi','zap','gauge','box','container','refresh-cw','power',
+'upload','download','trash-2','pencil','copy','share-2','filter','calendar','clock','check',
+'triangle-alert','circle-check','ban','info','hourglass','ellipsis','message-square','languages','sun','moon'];
+document.getElementById('icon-grid').innerHTML=ICONS.map(n=>`<div class="ico"><i data-lucide="${n}"></i><small>${n}</small></div>`).join('');
+lucide.createIcons();
+const icons=(scope)=>lucide.createIcons(); // re-scan após inserção dinâmica
+
+const REDUZ=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const easeOut=t=>1-Math.pow(1-t,3);
+
+/* ---- tema: claro é o padrão; escuro só por escolha explícita, persistida ---- */
+const root=document.documentElement, tbtn=document.getElementById('theme');
+const iMoon=document.querySelector('.i-moon'), iSun=document.querySelector('.i-sun');
+function setTheme(dark){
+  root.classList.toggle('dark',dark);
+  iMoon.style.display=dark?'none':''; iSun.style.display=dark?'':'none';
+  tbtn.setAttribute('aria-pressed',String(dark));
+  tbtn.setAttribute('aria-label',dark?T('temaClaro'):T('temaEscuro')); tbtn.title=tbtn.getAttribute('aria-label');
+  try{ localStorage.setItem('eveo-ds-theme',dark?'dark':'light'); }catch(e){}
+}
+
+/* ---- idioma do rodapé (dicionário mínimo da própria página) ---- */
+const I18N={
+  'pt-BR':{versao:'Versão 2.0.0',tarja:'Documento vivo: referência do painel na branch dev de 29/09/2026. Pode mudar sem aviso.',feedback:'Enviar feedback',temaEscuro:'Usar tema escuro',temaClaro:'Usar tema claro',copiado:'Copiado!',copiar:'Copiar ID',fbTitulo:'Feedback registrado',fbDetalhe:'Obrigado. O relato foi anexado com a tela de origem.'},
+  en:{versao:'Version 2.0.0',tarja:'Living document: reference from the dev branch of 29 Sep 2026. May change without notice.',feedback:'Send feedback',temaEscuro:'Use dark theme',temaClaro:'Use light theme',copiado:'Copied!',copiar:'Copy ID',fbTitulo:'Feedback recorded',fbDetalhe:'Thank you. The report was attached with the source screen.'},
+  es:{versao:'Versión 2.0.0',tarja:'Documento vivo: referencia del panel en la rama dev del 29/09/2026. Puede cambiar sin aviso.',feedback:'Enviar comentarios',temaEscuro:'Usar tema oscuro',temaClaro:'Usar tema claro',copiado:'¡Copiado!',copiar:'Copiar ID',fbTitulo:'Comentario registrado',fbDetalhe:'Gracias. El informe se adjuntó con la pantalla de origen.'}
+};
+let LANG='pt-BR';
+const T=k=>(I18N[LANG]||I18N['pt-BR'])[k]||k;
+function setLang(l){
+  LANG=I18N[l]?l:'pt-BR'; root.lang=LANG;
+  document.querySelectorAll('#idioma .rd-opcao').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=T(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-label]').forEach(el=>el.setAttribute('aria-label',T(el.dataset.i18nLabel)));
+  setTheme(root.classList.contains('dark'));
+  try{ localStorage.setItem('eveo-ds-idioma',LANG); }catch(e){}
+}
+document.querySelectorAll('#idioma .rd-opcao').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+const savedLang=(()=>{try{return localStorage.getItem('eveo-ds-idioma')}catch(e){return null}})();
+setLang(savedLang||'pt-BR');
+const savedTheme=(()=>{try{return localStorage.getItem('eveo-ds-theme')}catch(e){return null}})();
+setTheme(savedTheme==='dark');
+tbtn.onclick=()=>setTheme(!root.classList.contains('dark'));
+/* rodapé do shell de exemplo: só alterna a demo */
+document.querySelector('[data-shell-theme]').onclick=()=>setTheme(!root.classList.contains('dark'));
+
+/* ---- tabs ---- */
+const tabBody=document.getElementById('tab-body');
+const TABS=['Métricas de cluster, uso de recursos e status de nós.','Topologia de rede, sub-redes, ACLs e IPs públicos.','Política de retenção, snapshots agendados e rotinas de backup.'];
+document.querySelectorAll('#tabs .tab[data-tab]').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('#tabs .tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); tabBody.textContent=TABS[t.dataset.tab];
+});
+
+/* ---- copy hex / copy id ---- */
+document.querySelectorAll('.swatch').forEach(s=>s.onclick=()=>{
+  const hx=s.querySelector('.hx').textContent.split('·')[0].trim();
+  navigator.clipboard?.writeText(hx);
+  const el=s.querySelector('.nm'), old=el.textContent;
+  el.textContent='copiado ✓'; setTimeout(()=>el.textContent=old,1000);
+});
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{
+  const st=b.parentElement.querySelector('[data-copy-status]');
+  try{ await navigator.clipboard.writeText(b.dataset.copy); if(st) st.textContent=T('copiado'); }
+  catch(e){ if(st) st.textContent='Não foi possível copiar. Selecione o ID acima para copiá-lo.'; }
+  setTimeout(()=>{ if(st) st.textContent=''; },2000);
+});
+
+/* ============================================================
+   PROGRESSO: toda barra e anel sobem do zero até o valor real
+   a cada carregamento (650ms, ease-out cúbico). Tom pelo valor
+   final. prefers-reduced-motion entrega o valor de imediato.
+   ============================================================ */
+const DUR=650;
+function tomDe(v){ return v>=85?'critico':v>=50?'atencao':'ok'; }
+function faixaSaude(v){ return v>=85?'ok':v>=70?'atencao':v>=50?'alerta':'critico'; }
+function rotulo(v){ return v>0&&v<1?'<1%':Math.round(v)+'%'; }
+function animarValor(alvo, aplicar){
+  if(REDUZ){ aplicar(alvo,true); return; }
+  const ini=performance.now();
+  const passo=agora=>{ const p=Math.min(1,(agora-ini)/DUR); const v=alvo*easeOut(p); aplicar(v,p>=1); if(p<1) requestAnimationFrame(passo); };
+  requestAnimationFrame(passo);
+}
+function animarRb(el){
+  const alvo=Math.min(100,Math.max(0,parseFloat(el.dataset.alvo)||0));
+  const fill=el.querySelector('.rf'), num=el.querySelector('.rp'), tom=tomDe(Math.round(alvo));
+  fill.className='rf fill-'+tom; if(num) num.className='rp mono txt-'+tom;
+  fill.style.minWidth=alvo>0?'0.25rem':'';
+  el.setAttribute('role','progressbar'); el.setAttribute('aria-valuemin','0'); el.setAttribute('aria-valuemax','100'); el.setAttribute('aria-valuenow',String(alvo));
+  animarValor(alvo,(v,fim)=>{ fill.style.width=v+'%'; if(num) num.textContent=fim?rotulo(alvo):Math.round(v)+'%'; });
+}
+function animarRing(el){
+  const alvo=Math.min(100,Math.max(0,parseFloat(el.dataset.alvo)||0));
+  const arc=el.querySelector('.arc'), num=el.querySelector('.n');
+  const r=parseFloat(arc.getAttribute('r')), circ=2*Math.PI*r;
+  el.className=el.className.replace(/\bhm-\w+/g,'').trim()+' hm-'+faixaSaude(Math.round(alvo));
+  arc.setAttribute('stroke-dasharray',`${circ} ${circ}`);
+  el.setAttribute('role','img'); el.setAttribute('aria-label',`Saúde ${Math.round(alvo)} de 100`);
+  animarValor(alvo,(v,fim)=>{ arc.setAttribute('stroke-dashoffset',String(circ*(1-v/100))); num.textContent=String(Math.round(fim?alvo:v)); });
+}
+function animarBarFill(el){
+  const alvo=Math.min(100,Math.max(0,parseFloat(el.dataset.alvoBar)||0));
+  if('tom' in el.dataset) el.className='bar-fill fill-'+tomDe(alvo);
+  animarValor(alvo,v=>{ el.style.width=v+'%'; });
+}
+function animarBars(el){ el.querySelectorAll('i').forEach((i,k)=>{ i.style.height='0'; setTimeout(()=>{ i.style.height=i.dataset.h+'%'; },REDUZ?0:40*k); }); }
+function animarTudo(scope){
+  scope.querySelectorAll('.rb[data-alvo]').forEach(animarRb);
+  scope.querySelectorAll('[data-ring][data-alvo]').forEach(animarRing);
+  scope.querySelectorAll('.bar-fill[data-alvo-bar]').forEach(animarBarFill);
+  scope.querySelectorAll('[data-bars]').forEach(animarBars);
+}
+/* dispara quando o bloco entra na tela pela primeira vez (equivale à montagem da tela) */
+const vistos=new WeakSet();
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting&&!vistos.has(e.target)){ vistos.add(e.target); animarTudo(e.target); io.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('section, .shell').forEach(s=>io.observe(s));
+document.querySelectorAll('[data-replay]').forEach(b=>b.onclick=()=>{
+  const alvo=document.querySelector(b.dataset.replay); if(alvo) animarTudo(alvo);
+});
+
+/* ---- skeleton: silhueta → conteúdo real ---- */
+const skBtn=document.getElementById('sk-toggle');
+let skCarregando=true;
+function skRender(){
+  document.querySelectorAll('#sk-stage [data-sk]').forEach(el=>el.hidden=!skCarregando);
+  document.querySelectorAll('#sk-stage [data-sk-content]').forEach(el=>{ el.hidden=skCarregando; el.setAttribute('aria-busy',String(skCarregando)); });
+  if(!skCarregando) animarTudo(document.getElementById('sk-stage'));
+}
+skRender(); setTimeout(()=>{ skCarregando=false; skRender(); },1800);
+skBtn.onclick=()=>{ skCarregando=true; skRender(); setTimeout(()=>{ skCarregando=false; skRender(); },1400); };
+
+/* ---- toasts ---- */
+const TOAST_ICON={ok:'circle-check',err:'ban',warn:'triangle-alert',info:'info'};
+const pilha=document.getElementById('toasts');
+function toast({id,tom='ok',titulo,operacao,detalhe,corpo,persistente}){
+  id=id||('t'+Date.now()+Math.random());
+  let el=pilha.querySelector(`[data-id="${id}"]`);
+  const fixo=persistente??(tom==='err'||tom==='warn');
+  const html=`<span class="tic"><i data-lucide="${TOAST_ICON[tom]}"></i></span><div class="tbody"><p class="ttl">${titulo}</p>${operacao?`<p class="top">${operacao}</p>`:''}${detalhe?`<p class="tsb">${detalhe}</p>`:''}${corpo||''}${fixo?'<button class="btn ghost xs" data-ops>Ver em Operações</button>':''}</div><button class="btn ghost xs tx" aria-label="Dispensar aviso" data-x><i data-lucide="x"></i></button>`;
+  if(!el){ el=document.createElement('div'); el.className='toast'; el.dataset.id=id; pilha.appendChild(el); }
+  el.dataset.tom=tom; el.innerHTML=html; icons();
+  el.querySelector('[data-x]').onclick=()=>el.remove();
+  const ops=el.querySelector('[data-ops]'); if(ops) ops.onclick=()=>{ el.remove(); location.hash='#progresso'; };
+  clearTimeout(el._t);
+  if(!fixo && !(corpo&&corpo.includes('data-state="atual"'))) el._t=setTimeout(()=>el.remove(),8000);
+  return el;
+}
+function trilhaHtml(a,p,r,corr){
+  const ic={ok:'circle-check',atual:'hourglass',pendente:'circle',erro:'ban'}, tx={ok:'concluída',atual:'em andamento',pendente:'pendente',erro:'com erro'};
+  const li=(id,nome,st)=>`<li class="etapa" data-state="${st}"><span class="ei"><i data-lucide="${ic[st]}"></i></span>${nome}<span class="es">${tx[st]}</span></li>`;
+  return `<div class="trilha"><ol>${li('aceito','Aceito',a)}${li('prov','Provisionando',p)}${li('pronta','Pronta',r)}</ol>${p==='atual'?'<div class="bar indet" role="progressbar" aria-label="Progresso" aria-valuetext="em andamento"><span class="bar-fill"></span></div>':''}${corr?`<p class="hint mono" style="margin-top:6px">ID de correlação: ${corr}</p>`:''}</div>`;
+}
+const EX={
+  ok:{tom:'ok',titulo:'Instância cache-02 parada',operacao:'Parar · cache-02'},
+  info:{tom:'info',titulo:'Bem-vindo, rodrigo',detalhe:'Role Admin · eveo.com.br'},
+  warn:{tom:'warn',titulo:'Operação terminou pela metade',operacao:'Mover para projeto · db-primary',detalhe:'A Private Cloud não informou o que ficou pendente. Confira o estado do recurso antes de pedir de novo.'},
+  err:{tom:'err',titulo:'A instância não pôde ser criada',operacao:'Deploy de instância · web-04',detalhe:'Sem capacidade de storage no momento.'},
+};
+document.querySelectorAll('[data-toast]').forEach(b=>b.onclick=()=>{
+  const k=b.dataset.toast;
+  if(k==='feedback'){ toast({tom:'ok',titulo:T('fbTitulo'),detalhe:T('fbDetalhe')}); return; }
+  if(k==='deploy'){
+    const id='deploy-job-'+Math.floor(Math.random()*1e6);
+    toast({id,tom:'info',titulo:'Deploy aceito',operacao:'Deploy de instância · web-05',detalhe:'A Private Cloud aceitou o pedido e está provisionando.',corpo:trilhaHtml('ok','atual','pendente')});
+    setTimeout(()=>{
+      if(Math.random()<0.5) toast({id,tom:'ok',titulo:'Instância web-05 criada',operacao:'Deploy de instância · web-05',detalhe:'Senha inicial disponível em Operações.',corpo:trilhaHtml('ok','ok','ok')});
+      else toast({id,tom:'err',titulo:'A instância não pôde ser criada',operacao:'Deploy de instância · web-05',detalhe:'A oferta de serviço não está disponível nesta região.',corpo:trilhaHtml('ok','erro','pendente','9c2e…41af')});
+    },4000);
+    return;
+  }
+  toast(EX[k]);
+});
+
+/* ---- trilha demo ---- */
+document.querySelectorAll('[data-trilha]').forEach(b=>b.onclick=()=>{
+  const m={ok:['ok','ok','ok'],erro:['ok','erro','pendente'],parcial:['ok','ok','erro'],andamento:['ok','atual','pendente']}[b.dataset.trilha];
+  document.getElementById('trilha-demo').innerHTML=trilhaHtml(...m, b.dataset.trilha==='erro'?'7f3a…8c11':'').replace(/^<div class="trilha">|<\/div>$/g,''); icons();
+});
+
+/* ---- ampulheta ---- */
+const hgBtn=document.getElementById('hg-btn');
+hgBtn.onclick=()=>{ const svg=hgBtn.querySelector('.hourglass'); const on=svg.dataset.active!=='true'; svg.dataset.active=String(on); hgBtn.setAttribute('aria-pressed',String(on)); document.getElementById('hg-ping').style.display=on?'':'none'; };
+
+/* ---- notas de versão (modal acessível: foco preso, Esc fecha, foco devolvido) ---- */
+const notes=document.getElementById('notes'); let notesTrigger=null;
+function abrirNotas(ev){ notesTrigger=ev.currentTarget; notes.hidden=false; notes.querySelector('[role=dialog]').focus(); }
+function fecharNotas(){ notes.hidden=true; notesTrigger?.focus({preventScroll:true}); }
+document.querySelectorAll('[data-open-notes]').forEach(b=>b.onclick=abrirNotas);
+document.querySelectorAll('[data-close-notes]').forEach(b=>b.onclick=fecharNotas);
+document.addEventListener('keydown',e=>{
+  if(notes.hidden) return;
+  if(e.key==='Escape'){ fecharNotas(); return; }
+  if(e.key!=='Tab') return;
+  const f=[...notes.querySelectorAll('button,[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);
+  if(!f.length) return; const first=f[0], last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); }
+});
+
+/* ============================================================
+   TOPOLOGIA DINÂMICA: SVG gerado a partir do modelo de dados
+   (formas por tipo, manchas, ligações, destaque de vizinhos)
+   ============================================================ */
+const TOPO_GLYPH={
+  internet:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  ip:'<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  roteador:'<rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6.01 18H6"/><path d="M10.01 18H10"/><path d="M15 10v4"/><path d="M17.84 7.17a4 4 0 0 0-5.66 0"/><path d="M20.66 4.34a8 8 0 0 0-11.31 0"/>',
+  vpn:'<path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>',
+  rede:'<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',
+  instancia:'<rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/>',
+  balanceador:'<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
+  lock:'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
+};
+const MEIA={internet:26,ip:13,roteador:24,vpn:20,rede:22,instancia:15,balanceador:20};
+const ICO={internet:26,ip:13,roteador:20,vpn:15,rede:20,instancia:16,balanceador:15};
+const COR_TIPO={internet:['--info','--info-muted'],ip:['--accent-orange','--accent-orange-muted'],roteador:['--accent-purple','--accent-purple-muted'],vpn:['--success','--success-muted'],rede:['--info','--info-muted'],instancia:['--muted-fg','--surface-2'],balanceador:['--accent-teal','--accent-teal-muted']};
+const COR_REDE=[['--info','--info-muted'],['--accent-teal','--accent-teal-muted'],['--accent-purple','--accent-purple-muted'],['--accent-orange','--accent-orange-muted'],['--success','--success-muted']];
+const ROTULO_TIPO={internet:'Internet',ip:'IP público (NAT de origem)',roteador:'Roteador da VPC',vpn:'VPN Site-to-Site',rede:'Rede ou sub-rede',instancia:'Instância',balanceador:'Load balancer'};
+const FORMA={internet:'circulo',ip:'pilula',roteador:'hexagono',vpn:'escudo',rede:'hub',instancia:'quadrado',balanceador:'losango'};
+
+const TOPO_BASE=()=>({
+  vpc:'acme-prod', ip:'200.10.42.7', vpn:{nome:'Matriz SP',peer:'177.8.0.1'}, lb:false,
+  redes:[
+    {nome:'web-tier',cidr:'10.0.1.0/24',acl:true,vms:[{n:'web-01'},{n:'web-02'},{n:'web-03',alerta:true}]},
+    {nome:'app-tier',cidr:'10.0.2.0/24',acl:false,vms:[{n:'app-01'},{n:'app-02'}]},
+    {nome:'db-tier',cidr:'10.0.3.0/24',acl:true,vms:[{n:'db-primary'},{n:'db-replica',alerta:true}]},
+  ]
+});
+let TOPO=TOPO_BASE();
+
+function hexagono(r){ return Array.from({length:6},(_,i)=>{ const a=((i*60-90)*Math.PI)/180; return `${(r*Math.cos(a)).toFixed(1)},${(r*Math.sin(a)).toFixed(1)}`; }).join(' '); }
+const ESCUDO='M0 -21 L17 -14 V-1 C17 10 9 17 0 21 C-9 17 -17 10 -17 -1 V-14 Z';
+function forma(tipo,pint,largura){
+  const m=MEIA[tipo];
+  switch(tipo){
+    case 'internet': case 'rede': return `<circle r="${m}" ${pint}/>`;
+    case 'roteador': return `<polygon points="${hexagono(m)}" stroke-linejoin="round" ${pint}/>`;
+    case 'instancia': return `<rect x="${-m}" y="${-m}" width="${m*2}" height="${m*2}" rx="7" ${pint}/>`;
+    case 'balanceador': return `<polygon points="0,${-m} ${m},0 0,${m} ${-m},0" stroke-linejoin="round" ${pint}/>`;
+    case 'vpn': return `<path d="${ESCUDO}" stroke-linejoin="round" ${pint}/>`;
+    case 'ip': { const w=largura||m*4; return `<rect x="${-w/2}" y="${-m}" width="${w}" height="${m*2}" rx="${m}" ${pint}/>`; }
+  }
+}
+function glyph(tipo,x,y,size,color){ return `<g transform="translate(${x} ${y}) scale(${size/24})" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TOPO_GLYPH[tipo]}</g>`; }
+
+function layoutTopo(d){
+  const nos=[], lig=[], reg=[];
+  const cx=120, top=70;
+  nos.push({id:'internet',tipo:'internet',nome:'Internet',x:cx,y:top,linhas:['Internet'],rx:MEIA.internet+8,ry:5,anc:'inicio'});
+  const ipW=Math.max(96,d.ip.length*7.2+40);
+  nos.push({id:'ip',tipo:'ip',nome:d.ip,x:cx,y:top+95,largura:ipW,linhas:['IP público'],rx:0,ry:MEIA.ip+14,anc:'meio',det:['NAT de origem']});
+  nos.push({id:'roteador',tipo:'roteador',nome:d.vpc,x:cx,y:top+210,linhas:['Roteador',d.vpc],rx:MEIA.roteador+8,ry:5,anc:'inicio'});
+  lig.push({de:'internet',para:'ip'},{de:'ip',para:'roteador'});
+  if(d.vpn){ nos.push({id:'vpn',tipo:'vpn',nome:d.vpn.nome,x:cx,y:top+340,linhas:['VPN S2S',d.vpn.nome],rx:0,ry:MEIA.vpn+14,anc:'meio',det:['peer '+d.vpn.peer]}); lig.push({de:'roteador',para:'vpn',tracejada:true}); }
+  const colW=230, x0=cx+220, redeY=top+90;
+  d.redes.forEach((r,i)=>{
+    const rx=x0+i*colW, id='rede'+i;
+    nos.push({id,tipo:'rede',nome:r.nome,cor:i%COR_REDE.length,acl:r.acl,x:rx,y:redeY,linhas:[r.nome,r.cidr],rx:MEIA.rede+4,ry:-12,anc:'inicio',det:[r.cidr,r.acl?'ACL própria':'ACL padrão']});
+    lig.push({de:'roteador',para:id,curvas:[[rx-110,redeY]]});
+    const n=r.vms.length, gap=64, y1=redeY+110;
+    r.vms.forEach((vm,k)=>{ const vx=rx+(k-(n-1)/2)*gap, vid=id+'vm'+k; nos.push({id:vid,tipo:'instancia',nome:vm.n,alerta:vm.alerta,x:vx,y:y1,linhas:[vm.n+(vm.alerta?' ⚠':'')],rx:0,ry:MEIA.instancia+14,anc:'meio',rede:id}); lig.push({de:id,para:vid}); });
+    const ext=Math.max(MEIA.rede+30,(n-1)/2*gap+40);
+    reg.push({tipo:'rede',cor:i%COR_REDE.length,x:rx-ext,y:redeY-40,w:ext*2,h:(y1-redeY)+60,id:'reg'+i});
+    if(d.lb&&i===0){ nos.push({id:'lb',tipo:'balanceador',nome:'lb-web',x:rx,y:y1+95,linhas:['lb-web','80/443'],rx:0,ry:MEIA.balanceador+14,anc:'meio'}); r.vms.forEach((_,k)=>lig.push({de:'lb',para:id+'vm'+k})); reg[reg.length-1].h+=95; }
+  });
+  const largura=x0+(d.redes.length-1)*colW+140, altura=Math.max(top+400, redeY+110+120+(d.lb?95:0));
+  reg.unshift({tipo:'vpc',x:cx-70,y:top+40,w:largura-cx+40,h:altura-top-60});
+  return {nos,lig,reg,largura,altura};
+}
+
+let topoAtivo='';
+function renderTopo(){
+  const L=layoutTopo(TOPO), host=document.getElementById('topo-host');
+  const byId=new Map(L.nos.map(n=>[n.id,n]));
+  const viz=new Map(); L.lig.forEach(l=>{ (viz.get(l.de)||viz.set(l.de,new Set()).get(l.de)).add(l.para); (viz.get(l.para)||viz.set(l.para,new Set()).get(l.para)).add(l.de); });
+  const ligados=topoAtivo?(viz.get(topoAtivo)||new Set()):null;
+  const estado=id=>!ligados?'normal':id===topoAtivo?'ativo':ligados.has(id)?'vizinho':'apagado';
+  const cor=n=>n.tipo==='rede'?COR_REDE[n.cor]:COR_TIPO[n.tipo];
+  const v=t=>`var(${t})`;
+  let s=`<svg class="topo-svg" viewBox="0 0 ${L.largura} ${L.altura}" style="max-width:${L.largura}px;margin:0 auto" role="group" aria-label="Topologia da VPC ${TOPO.vpc}: ${L.nos.length} itens">`;
+  s+='<g data-camada="regioes" aria-hidden="true" pointer-events="none">';
+  L.reg.forEach(r=>{ if(r.tipo==='vpc') s+=`<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="18" fill="var(--muted-fg)" fill-opacity=".06" stroke="var(--muted-fg)" stroke-dasharray="6 5" stroke-opacity=".4" stroke-width="1.2"/>`; else { const c=COR_REDE[r.cor]; s+=`<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="16" fill="${v(c[1])}" stroke="${v(c[0])}" stroke-opacity=".5" stroke-width="1.2"/>`; } });
+  s+='</g><g data-camada="ligacoes" aria-hidden="true" pointer-events="none">';
+  L.lig.forEach(l=>{ const a=byId.get(l.de), b=byId.get(l.para); const acesa=ligados&&(l.de===topoAtivo||l.para===topoAtivo); const apag=ligados&&!acesa; const pts=[[a.x,a.y],...(l.curvas||[]),[b.x,b.y]].map(p=>p.join(',')).join(' ');
+    s+=`<polyline class="topo-lig" points="${pts}" fill="none" stroke="${acesa?'var(--fg)':'var(--muted-fg)'}" stroke-width="${acesa?2.4:1.3}" stroke-opacity="${acesa?1:.55}" opacity="${apag?.12:1}" ${l.tracejada?'stroke-dasharray="5 4"':''} stroke-linejoin="round"/>`; });
+  s+='</g><g data-camada="nos">';
+  L.nos.forEach(n=>{
+    const st=estado(n.id), c=cor(n), m=MEIA[n.tipo], mw=n.largura?n.largura/2:m;
+    const traco=n.alerta?'var(--warning)':v(c[0]); const esp=(n.tipo==='rede'?2.5:1.6)+(st==='ativo'?1:0);
+    const desc=[n.tipo==='internet'?n.nome:`${ROTULO_TIPO[n.tipo]} ${n.nome}`,...(n.det||[]),...(n.alerta?['Instância fora de execução']:[])].join(', ');
+    s+=`<g class="topo-no" data-no="${n.id}" data-tipo="${n.tipo}" data-forma="${FORMA[n.tipo]}" data-estado="${st}" role="img" tabindex="0" aria-label="${desc}" opacity="${st==='apagado'?.25:1}" transform="translate(${n.x} ${n.y})"><title>${desc}</title>`;
+    s+=`<rect class="topo-foco" x="${-mw-5}" y="${-m-5}" width="${mw*2+10}" height="${m*2+10}" rx="10"/>`;
+    s+=forma(n.tipo,'fill="var(--surface)"',n.largura)+forma(n.tipo,`fill="${v(c[1])}" stroke="${traco}" stroke-width="${esp}"`,n.largura);
+    const gs=ICO[n.tipo], gx=n.tipo==='ip'?-mw+7:-gs/2;
+    s+=glyph(n.tipo,gx,-gs/2,gs,n.tipo==='instancia'?'var(--fg)':v(c[0]));
+    if(n.tipo==='ip') s+=`<text x="${-mw+25}" y="4" font-size="11" font-weight="600" fill="var(--fg)">${n.nome}</text>`;
+    if(n.acl) s+=`<g transform="translate(-17 -17)"><circle r="8" fill="var(--surface)" stroke="var(--muted-fg)" stroke-width="1.2"/>${glyph('lock',-5,-5,10,'var(--fg)')}</g>`;
+    if(n.linhas.length){ s+=`<text paint-order="stroke" stroke="var(--surface)" stroke-width="3" stroke-linejoin="round" ${n.anc==='meio'?'text-anchor="middle"':''} x="${n.rx}" y="${n.ry}">`;
+      n.linhas.forEach((ln,i)=>{ const al=i===0&&n.alerta&&ln.endsWith(' ⚠'); s+=`<tspan x="${n.rx}" dy="${i?13:0}" fill="${i?'var(--muted-fg)':'var(--fg)'}" font-size="${i?11:(n.tipo==='internet'||n.tipo==='roteador'?13:12)}" font-weight="${i?400:600}">${al?ln.slice(0,-2):ln}${al?'<tspan fill="var(--warning)"> ⚠</tspan>':''}</tspan>`; });
+      s+='</text>'; }
+    s+='</g>';
+  });
+  s+='</g></svg>';
+  host.innerHTML=s;
+  host.querySelectorAll('.topo-no').forEach(g=>{ const id=g.dataset.no; const on=()=>{ if(topoAtivo!==id){ topoAtivo=id; renderTopo(); } }; const off=()=>{ if(topoAtivo){ topoAtivo=''; renderTopo(); } };
+    g.addEventListener('pointerenter',on); g.addEventListener('pointerleave',off); g.addEventListener('focus',on); g.addEventListener('blur',off); });
+  if(topoAtivo){ const f=host.querySelector(`[data-no="${topoAtivo}"]`); if(f&&document.activeElement?.tagName!=='BUTTON'&&document.activeElement!==f&&document.activeElement?.closest?.('#topo-host')) f.focus({preventScroll:true}); }
+  // legenda
+  const presentes=[...new Set(L.nos.map(n=>n.tipo))], ordem=['internet','ip','roteador','vpn','rede','instancia','balanceador'];
+  const amostra=t=>{ const m=MEIA[t]+3, w=t==='ip'?44:undefined, mw=w?w/2+3:m, c=t==='rede'?COR_REDE[0]:COR_TIPO[t]; return `<svg aria-hidden="true" width="${Math.round(24*mw/m)}" height="24" viewBox="${-mw} ${-m} ${mw*2} ${m*2}">${forma(t,'fill="var(--surface)"',w)}${forma(t,`fill="${v(c[1])}" stroke="${v(c[0])}" stroke-width="${t==='rede'?2.5:1.6}"`,w)}${glyph(t,t==='ip'?-mw+7:-ICO[t]/2,-ICO[t]/2,ICO[t],t==='instancia'?'var(--fg)':v(c[0]))}</svg>`; };
+  const comAlerta=L.nos.some(n=>n.alerta);
+  document.getElementById('topo-legenda').innerHTML=`<div><strong>Formas</strong><ul>${ordem.filter(t=>presentes.includes(t)).map(t=>`<li>${amostra(t)}<span>${ROTULO_TIPO[t]}</span></li>`).join('')}</ul></div><div><strong>Cores das redes</strong><ul>${TOPO.redes.map((r,i)=>`<li><span class="cor" style="background:${v(COR_REDE[i%5][1])};border-color:${v(COR_REDE[i%5][0])}"></span><span>${r.nome}</span></li>`).join('')}</ul></div><div class="topo-notas">${comAlerta?'<p><span style="color:var(--warning)">⚠</span> Instância fora de execução</p>':''}<p>A mancha colorida cobre cada rede e os membros dela; a mancha tracejada, mais clara, envolve a VPC inteira.</p><p>Passe o ponteiro ou o foco por um item para destacar as ligações dele.</p></div>`;
+}
+renderTopo();
+document.getElementById('topo-add-rede').onclick=()=>{ const i=TOPO.redes.length+1; if(i>5) return; TOPO.redes.push({nome:`tier-${i}`,cidr:`10.0.${i}.0/24`,acl:i%2===0,vms:[{n:`svc-${i}a`}]}); renderTopo(); };
+document.getElementById('topo-add-vm').onclick=()=>{ const r=TOPO.redes[Math.floor(Math.random()*TOPO.redes.length)]; if(r.vms.length>=5) return; r.vms.push({n:`${r.nome.split('-')[0]}-0${r.vms.length+1}`,alerta:Math.random()<.25}); renderTopo(); };
+document.getElementById('topo-toggle-lb').onclick=()=>{ TOPO.lb=!TOPO.lb; renderTopo(); };
+document.getElementById('topo-reset').onclick=()=>{ TOPO=TOPO_BASE(); topoAtivo=''; renderTopo(); };
+</script>
+
+<!-- Specular button · WebGL (port do reactbits SpecularButton, ogl via CDN) -->
+<script type="module">
+import { Renderer, Program, Mesh, Triangle, Color } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm';
+
+const PAD = 20;
+const VERT = `#version 300 es
+in vec2 position;
+void main(){ gl_Position = vec4(position,0.0,1.0); }`;
+const FRAG = `#version 300 es
+precision highp float;
+uniform vec2 uCenter; uniform vec2 uHalfSize; uniform float uRadius; uniform float uAngle;
+uniform float uPx; uniform vec3 uLineColor; uniform vec3 uBaseColor; uniform float uIntensity;
+uniform float uShineSize; uniform float uShineFade; uniform float uThickness; uniform float uBaseWidth;
+out vec4 fragColor;
+float sdRoundedRect(vec2 p, vec2 b, float r){ vec2 q=abs(p)-b+r; return length(max(q,0.0))+min(max(q.x,q.y),0.0)-r; }
+float shapeSDF(vec2 p){ return sdRoundedRect(p,uHalfSize,uRadius); }
+float gaussianLine(float d,float sigma){ float x=d/(sigma+1e-6); float k=mix(1.0,1.6,smoothstep(0.0,1.5,x)); return exp(-k*x*x); }
+void main(){
+  vec2 p = gl_FragCoord.xy - uCenter;
+  float d = shapeSDF(p);
+  vec2 L = vec2(cos(uAngle), sin(uAngle));
+  float base = (1.0 - smoothstep(0.0, uBaseWidth, abs(d))) * 0.45;
+  vec2 nEll = normalize(p/(uHalfSize*uHalfSize)+1e-6);
+  float phi = acos(clamp(abs(dot(nEll,L)),0.0,1.0));
+  float rim = 1.0 - smoothstep(uShineSize-uShineFade, uShineSize+uShineFade+1e-4, phi);
+  float line = gaussianLine(d, uThickness);
+  float edgeClamp = 1.0 - smoothstep(0.5*uPx, 3.0*uPx, abs(d));
+  float hi = line*rim*edgeClamp*uIntensity;
+  vec3 col = uBaseColor*base + uLineColor*hi;
+  float a = clamp(base+hi,0.0,1.0);
+  fragColor = vec4(col,a);
+}`;
+
+function initSpecular(btn){
+  const fx = btn.querySelector('.specular-button__fx');
+  if(!fx) return;
+  const conf = {
+    radius:    parseFloat(btn.dataset.sbRadius) || 18,
+    lineColor: btn.dataset.sbLine || '#ffffff',
+    baseColor: btn.dataset.sbBase || '#525252',
+    intensity:1, shineSize:10, shineFade:40, thickness:1, speed:0.35,
+    followMouse:true, proximity:250, autoAnimate:false
+  };
+  const dpr = window.devicePixelRatio || 1;
+  let renderer;
+  try{ renderer = new Renderer({ alpha:true, premultipliedAlpha:true, antialias:true, dpr }); }
+  catch(e){ return; }
+  const gl = renderer.gl;
+  gl.clearColor(0,0,0,0); gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  const geometry = new Triangle(gl);
+  if(geometry.attributes.uv) delete geometry.attributes.uv;
+  const program = new Program(gl,{ vertex:VERT, fragment:FRAG, uniforms:{
+    uCenter:{value:[0,0]}, uHalfSize:{value:[1,1]}, uRadius:{value:0}, uAngle:{value:2.4},
+    uPx:{value:dpr}, uLineColor:{value:[1,1,1]}, uBaseColor:{value:[.32,.32,.32]}, uIntensity:{value:1},
+    uShineSize:{value:.17}, uShineFade:{value:.7}, uThickness:{value:1}, uBaseWidth:{value:dpr}
+  }});
+  const mesh = new Mesh(gl,{ geometry, program });
+  fx.appendChild(gl.canvas);
+
+  const sizeRef = { w:1, h:1 };
+  const resize = () => {
+    const r = btn.getBoundingClientRect(); const w = r.width, h = r.height;
+    sizeRef.w = w; sizeRef.h = h;
+    renderer.setSize(w + PAD*2, h + PAD*2);
+    program.uniforms.uCenter.value  = [(PAD + w/2)*dpr, (PAD + h/2)*dpr];
+    program.uniforms.uHalfSize.value = [(w/2)*dpr, (h/2)*dpr];
+  };
+  new ResizeObserver(resize).observe(btn); resize();
+
+  let pointerAngle = null, proximityT = 0;
+  window.addEventListener('pointermove', e => {
+    const r = btn.getBoundingClientRect();
+    const cx = r.left + r.width/2, cy = r.top + r.height/2;
+    const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right);
+    const dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+    const dist = Math.hypot(dx, dy);
+    if(dist === 0){
+      const nx = (e.clientX - cx)/(r.width/2), ny = (cy - e.clientY)/(r.height/2);
+      pointerAngle = Math.atan2(2/r.height, -2/r.width) + nx*0.3 + ny*0.15;
+    } else {
+      pointerAngle = Math.atan2(cy - e.clientY, e.clientX - cx);
+    }
+    const t = Math.max(0, 1 - dist/Math.max(conf.proximity,1));
+    proximityT = t*t*(3 - 2*t);
+  });
+
+  let angle = 2.4, idleAngle = 2.4, bright = 0, last = performance.now();
+  const lineC = new Color(), baseC = new Color();
+  const update = now => {
+    requestAnimationFrame(update);
+    const dt = Math.min((now - last)/1000, 0.05); last = now;
+    idleAngle += conf.speed*dt;
+    const steer = conf.followMouse && pointerAngle != null && (!conf.autoAnimate || proximityT > 0);
+    const target = steer ? pointerAngle : idleAngle;
+    const diff = ((target - angle + Math.PI*3) % (Math.PI*2)) - Math.PI;
+    angle += diff*(1 - Math.exp(-dt*7));
+    const brightTarget = conf.autoAnimate ? 1 : proximityT;
+    bright += (brightTarget - bright)*(1 - Math.exp(-dt*8));
+    lineC.set(conf.lineColor); baseC.set(conf.baseColor);
+    program.uniforms.uAngle.value     = angle;
+    program.uniforms.uRadius.value    = Math.min(conf.radius, Math.min(sizeRef.w, sizeRef.h)/2)*dpr;
+    program.uniforms.uLineColor.value = [lineC.r, lineC.g, lineC.b];
+    program.uniforms.uBaseColor.value = [baseC.r, baseC.g, baseC.b];
+    program.uniforms.uIntensity.value = conf.intensity*bright;
+    program.uniforms.uShineSize.value = (conf.shineSize*Math.PI)/180;
+    program.uniforms.uShineFade.value = (conf.shineFade*Math.PI)/180;
+    program.uniforms.uThickness.value = conf.thickness*dpr;
+    renderer.render({ scene: mesh });
+  };
+  requestAnimationFrame(update);
+}
+
+document.querySelectorAll('.specular-button').forEach(initSpecular);
+</script>
+</body>
+</html>

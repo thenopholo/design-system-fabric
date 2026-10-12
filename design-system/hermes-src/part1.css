@@ -1,0 +1,232 @@
+/* ============================================================
+   Hermes · Design System do painel do agente
+   Cores, tipografia, imagens e animação do hero: referência
+   design-system/refs/gemini (gemini.google/about, IO 2026).
+   Estrutura, componentes, feedback, progresso e shell:
+   design-system 8 (eveo), adaptados ao domínio do agente.
+   ============================================================ */
+
+/* ---------- Tokens (claro padrão, html.dark sobrescreve; .theme-light/.theme-dark forçam num trecho) ---------- */
+:root, .theme-light{
+  /* Marca Gemini · azuis */
+  --g-blue:        #3186FF;   /* botão, acento principal */
+  --g-blue-2:      #346BF0;   /* meio do gradiente do botão */
+  --g-blue-3:      #4EA0FF;   /* fim do gradiente do botão */
+  --g-link:        #078EFB;   /* links, início do gradiente de texto */
+  --g-blue-deep:   #1A73E8;   /* Google blue 600 */
+  --g-blue-ink:    #174EA6;   /* Google blue 900 */
+  --g-blue-wash:   #F0F8FE;   /* fundo de dica */
+  --g-blue-wash-2: #E8F0FE;
+  --g-purple:      #AC87EB;   /* fim do gradiente de texto */
+  --g-purple-2:    #9B72CB;
+  --g-rose:        #D96570;
+
+  /* Faísca · 4 cores do núcleo + 4 cores da borda (spark2) */
+  --spark-red:     #FF4641;  --spark-red-edge:    #D8627E;
+  --spark-yellow:  #FFCC00;  --spark-yellow-edge: #FF6B2B;
+  --spark-green:   #00B95C;  --spark-green-edge:  #00A5B7;
+  --spark-blue:    #3186FF;  --spark-blue-edge:   #A975AA;
+
+  /* Neutros Google */
+  --n-0:   #FFFFFF; --n-50:  #F8F9FA; --n-100: #F1F3F4; --n-200: #DADCE0;
+  --n-300: #BDC1C6; --n-400: #9AA0A6; --n-500: #80868B; --n-600: #5F6368;
+  --n-700: #3C4043; --n-800: #202124; --n-850: #242629; --n-900: #131314; --n-950: #000000;
+
+  /* Semântico · claro */
+  --bg:            #FFFFFF;
+  --bg-2:          #F8F9FA;
+  --surface:       #FFFFFF;
+  --surface-2:     #F8F9FA;
+  --surface-raised:#F1F3F4;
+  --fg:            #202124;
+  --fg-soft:       #3C4043;
+  --muted:         #F1F3F4;
+  --muted-fg:      #5F6368;
+  --subtle-fg:     #80868B;
+  --border:        #E5E5E5;
+  --border-strong: #DADCE0;
+
+  --primary:       #3186FF;
+  --primary-hover: #1A73E8;
+  --primary-press: #174EA6;
+  --primary-fg:    #FFFFFF;
+  --primary-muted: rgba(49,134,255,.10);
+  --ring:          rgba(49,134,255,.38);
+  --focus:         #1A73E8;
+  --focus-width:   .2rem;
+  --focus-offset:  .2rem;
+
+  /* Gradientes da marca */
+  --grad-button:   linear-gradient(89.58deg,#3186FF .28%,#346BF0 44.45%,#4EA0FF 99.55%);
+  --grad-button-2x:linear-gradient(89.58deg,#3186FF 50.14%,#346BF0 72.225%,#4EA0FF 99.775%);
+  --grad-text:     linear-gradient(90deg,#078EFB 0%,#AC87EB 66.7%);
+  --grad-warm:     linear-gradient(72.83deg,#4285F4 11.63%,#9B72CB 40.43%,#D96570 68.07%);
+  --grad-spark:    conic-gradient(from 200deg,#FF4641,#FFCC00,#00B95C,#3186FF,#FF4641);
+
+  /* Estados (AA sobre --surface) */
+  --success:       #1E8E3E;
+  --warning:       #B06000;
+  --danger:        #D93025;
+  --danger-hover:  #A50E0E;
+  --info:          #1A73E8;
+  --success-muted: rgba(30,142,62,.12);
+  --warning-muted: rgba(249,171,0,.16);
+  --danger-muted:  rgba(217,48,37,.10);
+  --info-muted:    rgba(26,115,232,.12);
+
+  /* Acentos de categoria (ferramentas do agente, tags) */
+  --accent-purple:       #9B72CB;
+  --accent-purple-muted: rgba(155,114,203,.14);
+  --accent-teal:         #00A5B7;
+  --accent-teal-muted:   rgba(0,165,183,.14);
+  --accent-rose:         #D96570;
+  --accent-rose-muted:   rgba(217,101,112,.14);
+  --accent-amber:        #E37400;
+  --accent-amber-muted:  rgba(227,116,0,.14);
+
+  /* Vidro */
+  --glass-bg:      rgba(255,255,255,.72);
+  --glass-border:  rgba(32,33,36,.10);
+  --glass-blur:    20px;
+
+  /* Raio · escala Gemini (4 · 8 · 12 · 16 · 24 · 32 · pílula) */
+  --radius-xs:  4px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-2xl: 32px;
+  --radius-pill:100px;
+
+  /* Elevação: suave, nunca dura */
+  --shadow-sm: 0 1px 2px rgba(60,64,67,.12), 0 1px 3px 1px rgba(60,64,67,.08);
+  --shadow-md: 0 1px 3px rgba(60,64,67,.18), 0 4px 8px 3px rgba(60,64,67,.10);
+  --shadow-lg: 0 4px 4px rgba(60,64,67,.14), 0 8px 12px 6px rgba(60,64,67,.10);
+  --shadow-soft: 0 0 0 1px rgba(60,64,67,.06), 0 2px 6px rgba(60,64,67,.08), 0 12px 24px -12px rgba(60,64,67,.14);
+  --shadow-blue: 0 8px 24px -8px rgba(49,134,255,.45);
+
+  /* Movimento (durações do painel + do hero) */
+  --t-hover:      .18s;   /* hover de botão, link, item (Gemini usa .18s) */
+  --t-surgir:     .16s;   /* diálogo, toast */
+  --t-barra:      120ms;  /* suavização da barra */
+  --t-contagem:   650ms;  /* barra sobe do zero ao valor */
+  --t-indet:      1.2s;   /* indeterminada */
+  --t-pulso:      1.6s;   /* skeleton */
+  --t-hero-word:  .5s;    /* cada palavra do título entra em .5s */
+  --t-hero-scale: .8s;    /* camada de escala 1.12 → 1 */
+  --t-hero-cta:   1s;     /* CTA surge 1.5s depois */
+  --t-grad-loop:  4s;     /* gradiente do botão animado */
+
+  --rodape-h: 2.25rem;
+  --header-h: 64px;
+  --sp: 4px;
+  color-scheme: light;
+}
+
+html.dark, .theme-dark{
+  --bg:            #131314;
+  --bg-2:          #0F0F0F;
+  --surface:       #1F1F1F;
+  --surface-2:     #1A1A1B;
+  --surface-raised:#242629;
+  --fg:            #F1F1F1;
+  --fg-soft:       #D7D9DC;
+  --muted:         #242629;
+  --muted-fg:      #B4B4B4;
+  --subtle-fg:     #9AA0A6;
+  --border:        rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.18);
+
+  --primary:       #4EA0FF;
+  --primary-hover: #78B6FF;
+  --primary-press: #3186FF;
+  --primary-fg:    #0B1A33;
+  --primary-muted: rgba(78,160,255,.16);
+  --ring:          rgba(78,160,255,.45);
+  --focus:         #AECBFA;
+
+  --g-blue-wash:   #1B2A3F;
+  --g-blue-wash-2: #1E2F4A;
+
+  --success:       #5BB974;
+  --warning:       #FDD663;
+  --danger:        #F28B82;
+  --danger-hover:  #FF6B61;
+  --info:          #8AB4F8;
+  --success-muted: rgba(91,185,116,.16);
+  --warning-muted: rgba(253,214,99,.16);
+  --danger-muted:  rgba(242,139,130,.16);
+  --info-muted:    rgba(138,180,248,.16);
+
+  --accent-purple:       #C5A8F0;
+  --accent-purple-muted: rgba(197,168,240,.16);
+  --accent-teal:         #4FD0DF;
+  --accent-teal-muted:   rgba(79,208,223,.16);
+  --accent-rose:         #F08A94;
+  --accent-rose-muted:   rgba(240,138,148,.16);
+  --accent-amber:        #FFA657;
+  --accent-amber-muted:  rgba(255,166,87,.16);
+
+  --glass-bg:      rgba(31,31,31,.62);
+  --glass-border:  rgba(255,255,255,.12);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.45);
+  --shadow-md: 0 1px 3px rgba(0,0,0,.5), 0 4px 8px 3px rgba(0,0,0,.35);
+  --shadow-lg: 0 4px 4px rgba(0,0,0,.5), 0 8px 12px 6px rgba(0,0,0,.4);
+  --shadow-soft: 0 0 0 1px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.4), 0 12px 24px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
+  --shadow-blue: 0 8px 28px -6px rgba(78,160,255,.5);
+  color-scheme: dark;
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  font-family:"Google Sans","Google Sans Text",Roboto,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  background:var(--bg); color:var(--fg);
+  line-height:1.5; letter-spacing:0;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background .35s ease,color .35s ease;
+  overflow-x:hidden;
+  padding-bottom:calc(var(--rodape-h) + 8px);
+}
+::selection{ background:var(--g-blue); color:#fff; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; }
+svg{ display:block; }
+svg.lucide{ width:1em; height:1em; stroke-width:2; vertical-align:middle; }
+:focus-visible{ outline:var(--focus-width) solid var(--focus); outline-offset:var(--focus-offset); }
+.sr{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ---------- Layout ---------- */
+.wrap{ max-width:1320px; margin-inline:auto; padding-inline:24px; }
+section{ padding:80px 0 8px; scroll-margin-top:88px; }
+.grid{ display:grid; gap:16px; }
+.cols-2{ grid-template-columns:repeat(2,1fr); }
+.cols-3{ grid-template-columns:repeat(3,1fr); }
+.cols-4{ grid-template-columns:repeat(4,1fr); }
+.row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+@media(max-width:900px){ .cols-3,.cols-4{ grid-template-columns:repeat(2,1fr); } }
+@media(max-width:620px){ .cols-2,.cols-3,.cols-4{ grid-template-columns:1fr; } section{ padding-top:60px; } }
+
+/* ---------- Tipo · escala Gemini ---------- */
+.eyebrow{
+  font-size:14px; font-weight:500; letter-spacing:.5px; text-transform:uppercase; line-height:1.71;
+  color:var(--muted-fg); display:inline-flex; align-items:center; gap:8px;
+}
+.eyebrow.pill{ border:1px solid var(--g-blue); border-radius:var(--radius-pill); padding:4px 12px; text-transform:none; letter-spacing:0; font-size:14px; line-height:1.4; }
+.eyebrow.pill, .grad-text{ background:var(--grad-text); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+.eyebrow.badge-blue{ background:var(--grad-button); color:#fff; border-radius:var(--radius-sm); padding:4px 12px; text-transform:none; letter-spacing:0; }
+.h-sec{ font-size:clamp(32px,4vw,48px); font-weight:500; letter-spacing:-.04em; line-height:1.1; margin-top:10px; }
+.h-display{ font-size:clamp(40px,6vw,72px); font-weight:500; letter-spacing:-.04em; line-height:1; }
+.sub{ color:var(--muted-fg); max-width:62ch; margin-top:12px; font-size:18px; line-height:1.4; }
+.mono{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+.code{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85em; background:var(--muted); border:1px solid var(--border); padding:1px 6px; border-radius:var(--radius-xs); }
+.label{ font-size:12.5px; font-weight:500; color:var(--muted-fg); letter-spacing:.01em; }
+.divider{ height:1px; background:var(--border); margin:56px 0 0; }
+.rule{ display:flex; gap:10px; align-items:flex-start; font-size:13.5px; padding:8px 0; border-bottom:1px dashed var(--border); }
+.rule:last-child{ border-bottom:0; }
+.rule svg.lucide{ color:var(--primary); font-size:16px; margin-top:3px; flex:none; }
+.rule b{ color:var(--fg); font-weight:500; }
+.hint{ font-size:12px; color:var(--muted-fg); }
+.tip{ background:var(--g-blue-wash); color:var(--fg-soft); border-radius:var(--radius-md); padding:12px 20px; font-size:14px; display:inline-block; }

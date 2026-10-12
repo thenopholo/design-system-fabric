@@ -1,0 +1,310 @@
+<body class="hero-on">
+
+<!-- símbolos reutilizáveis: faísca Hermes (estrela de 4 pontas do Gemini) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="spark-h" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFCC00"/><stop offset=".55" stop-color="#3186FF"/><stop offset="1" stop-color="#3186FF"/></linearGradient>
+    <linearGradient id="spark-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF4641"/><stop offset=".42" stop-color="#FF4641" stop-opacity="0"/><stop offset=".62" stop-color="#00B95C" stop-opacity="0"/><stop offset="1" stop-color="#00B95C"/></linearGradient>
+    <path id="spark-path" d="M32.4473 0C33.1278 0 33.7197 0.464783 33.8857 1.125C34.3947 3.14441 35.0586 5.11414 35.8848 7.03027C38.0369 12.0299 40.99 16.406 44.7393 20.1553C48.4903 23.9045 52.8647 26.8576 57.8643 29.0098C59.7821 29.8359 61.7502 30.4998 63.7695 31.0088C64.4297 31.1748 64.8944 31.7668 64.8945 32.4473C64.8945 33.1278 64.4298 33.7198 63.7695 33.8857C61.7502 34.3947 59.7803 35.0586 57.8643 35.8848C52.8646 38.037 48.4885 40.99 44.7393 44.7393C40.99 48.4904 38.037 52.8646 35.8848 57.8643C35.0586 59.7822 34.3947 61.7502 33.8857 63.7695C33.7198 64.4298 33.1278 64.8945 32.4473 64.8945C31.7668 64.8944 31.1748 64.4297 31.0088 63.7695C30.4998 61.7502 29.8359 59.7803 29.0098 57.8643C26.8576 52.8647 23.9063 48.4885 20.1553 44.7393C16.4041 40.99 12.0299 38.0369 7.03027 35.8848C5.1123 35.0586 3.14441 34.3947 1.125 33.8857C0.464783 33.7197 0 33.1278 0 32.4473C0 31.7668 0.464826 31.1748 1.125 31.0088C3.14442 30.4998 5.11413 29.836 7.03027 29.0098C12.03 26.8575 16.406 23.9046 20.1553 20.1553C23.9046 16.406 26.8575 12.03 29.0098 7.03027C29.836 5.11229 30.4998 3.14442 31.0088 1.125C31.1748 0.464826 31.7668 0 32.4473 0Z"/>
+    <symbol id="spark" viewBox="0 0 65 65"><use href="#spark-path" fill="url(#spark-h)"/><use href="#spark-path" fill="url(#spark-v)"/></symbol>
+    <symbol id="spark-mono" viewBox="0 0 65 65"><use href="#spark-path" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar" id="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top">
+      <svg class="spark" style="width:26px;height:26px"><use href="#spark"/></svg>
+      <span>Hermes</span>
+      <span class="tag">Design System</span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#hero-doc">Hero</a>
+      <a href="#superficies">Superfícies</a>
+      <a href="#icones">Ícones</a>
+      <a href="#componentes">Componentes</a>
+      <a href="#agente">Agente</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#progresso">Progresso</a>
+      <a href="#shell">Shell</a>
+    </nav>
+    <button class="theme-btn" id="theme-top" type="button" aria-label="Usar tema escuro" aria-pressed="false" style="margin-left:4px"><i data-lucide="moon" class="i-moon"></i><i data-lucide="sun" class="i-sun"></i></button>
+    <a class="btn primary sm" href="#shell"><span>Ver painel</span></a>
+  </div>
+</header>
+
+<!-- ============ HERO · faísca ============ -->
+<section class="hero" id="top" aria-label="Hermes: tudo que o agente está fazendo, fez e vai fazer">
+  <div class="hero-sticky">
+    <div class="hero-spark" id="hero-spark" aria-hidden="true"></div>
+    <div class="hero-hint" aria-hidden="true"><span>arraste para girar</span><span class="k">clique</span><span>troca a cor</span><span class="k">rolar</span><span>recolhe</span></div>
+    <div class="hero-content">
+      <h1 class="hero-title" id="hero-title">
+        <div class="y-layer"><div class="scale-layer" style="--span-count:9"><span style="--i:0">Tudo</span> <span style="--i:1">que</span> <span style="--i:2">o</span> <span style="--i:3">Hermes</span> <span style="--i:4">faz,</span> <span style="--i:5">fez</span> <span style="--i:6">e</span> <span style="--i:7">vai</span> <span style="--i:8">fazer</span></div></div>
+      </h1>
+      <div class="hero-cta">
+        <a class="btn primary lg" href="#shell"><span>Abrir visão geral</span></a>
+        <a class="btn lg" href="#fundamentos" style="--_bg:transparent;--_fg:#fff;--_bd:rgba(255,255,255,.5)"><span>Explorar o sistema</span></a>
+      </div>
+    </div>
+    <div class="hero-mark"><svg class="spark" style="width:16px;height:16px"><use href="#spark"/></svg> Design System do painel do agente · v1.0</div>
+  </div>
+</section>
+
+<div class="after-hero"><main class="wrap">
+
+  <!-- ============ INTRO ============ -->
+  <section style="padding-top:0">
+    <span class="eyebrow pill">Hermes · painel do agente · v1.0</span>
+    <h2 class="h-display" style="margin-top:14px">Design System<br><span style="color:var(--muted-fg)">do painel do Hermes</span></h2>
+    <p class="sub" style="font-size:20px">
+      A linguagem visual do painel que mostra <b style="color:var(--fg);font-weight:500">o que o agente está fazendo agora</b>, o que <b style="color:var(--fg);font-weight:500">já fez</b> e o que <b style="color:var(--fg);font-weight:500">vai fazer</b>. Cores, tipografia <b style="color:var(--fg);font-weight:500">Google&nbsp;Sans</b>, a faísca e a animação do hero vêm da referência Gemini; a estrutura, os widgets, o feedback e o progresso vêm do design system base.
+    </p>
+    <div class="row" style="margin-top:26px">
+      <a href="#agente" class="btn primary lg animated"><i data-lucide="bot"></i><span>Agora, feito, próximo</span></a>
+      <a href="#hero-doc" class="btn outline-grad lg"><span class="lbl">Anatomia do hero</span></a>
+      <a href="#shell" class="btn lg"><i data-lucide="layout-dashboard"></i><span>Shell do painel</span></a>
+    </div>
+
+    <div class="grid cols-4" style="margin-top:34px">
+      <div class="card stat">
+        <div class="top"><div class="ic"><i data-lucide="activity"></i></div><span class="badge live">ao vivo</span></div>
+        <div class="num">3</div><div class="lb">tarefas em execução</div>
+        <div class="rb" style="margin-top:12px;display:flex" data-alvo="62" data-tone="plan" aria-label="Progresso médio"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></div>
+      </div>
+      <div class="card stat">
+        <div class="top"><div class="ic" style="background:var(--success-muted);color:var(--success)"><i data-lucide="circle-check"></i></div><span class="delta up"><i data-lucide="trending-up"></i>18%</span></div>
+        <div class="num">47</div><div class="lb">concluídas · 7 dias</div>
+        <svg class="sparkline" viewBox="0 0 120 40" preserveAspectRatio="none" aria-label="Tendência de tarefas concluídas, 12 pontos"><path class="ar" d="M0,30 L11,26 L22,28 L33,20 L44,22 L55,16 L66,18 L77,12 L88,14 L99,8 L110,10 L120,4 L120,40 L0,40 Z"/><path class="ln" d="M0,30 L11,26 L22,28 L33,20 L44,22 L55,16 L66,18 L77,12 L88,14 L99,8 L110,10 L120,4"/><circle class="pt" cx="120" cy="4" r="4"/></svg>
+      </div>
+      <div class="card stat">
+        <div class="top"><div class="ic" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand"></i></div><span class="badge err">aguarda você</span></div>
+        <div class="num">1</div><div class="lb">aprovação pendente</div>
+        <p class="hint" style="margin-top:12px">rm -rf em <span class="code">build/</span> · há 4 min</p>
+      </div>
+      <div class="card stat">
+        <div class="top"><div class="ic" style="background:var(--accent-purple-muted);color:var(--accent-purple)"><i data-lucide="list-todo"></i></div><span class="delta flat">fila</span></div>
+        <div class="num">12</div><div class="lb">na fila para depois</div>
+        <div class="rb" style="margin-top:12px;display:flex" data-alvo="34" aria-label="Contexto usado"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FUNDAMENTOS ============ -->
+  <section id="fundamentos">
+    <span class="eyebrow"><i data-lucide="layers"></i> Fundamentos</span>
+    <h2 class="h-sec">Cores</h2>
+    <p class="sub">Paleta extraída da referência Gemini (gemini.google, IO 2026): azuis da marca, gradiente de texto azul → roxo, a faísca de quatro cores e os neutros do Google. Clique em um swatch para copiar o hex.</p>
+
+    <div class="label" style="margin:22px 0 10px">Marca · azuis</div>
+    <div class="grid cols-4">
+      <div class="swatch"><div class="chip" style="background:#3186FF"></div><div class="meta"><div class="nm">Azul Gemini</div><div class="hx mono">#3186FF · botão, acento</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#078EFB"></div><div class="meta"><div class="nm">Azul link</div><div class="hx mono">#078EFB · links, início do gradiente</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#1A73E8"></div><div class="meta"><div class="nm">Azul 600</div><div class="hx mono">#1A73E8 · hover, foco</div></div></div>
+      <div class="swatch"><div class="chip" style="background:#174EA6"></div><div class="meta"><div class="nm">Azul tinta</div><div class="hx mono">#174EA6 · pressionado</div></div></div>
+    </div>
+    <div class="label" style="margin:22px 0 10px">Faísca · núcleo e borda (spark2)</div>
+    <div class="grid cols-4">
+      <div class="swatch sm"><div class="chip" style="background:linear-gradient(90deg,#FF4641 50%,#D8627E 50%)"></div><div class="meta"><div class="nm">Vermelho</div><div class="hx mono">#FF4641 · borda #D8627E</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:linear-gradient(90deg,#FFCC00 50%,#FF6B2B 50%)"></div><div class="meta"><div class="nm">Amarelo</div><div class="hx mono">#FFCC00 · borda #FF6B2B</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:linear-gradient(90deg,#00B95C 50%,#00A5B7 50%)"></div><div class="meta"><div class="nm">Verde</div><div class="hx mono">#00B95C · borda #00A5B7</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:linear-gradient(90deg,#3186FF 50%,#A975AA 50%)"></div><div class="meta"><div class="nm">Azul</div><div class="hx mono">#3186FF · borda #A975AA</div></div></div>
+    </div>
+    <div class="label" style="margin:22px 0 10px">Gradientes</div>
+    <div class="grad-row">
+      <div style="background:var(--grad-button)" title="botão"></div>
+      <div style="background:var(--grad-text)" title="texto"></div>
+      <div style="background:var(--grad-warm)" title="quente"></div>
+      <div style="background:var(--grad-spark)" title="faísca"></div>
+    </div>
+    <div class="grid cols-4" style="gap:12px;margin-top:8px">
+      <span class="hint mono">botão · 89.58deg #3186FF → #346BF0 → #4EA0FF</span>
+      <span class="hint mono">texto · 90deg #078EFB → #AC87EB 66.7%</span>
+      <span class="hint mono">quente · #4285F4 → #9B72CB → #D96570</span>
+      <span class="hint mono">faísca · cônico das 4 cores</span>
+    </div>
+    <div class="label" style="margin:22px 0 10px">Neutros Google</div>
+    <div class="grid cols-4">
+      <div class="swatch sm"><div class="chip" style="background:#202124"></div><div class="meta"><div class="nm">Grafite</div><div class="hx mono">#202124 · texto</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#5F6368"></div><div class="meta"><div class="nm">Cinza 700</div><div class="hx mono">#5F6368 · secundário</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#DADCE0"></div><div class="meta"><div class="nm">Cinza 300</div><div class="hx mono">#DADCE0 · bordas</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#F8F9FA;box-shadow:inset 0 0 0 1px var(--border)"></div><div class="meta"><div class="nm">Cinza 50</div><div class="hx mono">#F8F9FA · superfície 2</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#131314"></div><div class="meta"><div class="nm">Preto suave</div><div class="hx mono">#131314 · fundo escuro</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#242629"></div><div class="meta"><div class="nm">Grafite escuro</div><div class="hx mono">#242629 · superfície escura</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#F0F8FE;box-shadow:inset 0 0 0 1px var(--border)"></div><div class="meta"><div class="nm">Azul lavado</div><div class="hx mono">#F0F8FE · dica, faixa info</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#000000"></div><div class="meta"><div class="nm">Preto</div><div class="hx mono">#000000 · só no hero</div></div></div>
+    </div>
+
+    <div class="label" style="margin:22px 0 10px">Tons de estado e acentos · cada um com par <span class="code">-muted</span> e versão escura</div>
+    <div class="grid cols-3" style="gap:10px">
+      <div class="tone" style="color:var(--success)"><i style="background:var(--success)"></i><b>success</b><span class="hx mono">#1E8E3E · dark #5BB974</span></div>
+      <div class="tone" style="color:var(--warning)"><i style="background:var(--warning)"></i><b>warning</b><span class="hx mono">#B06000 · dark #FDD663</span></div>
+      <div class="tone" style="color:var(--danger)"><i style="background:var(--danger)"></i><b>danger</b><span class="hx mono">#D93025 · dark #F28B82</span></div>
+      <div class="tone" style="color:var(--info)"><i style="background:var(--info)"></i><b>info</b><span class="hx mono">#1A73E8 · dark #8AB4F8</span></div>
+      <div class="tone" style="color:var(--accent-teal)"><i style="background:var(--accent-teal)"></i><b>accent-teal</b><span class="hx mono">#00A5B7 · ferramenta bash</span></div>
+      <div class="tone" style="color:var(--accent-purple)"><i style="background:var(--accent-purple)"></i><b>accent-purple</b><span class="hx mono">#9B72CB · edição, plano</span></div>
+      <div class="tone" style="color:var(--accent-rose)"><i style="background:var(--accent-rose)"></i><b>accent-rose</b><span class="hx mono">#D96570 · pedido de aprovação</span></div>
+      <div class="tone" style="color:var(--accent-amber)"><i style="background:var(--accent-amber)"></i><b>accent-amber</b><span class="hx mono">#E37400 · MCP, saída</span></div>
+      <div class="tone" style="color:var(--primary)"><i style="background:var(--primary-muted)"></i><b>primary-muted</b><span class="hx mono">rgba(49,134,255,.10)</span></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Regras de cor do painel</span><span class="badge outline">gate do design system</span></div>
+      <div class="rule"><i data-lucide="ban"></i><div><b>Hexadecimal só em tokens.</b> Componentes leem <span class="code">var(--token)</span>; um teste reprova hex fora do arquivo de tokens. A faísca é a única exceção: as 8 cores dela vivem no shader e nos tokens <span class="code">--spark-*</span>.</div></div>
+      <div class="rule"><i data-lucide="eye"></i><div><b>Cor nunca é o único sinal.</b> Estado da tarefa sempre com ícone, texto ou selo: "executando" tem barra <i>e</i> rótulo; "aguardando aprovação" tem fundo rosado <i>e</i> ícone de mão.</div></div>
+      <div class="rule"><i data-lucide="contrast"></i><div><b>AA contra a superfície.</b> Tons de estado escurecidos no claro (success #1E8E3E, warning #B06000) para passar 4,5:1 sobre branco; os chips de ferramenta usam <span class="code">color-mix</span> local.</div></div>
+      <div class="rule"><i data-lucide="sparkles"></i><div><b>Gradiente só em destaque.</b> Botão primário, eyebrow em pílula e texto de marca. Nunca em texto corrido, nunca em dado de gráfico: lá a cor é o azul sólido.</div></div>
+      <div class="rule"><i data-lucide="moon"></i><div><b>Preto puro só no hero.</b> O tema escuro usa #131314 e #242629 (Gemini dark), não #000. O hero é preto nos dois temas, para a faísca ter contraste total.</div></div>
+      <div class="rule"><i data-lucide="sun-moon"></i><div><b>Tema segue o sistema na primeira visita</b> (<span class="code">prefers-color-scheme</span>); depois que a pessoa escolhe no alternador da topbar ou do rodapé, a escolha fica salva e vence o sistema.</div></div>
+    </div>
+
+    <!-- Tema escuro -->
+    <div class="divider"></div>
+    <h2 class="h-sec" style="margin-top:36px">Tema escuro</h2>
+    <p class="sub">Mesmos tokens, outros valores: fundo #131314, superfícies #1F1F1F e #242629, texto #F1F1F1, bordas brancas a 10%. O azul primário clareia para #4EA0FF e os tons de estado sobem de luminosidade para passar AA sobre o fundo escuro. Alterne na topbar para ver a página inteira.</p>
+    <div class="row" style="margin-top:16px"><button class="btn primary" data-theme-toggle><i data-lucide="sun-moon"></i><span>Alternar tema</span></button><span class="hint">segue o sistema até você escolher · a escolha fica salva</span></div>
+
+    <div class="label" style="margin:22px 0 10px">Superfícies e texto · escuro</div>
+    <div class="grid cols-4">
+      <div class="swatch sm"><div class="chip" style="background:#131314"></div><div class="meta"><div class="nm">bg</div><div class="hx mono">#131314 · fundo</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#1F1F1F"></div><div class="meta"><div class="nm">surface</div><div class="hx mono">#1F1F1F · cards</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#242629"></div><div class="meta"><div class="nm">surface-raised</div><div class="hx mono">#242629 · trilhas, hover</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#F1F1F1;box-shadow:inset 0 0 0 1px var(--border)"></div><div class="meta"><div class="nm">fg</div><div class="hx mono">#F1F1F1 · texto</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#B4B4B4"></div><div class="meta"><div class="nm">muted-fg</div><div class="hx mono">#B4B4B4 · secundário</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#4EA0FF"></div><div class="meta"><div class="nm">primary</div><div class="hx mono">#4EA0FF · hover #78B6FF</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#AECBFA"></div><div class="meta"><div class="nm">focus</div><div class="hx mono">#AECBFA · anel de foco</div></div></div>
+      <div class="swatch sm"><div class="chip" style="background:#1B2A3F"></div><div class="meta"><div class="nm">blue-wash</div><div class="hx mono">#1B2A3F · item ativo, faixa info</div></div></div>
+    </div>
+    <div class="label" style="margin:22px 0 10px">Tons de estado · escuro</div>
+    <div class="grid cols-4" style="gap:10px">
+      <div class="tone theme-dark" style="color:var(--success)"><i style="background:var(--success)"></i><b>success</b><span class="hx mono">#5BB974</span></div>
+      <div class="tone theme-dark" style="color:var(--warning)"><i style="background:var(--warning)"></i><b>warning</b><span class="hx mono">#FDD663</span></div>
+      <div class="tone theme-dark" style="color:var(--danger)"><i style="background:var(--danger)"></i><b>danger</b><span class="hx mono">#F28B82</span></div>
+      <div class="tone theme-dark" style="color:var(--info)"><i style="background:var(--info)"></i><b>info</b><span class="hx mono">#8AB4F8</span></div>
+      <div class="tone theme-dark" style="color:var(--accent-teal)"><i style="background:var(--accent-teal)"></i><b>accent-teal</b><span class="hx mono">#4FD0DF</span></div>
+      <div class="tone theme-dark" style="color:var(--accent-purple)"><i style="background:var(--accent-purple)"></i><b>accent-purple</b><span class="hx mono">#C5A8F0</span></div>
+      <div class="tone theme-dark" style="color:var(--accent-rose)"><i style="background:var(--accent-rose)"></i><b>accent-rose</b><span class="hx mono">#F08A94</span></div>
+      <div class="tone theme-dark" style="color:var(--accent-amber)"><i style="background:var(--accent-amber)"></i><b>accent-amber</b><span class="hx mono">#FFA657</span></div>
+    </div>
+
+    <div class="label" style="margin:22px 0 10px">Lado a lado · os mesmos componentes nos dois temas</div>
+    <div class="theme-pair">
+      <div class="theme-preview theme-light">
+        <div class="tp-head"><b>Claro</b><span>padrão quando o sistema é claro</span></div>
+        <div class="task" data-state="executando" tabindex="0"><div class="tt">Migrar testes para vitest</div><div class="ts">Passo 4 de 6 · reescrevendo mocks</div><div class="bar grad tp"><span class="bar-fill" style="width:62%"></span></div><div class="tm"><span class="tool bash"><i data-lucide="terminal"></i>bash</span><span class="tool edit"><i data-lucide="file-pen"></i>edit</span><span class="when">4 min</span></div></div>
+        <div class="task" data-state="aguardando" tabindex="0"><div class="tt">Limpar artefatos de build</div><div class="ts">Precisa do seu ok para <span class="code">rm -rf build/</span></div><div class="tm"><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda você</span><span class="when">4 min</span></div></div>
+        <div class="row"><button class="btn primary sm"><span>Primário</span></button><button class="btn outline-grad sm"><span class="lbl">Médio</span></button><button class="btn sm"><span>Padrão</span></button><span class="badge live">executando</span><span class="badge success dot">concluída</span><span class="badge err dot">falhou</span></div>
+        <div class="ia info"><span class="ic"><i data-lucide="lightbulb"></i></span><div><strong>Faixa informativa</strong>Azul lavado #F0F8FE sobre branco.</div></div>
+      </div>
+      <div class="theme-preview theme-dark">
+        <div class="tp-head"><b>Escuro</b><span>padrão quando o sistema é escuro</span></div>
+        <div class="task" data-state="executando" tabindex="0"><div class="tt">Migrar testes para vitest</div><div class="ts">Passo 4 de 6 · reescrevendo mocks</div><div class="bar grad tp"><span class="bar-fill" style="width:62%"></span></div><div class="tm"><span class="tool bash"><i data-lucide="terminal"></i>bash</span><span class="tool edit"><i data-lucide="file-pen"></i>edit</span><span class="when">4 min</span></div></div>
+        <div class="task" data-state="aguardando" tabindex="0"><div class="tt">Limpar artefatos de build</div><div class="ts">Precisa do seu ok para <span class="code">rm -rf build/</span></div><div class="tm"><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda você</span><span class="when">4 min</span></div></div>
+        <div class="row"><button class="btn primary sm"><span>Primário</span></button><button class="btn outline-grad sm"><span class="lbl">Médio</span></button><button class="btn sm"><span>Padrão</span></button><span class="badge live">executando</span><span class="badge success dot">concluída</span><span class="badge err dot">falhou</span></div>
+        <div class="ia info"><span class="ic"><i data-lucide="lightbulb"></i></span><div><strong>Faixa informativa</strong>Azul lavado #1B2A3F sobre #131314.</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Regras do tema escuro</span></div>
+      <div class="grid cols-2" style="gap:0 32px">
+        <div class="rule"><i data-lucide="layers"></i><div><b>Elevação por tom, não por sombra.</b> No escuro a sombra some no fundo; o que separa um card do fundo é a superfície um passo mais clara (#1F1F1F sobre #131314) e a borda branca a 10%.</div></div>
+        <div class="rule"><i data-lucide="sun"></i><div><b>Primário clareia, gradiente não muda.</b> O azul sólido vira #4EA0FF para manter contraste com texto escuro no botão; o gradiente do botão e do texto é o mesmo nos dois temas.</div></div>
+        <div class="rule"><i data-lucide="contrast"></i><div><b>Estados clareiam para AA.</b> success #5BB974, warning #FDD663, danger #F28B82, info #8AB4F8: os mesmos usados pelo Google em dark.</div></div>
+        <div class="rule"><i data-lucide="terminal"></i><div><b>Registro de execução fica mais escuro que o fundo</b> (#0F0F0F) para continuar sendo "a janela preta" dentro de um painel já escuro.</div></div>
+        <div class="rule"><i data-lucide="sparkles"></i><div><b>O hero não tem tema.</b> Preto, faísca e título branco nos dois casos; só a topbar troca de cor ao sair dele.</div></div>
+        <div class="rule"><i data-lucide="save"></i><div><b>Persistência.</b> Sem escolha salva, segue <span class="code">prefers-color-scheme</span> e acompanha a mudança do sistema ao vivo; com escolha salva (localStorage), ignora o sistema.</div></div>
+      </div>
+    </div>
+
+    <!-- Tipografia -->
+    <div class="divider"></div>
+    <h2 class="h-sec" style="margin-top:36px">Tipografia</h2>
+    <p class="sub">Família <b style="color:var(--fg);font-weight:500">Google Sans</b> (400, 500, 700) com <b style="color:var(--fg);font-weight:500">Google Sans Flex</b> para pesos pesados, como na referência. Títulos em peso 500 com tracking negativo forte (-.04em); corpo em 400. Números de tabela com <span class="code">tabular-nums</span>; o número grande do painel usa figuras proporcionais.</p>
+
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Espécime & pesos</span><span class="badge outline">3 pesos + Flex</span></div>
+        <div style="font-size:64px;font-weight:500;letter-spacing:-.04em;line-height:1">Google<br>Sans</div>
+        <div class="weights" style="margin-top:22px">
+          <span style="font-weight:400">Regular</span>
+          <span style="font-weight:500">Medium</span>
+          <span style="font-weight:700">Bold</span>
+          <span style="font-family:'Google Sans Flex','Google Sans',sans-serif;font-weight:900">Flex Black</span>
+        </div>
+        <p class="hint" style="margin-top:16px">Carregada do Google Fonts como na referência: <span class="code">family=Google+Sans:400,500,700|Google+Sans+Flex:700,900</span>. Fallback: Roboto, system-ui.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Escala tipográfica · nomes da referência</span></div>
+        <div class="scale-row"><span class="meta mono">display · 96/500 · -3.84px</span><span style="font-size:40px;font-weight:500;letter-spacing:-.04em;line-height:1">Ag</span></div>
+        <div class="scale-row"><span class="meta mono">headline-1 · 72/500</span><span style="font-size:28px;font-weight:500;letter-spacing:-.04em">Visão geral</span></div>
+        <div class="scale-row"><span class="meta mono">headline-3 · 48/500</span><span style="font-size:22px;font-weight:500;letter-spacing:-.03em">Tarefas de hoje</span></div>
+        <div class="scale-row"><span class="meta mono">headline-5 · 28/500</span><span style="font-size:18px;font-weight:500;letter-spacing:-.01em">Cartão de tarefa</span></div>
+        <div class="scale-row"><span class="meta mono">eyebrow · 14/500 caps +.5px</span><span style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--muted-fg)">Em execução</span></div>
+        <div class="scale-row"><span class="meta mono">body · 20/400 · lh 1.4</span><span style="font-size:15px;font-weight:400">o que o agente está fazendo</span></div>
+        <div class="scale-row"><span class="meta mono">caption · 14/400</span><span style="font-size:12px;color:var(--muted-fg)">há 4 min · bash · 1,2k tokens</span></div>
+        <div class="scale-row"><span class="meta mono">mono · 12.5</span><span class="code mono">npm test --watch=false</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Formas de uso</span></div>
+      <div class="grid cols-2" style="gap:10px 32px">
+        <div class="usage"><i data-lucide="type"></i><div><b>Títulos em 500, nunca 700.</b> A referência inteira usa Medium com tracking apertado; Bold só em ênfase pontual dentro do corpo.</div></div>
+        <div class="usage"><i data-lucide="align-left"></i><div><b>Sentence case.</b> Títulos e botões em caixa normal; caixa alta só no eyebrow (14px, +.5px).</div></div>
+        <div class="usage"><i data-lucide="hash"></i><div><b>Número grande proporcional.</b> O número do stat e do hero usa figuras padrão; <span class="code">tabular-nums</span> só em colunas e horários.</div></div>
+        <div class="usage"><i data-lucide="terminal"></i><div><b>Mono para o que o agente digitou.</b> Comandos, caminhos, chips de ferramenta e o registro de execução usam <span class="code">ui-monospace</span>.</div></div>
+      </div>
+    </div>
+
+    <!-- Radius, spacing, elevation, motion -->
+    <div class="divider"></div>
+    <h2 class="h-sec" style="margin-top:36px">Raio, espaçamento, elevação & movimento</h2>
+    <div class="grid cols-3" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Border radius · escala Gemini</span></div>
+        <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:12px">
+          <div><div class="radius-demo" style="--_r:var(--radius-sm)"></div><div class="tile" style="border:0;margin-top:6px">sm · 8</div></div>
+          <div><div class="radius-demo" style="--_r:var(--radius-lg)"></div><div class="tile" style="border:0;margin-top:6px">lg · 16</div></div>
+          <div><div class="radius-demo" style="--_r:var(--radius-xl)"></div><div class="tile" style="border:0;margin-top:6px">xl · 24</div></div>
+          <div><div class="radius-demo" style="--_r:var(--radius-pill)"></div><div class="tile" style="border:0;margin-top:6px">pílula</div></div>
+        </div>
+        <p class="hint" style="margin-top:12px">Cards em 24 e 32; botões, chips e abas em pílula (100px); campos em 12; chips de ferramenta em 8.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Espaçamento · 4px</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="row" style="gap:8px"><span style="width:4px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">4 · xs</span></div>
+          <div class="row" style="gap:8px"><span style="width:8px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">8 · sm</span></div>
+          <div class="row" style="gap:8px"><span style="width:16px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">16 · md</span></div>
+          <div class="row" style="gap:8px"><span style="width:24px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">24 · lg · gap da grade</span></div>
+          <div class="row" style="gap:8px"><span style="width:40px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">40 · xl</span></div>
+          <div class="row" style="gap:8px"><span style="width:80px;height:16px;background:var(--g-blue);border-radius:2px"></span><span class="hint mono">80 · seção</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Elevação</span></div>
+        <div class="grid" style="gap:12px">
+          <div class="shadow-demo" style="box-shadow:var(--shadow-sm)">sm</div>
+          <div class="shadow-demo" style="box-shadow:var(--shadow-md)">md</div>
+          <div class="shadow-demo" style="box-shadow:var(--shadow-soft)">soft · assinatura</div>
+          <div class="shadow-demo" style="box-shadow:var(--shadow-blue);background:var(--g-blue);color:#fff">blue · só CTA flutuante</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Movimento · durações</span><span class="badge outline">prefers-reduced-motion respeitado</span></div>
+      <p class="hint" style="margin:-8px 0 14px">Passe o mouse nos blocos. Hover e transição de cor em .18s como na referência. A faísca, o título palavra a palavra e o gradiente do botão são as únicas animações longas e todas têm versão sem movimento.</p>
+      <div class="grid cols-4" style="gap:10px">
+        <div class="motion-tile"><b>Hover</b><span class="mono">.18s · cor, borda, fundo</span></div>
+        <div class="motion-tile"><b>Gradiente do botão</b><span class="mono">.5s desliza · loop 4s opcional</span></div>
+        <div class="motion-tile"><b>Palavra do título</b><span class="mono">.5s ease · 40px → 0 · +60ms cada</span></div>
+        <div class="motion-tile"><b>Escala do título</b><span class="mono">.8s · 1.12 → 1</span></div>
+        <div class="motion-tile"><b>CTA do hero</b><span class="mono">1s · começa aos 1.5s</span></div>
+        <div class="motion-tile"><b>Entrada da faísca</b><span class="mono">2s de espera · cresce 0 → 1</span></div>
+        <div class="motion-tile"><b>Barra de progresso</b><span class="mono">650ms ease-out cúbico</span></div>
+        <div class="motion-tile"><b>Pensando</b><span class="mono">1.2s · três pontos em gradiente</span></div>
+      </div>
+    </div>
+  </section>

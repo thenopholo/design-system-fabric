@@ -1,0 +1,200 @@
+
+  <!-- ============ HERO · ANATOMIA ============ -->
+  <section id="hero-doc">
+    <span class="eyebrow"><i data-lucide="sparkles"></i> Hero</span>
+    <h2 class="h-sec">A faísca e o título palavra a palavra</h2>
+    <p class="sub">Port fiel do <span class="code">gemini-io2026-spark2</span>: uma nuvem de pontos em three.js desenha a estrela de quatro pontas do Gemini. Cada ponto nasce numa superelipse (<span class="code">|cos|^(2/n)</span>, n oscila entre 2,8 e 4,2), é empurrado pela dispersão e colorido do núcleo para a borda. Girar com o ponteiro, clicar para lançar uma onda que troca a cor, rolar para recolher.</p>
+
+    <div class="card" style="margin-top:22px;padding:0;overflow:hidden">
+      <div class="hero-mini" id="hero-mini">
+        <div class="hero-content">
+          <h1 class="hero-title enter" style="--span-count:4"><div class="y-layer"><div class="scale-layer"><span style="--i:0">Executando</span> <span style="--i:1">o</span> <span style="--i:2">plano</span> <span style="--i:3">agora</span></div></div></h1>
+        </div>
+      </div>
+      <div style="padding:16px 22px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between">
+        <div class="spark-legend">
+          <span><i style="background:#00B95C"></i>verde</span><span><i style="background:#FFCC00"></i>amarelo</span><span><i style="background:#FF4641"></i>vermelho</span><span><i style="background:#3186FF"></i>azul</span>
+          <span class="hint">· clique no canvas para pulsar a próxima cor</span>
+        </div>
+        <div class="row"><button class="btn sm" id="hero-replay"><i data-lucide="rotate-ccw"></i><span>Repetir o título</span></button><button class="btn sm" id="hero-pulse"><i data-lucide="zap"></i><span>Onda de cor</span></button></div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Parâmetros da faísca (spark2)</span><span class="badge outline">como na referência</span></div>
+        <div style="overflow-x:auto"><table class="tbl">
+          <thead><tr><th>Parâmetro</th><th class="num-col">Valor</th><th>Efeito</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">particleCount</td><td class="num-col mono">80 000</td><td>pontos no hero; 24 000 na miniatura</td></tr>
+            <tr><td class="mono">colorSaturation</td><td class="num-col mono">.75</td><td>saturação HSL aplicada às 8 cores</td></tr>
+            <tr><td class="mono">scatterTop / Bottom</td><td class="num-col mono">1 / .15</td><td>dispersão no topo e após rolar</td></tr>
+            <tr><td class="mono">shrinkSpeed</td><td class="num-col mono">15</td><td>quão cedo a rolagem recolhe</td></tr>
+            <tr><td class="mono">entranceDelayMs</td><td class="num-col mono">2 000</td><td>espera antes de crescer</td></tr>
+            <tr><td class="mono">entranceGrowSpeed</td><td class="num-col mono">.8</td><td>lerp da escala 0 → 1</td></tr>
+            <tr><td class="mono">sparkCurveN</td><td class="num-col mono">.7</td><td>amplitude da respiração da forma</td></tr>
+            <tr><td class="mono">roundingFactor</td><td class="num-col mono">.18</td><td>arredonda as pontas nos eixos</td></tr>
+            <tr><td class="mono">autoReturnForce</td><td class="num-col mono">.15</td><td>câmera volta à frente após arrastar</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Regras do hero</span></div>
+        <div class="rule"><i data-lucide="move-vertical"></i><div><b>200vh com miolo sticky.</b> A seção mede duas telas e o conteúdo gruda no topo por uma; rolar recolhe a dispersão (scatter 1 → .15) e, ao fim, a seção seguinte cobre o hero com um degradê de 80px.</div></div>
+        <div class="rule"><i data-lucide="type"></i><div><b>Título entra palavra a palavra.</b> Cada <span class="code">&lt;span&gt;</span> sobe 40px e aparece em .5s com atraso de 60ms × índice, escalado por <span class="code">min(1, 7 / n)</span> para frases longas não demorarem. A camada de escala vai de 1.12 a 1 em .8s.</div></div>
+        <div class="rule"><i data-lucide="mouse-pointer-click"></i><div><b>Três gestos.</b> Arrastar gira (OrbitControls sem zoom, com amortecimento .05); clicar lança uma onda de 75 unidades a 750/s que troca a cor atrás dela; aproximar o ponteiro realça os pontos num raio de 75 e antecipa a próxima cor.</div></div>
+        <div class="rule"><i data-lucide="clock"></i><div><b>Sequência fixa.</b> 0s: fundo preto e título. 2s: faísca cresce. 1.5s: CTA. 2s: marca d'água. 5s: começa a girar sozinha (respiração senoidal em x, y, z).</div></div>
+        <div class="rule"><i data-lucide="accessibility"></i><div><b>Sem movimento, com conteúdo.</b> Com <span class="code">prefers-reduced-motion</span> o título aparece de uma vez, o CTA fica visível e a faísca renderiza parada; em toque o canvas não captura o gesto.</div></div>
+        <div class="rule"><i data-lucide="gauge"></i><div><b>Custo.</b> 80k pontos em <span class="code">Points</span> com blending aditivo; atualiza posição, cor e tamanho por frame na CPU como o original. Pausa quando fora da tela e quando a aba perde o foco (o original não pausa).</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUPERFÍCIES ============ -->
+  <section id="superficies">
+    <span class="eyebrow"><i data-lucide="square-stack"></i> Superfícies</span>
+    <h2 class="h-sec">Vidro, gradiente e preto</h2>
+    <p class="sub">Três fundos. O painel vive em branco e cinza 50 com cards de 24px; o vidro aparece só na topbar e no cartão de sessão; o preto é exclusivo do hero e do registro de execução.</p>
+
+    <div class="glass-stage" style="margin-top:22px">
+      <div class="grid cols-3" style="gap:16px;position:relative;z-index:2">
+        <div class="glass" style="padding:20px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)">
+          <div class="row" style="justify-content:space-between">
+            <div style="width:40px;height:40px;border-radius:50%;display:grid;place-content:center;background:rgba(255,255,255,.16);color:#fff"><i data-lucide="bot"></i></div>
+            <span class="badge" style="background:rgba(255,255,255,.18);color:#fff">executando</span>
+          </div>
+          <div style="color:#fff;font-size:26px;font-weight:500;margin-top:14px">62%</div>
+          <div style="color:rgba(255,255,255,.8);font-size:13px">migrar testes para vitest</div>
+          <div class="bar" style="margin-top:12px;background:rgba(255,255,255,.2)"><span class="bar-fill" style="width:62%;background:#fff"></span></div>
+        </div>
+        <div class="glass" style="padding:20px;color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)">
+          <div class="row" style="gap:10px"><svg class="spark" style="width:36px;height:36px"><use href="#spark"/></svg><div><div style="font-weight:500;font-size:14px">Hermes · sessão 14</div><div style="font-size:12px;color:rgba(255,255,255,.75)">ativa há 1 h 12 min</div></div></div>
+          <div style="height:1px;background:rgba(255,255,255,.16);margin:14px 0"></div>
+          <div class="row" style="justify-content:space-between;font-size:13px;color:rgba(255,255,255,.9)"><span>contexto</span><b class="mono">84k / 200k</b></div>
+          <div class="row" style="justify-content:space-between;font-size:13px;color:rgba(255,255,255,.9);margin-top:6px"><span>custo da sessão</span><b class="mono">US$ 1,84</b></div>
+        </div>
+        <div class="glass" style="padding:20px;color:#fff;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)">
+          <div class="row" style="gap:10px;margin-bottom:12px"><i data-lucide="bell" style="font-size:18px"></i><b style="font-size:14px;font-weight:500">Eventos</b></div>
+          <div style="font-size:13px;color:rgba(255,255,255,.9);display:flex;flex-direction:column;gap:10px">
+            <div class="row" style="gap:8px"><span class="st-dot" style="background:#81C995"></span> PR #42 aberto</div>
+            <div class="row" style="gap:8px"><span class="st-dot" style="background:#FDD663"></span> aguarda aprovação: rm -rf build/</div>
+            <div class="row" style="gap:8px"><span class="st-dot" style="background:#fff"></span> plano revisado · 5 passos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:12px"><span class="code">.glass</span> <span class="mono">border:1px rgba(32,33,36,.10) · background:rgba(255,255,255,.72) · backdrop-filter:blur(20px)</span>. Sobre o gradiente da marca o vidro vira branco a 14% com borda a 22%. <span class="code">backdrop-filter</span> cria bloco de contenção: popover dentro de vidro vai para o <span class="code">body</span>.</p>
+
+    <div class="grid cols-3" style="margin-top:16px;align-items:start">
+      <div class="card"><div class="card-head"><span class="card-title">Card padrão</span></div><p class="hint">Branco, borda #E5E5E5, raio 24, sombra soft. É a superfície de 90% do painel.</p></div>
+      <div class="tile-grad"><div><div class="card-head"><span class="card-title">Card com borda gradiente</span></div><p class="hint">Padding de 1px com o gradiente quente por trás; usado no destaque da tarefa ativa e no cartão de plano Pro da referência.</p></div></div>
+      <div class="card flat"><div class="card-head"><span class="card-title">Card raso</span></div><p class="hint">Cinza 50 sem sombra: colunas do quadro, listas dentro de outros cards, prompt.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ ÍCONES ============ -->
+  <section id="icones">
+    <span class="eyebrow"><i data-lucide="shapes"></i> Ícones</span>
+    <h2 class="h-sec">Biblioteca de ícones</h2>
+    <p class="sub">Conjunto <b style="color:var(--fg);font-weight:500">Lucide</b>, traço de 2px (1.75 dentro do círculo). Sempre <span class="code">aria-hidden</span> com nome acessível no controle. O círculo com borda a 10% vem dos cards de recursos da referência; a faísca é a marca e também o avatar do agente.</p>
+    <div class="row" style="margin-top:22px;gap:14px">
+      <span class="ico-circle"><i data-lucide="bot"></i></span>
+      <span class="ico-circle"><i data-lucide="terminal"></i></span>
+      <span class="ico-circle"><i data-lucide="file-pen"></i></span>
+      <span class="ico-circle"><i data-lucide="globe"></i></span>
+      <span class="ico-circle"><i data-lucide="git-pull-request"></i></span>
+      <span class="ico-circle grad"><i data-lucide="sparkles"></i></span>
+      <span class="ico-circle" style="border:0"><svg class="spark" style="width:34px;height:34px"><use href="#spark"/></svg></span>
+      <span class="ico-circle" style="color:var(--muted-fg)"><svg class="spark" style="width:24px;height:24px"><use href="#spark-mono"/></svg></span>
+      <span class="hint">círculo 48px · gradiente para ação de IA · faísca colorida como marca, mono como ícone</span>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="icons" id="icon-grid"></div>
+    </div>
+  </section>
+
+  <!-- ============ COMPONENTES ============ -->
+  <section id="componentes">
+    <span class="eyebrow"><i data-lucide="component"></i> Componentes</span>
+    <h2 class="h-sec">Widgets & controles</h2>
+    <p class="sub">Os blocos de construção do painel. Botões em pílula com o gradiente da marca, chips de ferramenta, abas em pílula, prompt arredondado e tabela de execuções. As peças do agente têm seção própria.</p>
+
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Botões</span><span class="badge blue">primário = gradiente que desliza</span></div>
+        <div class="row"><button class="btn primary"><span>Primário</span></button><button class="btn outline-grad"><span class="lbl">Médio gradiente</span></button><button class="btn"><span>Padrão</span></button><button class="btn black"><span>Preto</span></button><button class="btn ghost"><span>Fantasma</span></button><button class="btn link"><span>Link</span></button></div>
+        <div class="row" style="margin-top:12px"><button class="btn primary xs"><span>xs</span></button><button class="btn primary sm"><span>sm</span></button><button class="btn primary"><span>md</span></button><button class="btn primary lg"><span>lg · 48px</span></button></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary animated"><i data-lucide="play"></i><span>Executar plano</span></button>
+          <button class="btn"><i data-lucide="pause"></i><span>Pausar</span></button>
+          <button class="btn destructive"><i data-lucide="square"></i><span>Interromper</span></button>
+          <button class="btn icon" aria-label="Mais ações"><i data-lucide="ellipsis"></i></button>
+          <button class="btn primary" disabled><i data-lucide="loader-circle" class="spin"></i><span>Pensando</span></button>
+        </div>
+        <p class="hint" style="margin-top:12px">Primário: fundo azul com uma camada de 200% de largura em gradiente que desliza no hover (.5s); <span class="code">.animated</span> faz o loop de 4s da referência. Médio: borda de 1px em gradiente com texto em gradiente, vira azul sólido no hover. Destrutivo é a única cor quente: pausar é padrão, interromper é destrutivo.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Selos, chips de estado e de ferramenta</span></div>
+        <div class="label" style="margin-bottom:8px">Estado da tarefa</div>
+        <div class="row"><span class="badge live">executando</span><span class="badge success dot">concluída</span><span class="badge outline dot">na fila</span><span class="badge err dot">falhou</span><span class="badge warn dot">parcial</span><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda aprovação</span><span class="badge grad">IA</span><span class="badge soon">Em breve</span></div>
+        <div class="label" style="margin:16px 0 8px">Ferramentas que o agente usou</div>
+        <div class="row"><span class="tool bash"><i data-lucide="terminal"></i>bash</span><span class="tool"><i data-lucide="file-search"></i>read</span><span class="tool edit"><i data-lucide="file-pen"></i>edit</span><span class="tool edit"><i data-lucide="file-plus"></i>write</span><span class="tool web"><i data-lucide="globe"></i>web</span><span class="tool mcp"><i data-lucide="plug"></i>mcp:github</span><span class="tool ask"><i data-lucide="message-circle-question"></i>ask</span><span class="tool"><i data-lucide="users"></i>agent</span></div>
+        <p class="hint" style="margin:10px 0 0">Chip de ferramenta é mono, raio 8, cor por categoria: teal para shell, roxo para escrita, azul para rede, âmbar para MCP, rosa para perguntar ao humano. Leitura é neutra: é o que o agente mais faz e não precisa gritar.</p>
+        <div class="card-head" style="margin:22px 0 14px"><span class="card-title">Abas</span></div>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="0"><i data-lucide="activity" style="font-size:14px"></i> Agora</button>
+          <button class="tab" data-tab="1"><i data-lucide="history" style="font-size:14px"></i> Histórico</button>
+          <button class="tab" data-tab="2"><i data-lucide="calendar-clock" style="font-size:14px"></i> Planejado</button>
+          <button class="tab" disabled>Métricas <span class="badge soon">Em breve</span></button>
+        </div>
+        <div style="margin-top:14px;font-size:14px;color:var(--muted-fg)" id="tab-body">Três tarefas em execução, uma aguardando aprovação.</div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Prompt e campos</span></div>
+        <div class="grid" style="gap:14px">
+          <div class="prompt"><textarea rows="1" placeholder="Peça algo ao Hermes…"></textarea><button class="send" aria-label="Enviar"><i data-lucide="arrow-up"></i></button></div>
+          <div class="field"><label class="label">Buscar tarefa ou execução</label><div class="input-icon"><i data-lucide="search"></i><input class="input pill" placeholder="Tarefa, comando, arquivo…" /></div></div>
+          <div class="field"><label class="label">Nome da tarefa</label><input class="input err" value="Migrar testes!!" aria-invalid="true" aria-describedby="e-nome" /><span class="ferr" id="e-nome">Use um título curto, sem pontuação repetida.</span></div>
+          <div class="field"><label class="label">Modelo</label>
+            <select class="select"><option value="">Selecione…</option><option>claude-fable-5-1</option><option>claude-opus-5-5</option><option>claude-sonnet-5-5</option><option disabled>claude-haiku-5-5 · sem ferramentas</option></select>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:12px">O prompt é a caixa de 32px de raio da referência: cresce até 160px, o botão redondo só fica azul com texto. Busca é pílula; campos comuns têm raio 12.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Seleção & controles</span></div>
+        <div class="row" style="justify-content:space-between"><span style="font-size:14px">Aprovar comandos automaticamente</span><label class="switch"><input type="checkbox"><span class="track"></span><span class="thumb"></span></label></div>
+        <div class="row" style="justify-content:space-between;margin-top:14px"><span style="font-size:14px">Notificar quando terminar</span><label class="switch"><input type="checkbox" checked><span class="track"></span><span class="thumb"></span></label></div>
+        <div style="height:1px;background:var(--border);margin:18px 0"></div>
+        <label class="check"><input type="checkbox" checked> Pode editar arquivos</label><br style="line-height:2.4">
+        <label class="check" style="margin-top:10px"><input type="checkbox" checked> Pode acessar a web</label><br style="line-height:2.4">
+        <label class="check" style="margin-top:10px"><input type="checkbox"> Pode abrir PRs sem revisão</label>
+        <div style="height:1px;background:var(--border);margin:18px 0"></div>
+        <div class="row" style="gap:22px">
+          <label class="check"><input type="radio" name="modo" checked> Pergunta antes de agir</label>
+          <label class="check"><input type="radio" name="modo"> Autônomo</label>
+        </div>
+        <div class="field" style="margin-top:20px"><label class="label">Orçamento da sessão · US$ 5</label><input class="slider" type="range" min="1" max="20" value="5" /></div>
+      </div>
+    </div>
+
+    <!-- Tabela de execuções -->
+    <div class="card" style="margin-top:16px;padding:0;overflow:hidden">
+      <div class="card-head" style="padding:20px 22px 0"><span class="card-title">Execuções recentes</span><div class="row"><span class="hint">barras carregam do zero a cada abertura</span><button class="btn sm" data-replay="#tbl-runs"><i data-lucide="refresh-cw"></i><span>Recarregar</span></button></div></div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <table class="tbl" id="tbl-runs">
+          <thead><tr><th>Tarefa</th><th>Ferramentas</th><th>Progresso</th><th>Contexto</th><th>Custo</th><th>Estado</th><th style="text-align:center">Ações</th></tr></thead>
+          <tbody>
+            <tr><td><b style="font-weight:500">Migrar testes para vitest</b><br><span class="hint mono">#128 · há 4 min</span></td><td><span class="tool bash"><i data-lucide="terminal"></i>bash</span> <span class="tool edit"><i data-lucide="file-pen"></i>edit</span></td><td><span class="rb" data-alvo="62" data-tone="plan"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg hm-brand" data-alvo="42" data-ring data-tone="brand"><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td class="mono">US$ 0,84</td><td><span class="badge live">executando</span></td><td style="text-align:center"><button class="btn icon sm" aria-label="Ações da tarefa 128"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b style="font-weight:500">Revisar PR #42</b><br><span class="hint mono">#127 · há 11 min</span></td><td><span class="tool mcp"><i data-lucide="plug"></i>github</span> <span class="tool"><i data-lucide="file-search"></i>read</span></td><td><span class="rb" data-alvo="100" data-tone="plan"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg hm-brand" data-alvo="18" data-ring data-tone="brand"><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td class="mono">US$ 0,22</td><td><span class="badge success dot">concluída</span></td><td style="text-align:center"><button class="btn icon sm" aria-label="Ações da tarefa 127"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b style="font-weight:500">Limpar artefatos de build</b><br><span class="hint mono">#126 · há 4 min</span></td><td><span class="tool bash"><i data-lucide="terminal"></i>bash</span> <span class="tool ask"><i data-lucide="message-circle-question"></i>ask</span></td><td><span class="rb" data-alvo="40" data-tone="plan"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></td><td><span class="ring lg hm-brand" data-alvo="9" data-ring data-tone="brand"><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td class="mono">US$ 0,05</td><td><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda aprovação</span></td><td style="text-align:center"><button class="btn icon sm" aria-label="Ações da tarefa 126"><i data-lucide="ellipsis"></i></button></td></tr>
+            <tr><td><b style="font-weight:500">Atualizar dependências</b><br><span class="hint mono">#125 · ontem</span></td><td><span class="tool bash"><i data-lucide="terminal"></i>bash</span></td><td><span class="hint">interrompida aos 70%</span></td><td><span class="ring lg hm-critico" data-alvo="91" data-ring><svg viewBox="0 0 34 34"><circle class="track" cx="17" cy="17" r="14" fill="none" stroke-width="3"/><circle class="arc" cx="17" cy="17" r="14" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span></td><td class="mono">US$ 2,10</td><td><span class="badge err dot">falhou</span></td><td style="text-align:center"><button class="btn icon sm" aria-label="Ações da tarefa 125"><i data-lucide="ellipsis"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint" style="padding:12px 22px 18px">Progresso é o que o agente reporta do próprio plano (passos concluídos ÷ passos), nunca estimado; sem plano, barra indeterminada. Anel de contexto fica azul até 70%, âmbar até 85%, vermelho depois: é quando o agente começa a esquecer. Coluna de ações sempre visível à direita.</p>
+    </div>
+  </section>

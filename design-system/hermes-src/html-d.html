@@ -1,0 +1,151 @@
+
+  <!-- ============ SHELL ============ -->
+  <section id="shell">
+    <span class="eyebrow"><i data-lucide="layout-dashboard"></i> Shell</span>
+    <h2 class="h-sec">Topbar, sidebar e a visão geral</h2>
+    <p class="sub">A grade do painel tem três linhas: topbar de vidro (3.75rem), conteúdo com a sidebar, e o rodapé de ferramentas. O rodapé é a <b style="color:var(--fg);font-weight:500">terceira linha da grade</b>, não <span class="code">position:fixed</span>: quem rola é o conteúdo.</p>
+
+    <div class="shell" style="margin-top:22px" id="shell-demo">
+      <header class="sh-top">
+        <div class="sh-brand"><svg class="spark" style="width:26px;height:26px"><use href="#spark"/></svg><span><span class="sh-logo" style="display:block">Hermes</span><span class="sh-sub" style="display:block">painel do agente</span></span></div>
+        <div class="sh-actions">
+          <div class="sh-proj"><span class="pm">A</span><span>app-core</span><i data-lucide="chevron-down" style="font-size:14px;color:var(--muted-fg)"></i></div>
+          <div class="zone-seg"><button aria-pressed="true"><span class="st-dot dot-run"></span> Sessão 14</button><button><span class="st-dot dot-off"></span> Todas</button></div>
+          <div class="sh-search"><i data-lucide="search"></i> Buscar tarefa, comando…</div>
+          <span style="flex:1"></span>
+          <button class="btn sm primary"><i data-lucide="plus"></i><span>Nova tarefa</span></button>
+          <div class="health-pill"><span class="ring" data-alvo="42" data-ring data-tone="brand"><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Contexto</div><div class="health-sub" style="color:var(--primary)">84k</div></div></div>
+          <button class="tb-icon" aria-label="1 pedido de aprovação"><i data-lucide="hand"></i><span class="ping ask"></span></button>
+          <button class="tb-icon" aria-label="Notificações"><i data-lucide="bell"></i><span class="ping jobs"></span></button>
+          <button class="tb-icon" aria-label="Ajuda"><i data-lucide="circle-help"></i></button>
+          <span class="sh-avatar">RT</span>
+        </div>
+      </header>
+      <nav class="sh-side" aria-label="Seções">
+        <div class="sb-item" aria-current="page"><i data-lucide="layout-dashboard"></i> Visão geral</div>
+        <div class="sb-item"><i data-lucide="activity"></i> Agora <span class="cnt">3</span></div>
+        <div class="sb-item"><i data-lucide="history"></i> Feito <span class="cnt">47</span></div>
+        <div class="sb-item"><i data-lucide="calendar-clock"></i> Próximo <span class="cnt">12</span></div>
+        <div class="sb-item"><i data-lucide="hand"></i> Aprovações <span class="cnt" style="color:var(--accent-rose)">1</span></div>
+        <div class="sb-sec">Memória</div>
+        <div class="sb-item"><i data-lucide="brain"></i> O que ele sabe</div>
+        <div class="sb-item"><i data-lucide="wrench"></i> Ferramentas</div>
+        <div class="sb-item" data-embreve="true"><i data-lucide="bar-chart-3"></i> Métricas <span class="badge soon">Em breve</span></div>
+        <div class="sb-item"><i data-lucide="settings"></i> Configurações</div>
+        <div class="glass sh-session" style="border-radius:var(--radius-lg)"><b><span class="st-dot dot-run"></span> Sessão 14 ativa</b>há 1 h 12 min · US$ 1,84<div class="bar" style="margin-top:8px"><span class="bar-fill" data-alvo-bar="42"></span></div></div>
+      </nav>
+      <main class="sh-main">
+        <div class="row" style="justify-content:space-between;align-items:flex-start">
+          <div><div class="ph">Bom dia, Rodrigo</div><div class="phs">O Hermes concluiu 5 tarefas hoje e precisa de você em 1.</div></div>
+          <div class="tabs"><button class="tab active">Hoje</button><button class="tab">Semana</button><button class="tab">Tudo</button></div>
+        </div>
+        <div class="ia ask" style="margin-bottom:14px" role="status"><span class="ic"><i data-lucide="hand"></i></span><div><strong>Limpar artefatos de build quer executar rm -rf build/</strong>A tarefa #126 está pausada há 4 min esperando sua resposta.</div><button class="btn primary sm"><span>Ver pedido</span></button></div>
+        <div class="grid cols-4" style="gap:12px" id="shell-cards">
+          <div class="mini-card"><div class="mc-label">Agora</div><div class="mc-val">3</div><div class="mc-sub">1 aguarda aprovação</div><div class="bar grad"><span class="bar-fill" data-alvo-bar="62"></span></div></div>
+          <div class="mini-card"><div class="mc-label">Feito hoje</div><div class="mc-val">5 <span class="mc-unit">/ 47 na semana</span></div><div class="mc-sub">1 falhou</div><div class="bar"><span class="bar-fill" data-alvo-bar="80" style="background:var(--success)"></span></div></div>
+          <div class="mini-card"><div class="mc-label">Próximo</div><div class="mc-val">12</div><div class="mc-sub">2 agendadas para hoje</div><div class="bar"><span class="bar-fill" data-alvo-bar="25" style="background:var(--subtle-fg)"></span></div></div>
+          <div class="mini-card"><div class="mc-label">Custo</div><div class="mc-val">1,84 <span class="mc-unit">/ 5 US$</span></div><div class="mc-sub">sessão 14</div><div class="bar"><span class="bar-fill" data-alvo-bar="37" data-tom></span></div></div>
+        </div>
+        <div class="sh-grid" style="margin-top:12px">
+          <div class="card" style="padding:14px;box-shadow:var(--shadow-sm)">
+            <div class="card-head" style="margin-bottom:10px"><span class="card-title" style="font-size:13px">Agora</span><span class="hint">3 tarefas</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="task" data-state="executando" tabindex="0"><div class="tt">Migrar testes para vitest</div><div class="ts">Passo 4 de 6 · reescrevendo mocks</div><div class="bar grad tp"><span class="bar-fill" data-alvo-bar="62"></span></div><div class="tm"><span class="tool bash"><i data-lucide="terminal"></i>bash</span><span class="tool edit"><i data-lucide="file-pen"></i>edit</span><span class="when">4 min</span></div></div>
+              <div class="task" data-state="aguardando" tabindex="0"><div class="tt">Limpar artefatos de build</div><div class="ts">Precisa do seu ok para rm -rf build/</div><div class="tm"><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda você</span><span class="when">4 min</span></div></div>
+              <div class="task" data-state="executando" tabindex="0"><div class="tt">Investigar flake em CI</div><div class="ts"><span class="thinking"><i></i><i></i><i></i>lendo logs</span></div><div class="tm"><span class="tool mcp"><i data-lucide="plug"></i>github</span><span class="when">1 min</span></div></div>
+            </div>
+          </div>
+          <div class="card" style="padding:14px;box-shadow:var(--shadow-sm)">
+            <div class="card-head" style="margin-bottom:10px"><span class="card-title" style="font-size:13px">Linha do tempo</span><span class="hint">hoje</span></div>
+            <div class="timeline" style="gap:10px">
+              <div class="ev" data-kind="run"><span class="ed"><i data-lucide="loader-circle" class="spin"></i></span><div class="eh"><b>#128 · passo 4</b><span class="et mono">10:09</span></div></div>
+              <div class="ev" data-kind="ask"><span class="ed"><i data-lucide="hand"></i></span><div class="eh"><b>#126 pediu aprovação</b><span class="et mono">10:05</span></div></div>
+              <div class="ev" data-kind="ok"><span class="ed"><i data-lucide="check"></i></span><div class="eh"><b>#127 PR revisado</b><span class="et mono">09:58</span></div></div>
+              <div class="ev" data-kind="ok"><span class="ed"><i data-lucide="check"></i></span><div class="eh"><b>#124 changelog</b><span class="et mono">09:40</span></div></div>
+              <div class="ev" data-kind="err"><span class="ed"><i data-lucide="x"></i></span><div class="eh"><b>#125 interrompida</b><span class="et mono">ontem</span></div></div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="rodape">
+        <div class="rd-inicio">
+          <button class="rd-tema" type="button" aria-label="Usar tema escuro" data-shell-theme><i data-lucide="moon"></i></button>
+          <div class="rd-idioma" role="radiogroup" aria-label="Idioma do painel">
+            <button class="rd-opcao" aria-pressed="true" lang="pt-BR">PT</button>
+            <button class="rd-opcao" aria-pressed="false" lang="en">EN</button>
+          </div>
+          <button class="rd-versao" type="button" aria-haspopup="dialog" data-open-notes>Hermes 0.4.0 · claude-fable-5-1</button>
+        </div>
+        <p class="rd-tarja"><span class="ic"><i data-lucide="triangle-alert"></i></span><span>Modo "pergunta antes de agir": o agente não executa comandos destrutivos sem aprovação.</span></p>
+        <div class="rd-fim"><button class="rd-feedback" type="button" aria-label="Enviar feedback"><i data-lucide="message-square"></i><span>Enviar feedback</span></button></div>
+      </footer>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Topbar e sidebar</span></div>
+        <div class="rule"><i data-lucide="panel-top"></i><div><b>Ordem fixa da topbar:</b> marca · projeto · seletor de sessão · busca · Nova tarefa · anel de contexto · aprovações · sino · ajuda · perfil.</div></div>
+        <div class="rule"><i data-lucide="hand"></i><div><b>Aprovações têm botão próprio</b> com ping rosa; não se misturam com notificações, porque uma pausa o agente e a outra não.</div></div>
+        <div class="rule"><i data-lucide="menu"></i><div><b>Sidebar em pílulas</b> (Gemini): item ativo em azul lavado com texto azul 600; contadores à direita; "Em breve" visível e inerte.</div></div>
+        <div class="rule"><i data-lucide="id-card"></i><div><b>Cartão da sessão em vidro</b> no pé da sidebar: sessão ativa, duração, custo e barra de contexto.</div></div>
+        <div class="rule"><i data-lucide="sun-moon"></i><div><b>Tema claro é o padrão</b> (a referência é clara); o escuro usa #131314/#242629 e só entra por escolha explícita, pelo rodapé.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Diálogo de confirmação com selo</span></div>
+        <div class="modal" style="width:100%;animation:none;box-shadow:var(--shadow-soft)">
+          <div class="mi"><span class="selo perigo"><i data-lucide="square"></i></span><h3 class="mt">Interromper a tarefa #128?</h3><p class="mb2">O Hermes vai parar no meio do passo 4. Os arquivos já editados ficam como estão; você pode retomar depois do mesmo ponto.</p><div class="field" style="margin-top:12px"><label class="label">Motivo (opcional, vai para a memória do agente)</label><input class="input" placeholder="ex.: quero revisar os mocks antes"></div></div>
+          <div class="ma"><button class="btn"><span>Cancelar</span></button><button class="btn destructive"><span>Interromper</span></button></div>
+        </div>
+        <p class="hint" style="margin-top:10px">Modal não fecha no clique fora quando há formulário. Foco preso, devolvido ao gatilho com <span class="code">preventScroll</span>. Interromper nunca pede confirmação dupla: é a ação de emergência.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pagefoot">
+    <div class="row" style="justify-content:space-between">
+      <div class="lockup"><svg class="spark" style="width:28px;height:28px"><use href="#spark"/></svg><span class="word">Hermes</span></div>
+      <div style="text-align:right">Design System · painel do agente<br><span style="color:var(--fg-soft)">Cores, Google Sans, faísca e hero da referência Gemini (IO 2026) · componentes, feedback, progresso e shell do design system base · 12/10/2026</span></div>
+    </div>
+  </footer>
+</main>
+</div>
+
+<div class="pin"><button class="to-top" onclick="scrollTo({top:0,behavior:'smooth'})" aria-label="Topo"><i data-lucide="arrow-up"></i></button></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<footer class="rodape fixo" id="rodape">
+  <div class="rd-inicio">
+    <button class="rd-tema" type="button" id="theme" aria-label="Usar tema escuro" aria-pressed="false"><i data-lucide="moon" class="i-moon"></i><i data-lucide="sun" class="i-sun"></i></button>
+    <div class="rd-idioma" role="radiogroup" aria-label="Idioma" id="idioma">
+      <button class="rd-opcao" data-lang="pt-BR" aria-pressed="true" lang="pt-BR">PT</button>
+      <button class="rd-opcao" data-lang="en" aria-pressed="false" lang="en">EN</button>
+    </div>
+    <button class="rd-versao" type="button" aria-haspopup="dialog" data-open-notes data-i18n="versao">Versão 1.0.0</button>
+  </div>
+  <p class="rd-tarja"><span class="ic"><i data-lucide="triangle-alert"></i></span><span data-i18n="tarja">Documento vivo: referência do painel do Hermes. Pode mudar sem aviso.</span></p>
+  <div class="rd-fim"><button class="rd-feedback" type="button" data-i18n-label="feedback" aria-label="Enviar feedback" data-toast="feedback"><i data-lucide="message-square"></i><span data-i18n="feedback">Enviar feedback</span></button></div>
+</footer>
+
+<div class="ov" id="notes" hidden role="presentation">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="notes-title" tabindex="-1">
+    <div class="mi">
+      <h2 class="mt" id="notes-title">Notas de versão</h2>
+      <p class="mb2">O que entrou nesta versão do Design System do Hermes.</p>
+      <div class="notas-cab">1.0.0 <span class="notas-data">12 de outubro de 2026</span></div>
+      <div class="notas-grupo">Novidades</div>
+      <ul class="notas-lista">
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Tema escuro documentado em Fundamentos, com alternador na topbar; segue o sistema na primeira visita e guarda a escolha.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Hero com a faísca (port do gemini-io2026-spark2 em three.js) e título palavra a palavra.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Tokens da referência Gemini: azuis, gradientes de botão e texto, 8 cores da faísca, neutros Google, tema escuro #131314.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Tipografia Google Sans com a escala nomeada da referência (display, headline-1…6, eyebrow, body, caption).</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Seção Agente: quadro agora/feito/próximo, cartão de tarefa, pedido de aprovação, linha do tempo, registro de execução, medidor de contexto, conversa.</li>
+        <li class="notas-item" data-tipo="novo"><span class="notas-ico"><i data-lucide="sparkles"></i></span>Botão primário com gradiente que desliza, botão médio com borda gradiente, chips de ferramenta por categoria, abas e prompt em pílula.</li>
+      </ul>
+      <div class="notas-grupo">Herdado do design system base</div>
+      <ul class="notas-lista">
+        <li class="notas-item" data-tipo="alterado"><span class="notas-ico"><i data-lucide="refresh-cw"></i></span>Toasts por tom (com o tom "aprovação"), faixas, skeleton, barras e anéis do zero, trilha de etapas, shell com rodapé de ferramentas e notas de versão.</li>
+              </ul>
+    </div>
+    <div class="ma"><button class="btn" data-close-notes><span>Fechar</span></button></div>
+  </div>
+</div>

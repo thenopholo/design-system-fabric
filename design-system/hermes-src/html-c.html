@@ -1,0 +1,275 @@
+
+  <!-- ============ AGENTE ============ -->
+  <section id="agente">
+    <span class="eyebrow"><i data-lucide="bot"></i> Agente</span>
+    <h2 class="h-sec">Agora, feito e próximo</h2>
+    <p class="sub">O coração do painel. Três colunas respondem às três perguntas de quem abre a tela: o que o Hermes está fazendo <b style="color:var(--fg);font-weight:500">agora</b>, o que <b style="color:var(--fg);font-weight:500">já fez</b> e o que <b style="color:var(--fg);font-weight:500">vai fazer</b>. Cada cartão é uma tarefa; clicar abre a linha do tempo e o registro de execução.</p>
+
+    <div class="kanban" style="margin-top:22px" id="kanban">
+      <div class="col" data-col="agora">
+        <div class="col-head"><span class="cd"></span>Agora<span class="cnt">3</span></div>
+        <div class="task" data-state="executando" tabindex="0">
+          <div class="tt">Migrar testes para vitest</div>
+          <div class="ts">Passo 4 de 6 · reescrevendo <span class="code">setup.ts</span></div>
+          <div class="bar grad tp"><span class="bar-fill" data-alvo-bar="62"></span></div>
+          <div class="tm"><span class="tool bash"><i data-lucide="terminal"></i>bash</span><span class="tool edit"><i data-lucide="file-pen"></i>edit</span><span class="when">4 min</span></div>
+        </div>
+        <div class="task" data-state="aguardando" tabindex="0">
+          <div class="tt">Limpar artefatos de build</div>
+          <div class="ts">Quer executar <span class="code">rm -rf build/</span> e precisa do seu ok.</div>
+          <div class="tm"><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)"><i data-lucide="hand" style="font-size:12px"></i> aguarda você</span><span class="when">4 min</span></div>
+        </div>
+        <div class="task" data-state="executando" tabindex="0">
+          <div class="tt">Investigar flake em CI</div>
+          <div class="ts"><span class="thinking"><i></i><i></i><i></i><span class="shimmer">lendo os últimos 20 logs</span></span></div>
+          <div class="bar indet tp" role="progressbar" aria-label="Progresso" aria-valuetext="em andamento"><span class="bar-fill"></span></div>
+          <div class="tm"><span class="tool mcp"><i data-lucide="plug"></i>github</span><span class="tool"><i data-lucide="file-search"></i>read</span><span class="when">1 min</span></div>
+        </div>
+      </div>
+      <div class="col" data-col="feito">
+        <div class="col-head"><span class="cd"></span>Feito hoje<span class="cnt">5</span></div>
+        <div class="task" data-state="concluido" tabindex="0"><div class="tt">Revisar PR #42</div><div class="ts">3 comentários, 1 sugestão aplicada.</div><div class="tm"><span class="badge success dot">concluída</span><span class="when">11 min</span></div></div>
+        <div class="task" data-state="concluido" tabindex="0"><div class="tt">Gerar changelog da v2.3</div><div class="ts">42 commits resumidos em 9 linhas.</div><div class="tm"><span class="badge success dot">concluída</span><span class="when">09:40</span></div></div>
+        <div class="task" data-state="falhou" tabindex="0"><div class="tt">Atualizar dependências</div><div class="ts">Interrompida: 3 pacotes com breaking change.</div><div class="tm"><span class="badge err dot">falhou</span><button class="btn xs" style="margin-left:4px"><span>Retomar</span></button><span class="when">ontem</span></div></div>
+        <div class="task" data-state="concluido" tabindex="0"><div class="tt">Responder issue #311</div><div class="ts">Reproduziu, explicou a causa e sugeriu patch.</div><div class="tm"><span class="badge success dot">concluída</span><span class="when">08:15</span></div></div>
+      </div>
+      <div class="col" data-col="proximo">
+        <div class="col-head"><span class="cd"></span>Próximo<span class="cnt">12</span></div>
+        <div class="task" tabindex="0"><div class="tt"><span class="prio alta"></span> Escrever testes para o parser</div><div class="ts">Depois de migrar para vitest.</div><div class="tm"><span class="badge outline dot">na fila</span><span class="when">#2</span></div></div>
+        <div class="task" tabindex="0"><div class="tt"><span class="prio media"></span> Documentar a API de webhooks</div><div class="ts">Agendada para 14:00.</div><div class="tm"><span class="badge outline dot">agendada</span><span class="when">14:00</span></div></div>
+        <div class="task" tabindex="0"><div class="tt"><span class="prio baixa"></span> Arquivar branches antigas</div><div class="ts">Toda sexta, se houver mais de 10.</div><div class="tm"><span class="badge outline dot">recorrente</span><span class="when">sex</span></div></div>
+        <div class="vazio" style="padding:1.25rem"><span class="hint">+ 9 na fila · <a href="#" style="color:var(--g-link)">ver todas</a></span></div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Anatomia do cartão de tarefa</span></div>
+        <div class="rule"><i data-lucide="heading"></i><div><b>Título em 13.5/500, uma linha de contexto em 12.</b> A linha diz o passo atual ("Passo 4 de 6") ou o que o agente está lendo, nunca o comando cru.</div></div>
+        <div class="rule"><i data-lucide="bar-chart-3"></i><div><b>Barra só quando há plano.</b> Progresso em gradiente quando determinado; indeterminada em gradiente de texto quando o agente ainda está pensando.</div></div>
+        <div class="rule"><i data-lucide="wrench"></i><div><b>Chips das ferramentas usadas</b>, no máximo três; o resto vai para "+n". Tempo relativo à direita, em tabular-nums.</div></div>
+        <div class="rule"><i data-lucide="hand"></i><div><b>Aguardando aprovação sobe para o topo</b> da coluna Agora, com fundo rosado e borda: é a única coisa que exige a pessoa.</div></div>
+        <div class="rule"><i data-lucide="circle"></i><div><b>Prioridade é um ponto</b> antes do título (vermelho, âmbar, cinza) só na coluna Próximo; nas outras a ordem é cronológica.</div></div>
+        <div class="rule"><i data-lucide="keyboard"></i><div><b>Cartão é focável</b> (<span class="code">tabindex=0</span>), Enter abre o detalhe; o botão Retomar dentro dele continua um botão de verdade.</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Pedido de aprovação</span><span class="badge" style="background:var(--accent-rose-muted);color:var(--accent-rose)">humano no circuito</span></div>
+        <div class="approval">
+          <div class="ah"><span class="ic"><i data-lucide="hand"></i></span>Hermes quer executar um comando destrutivo<span class="cd mono">expira em 9:41</span></div>
+          <div class="ab">Para limpar artefatos antigos antes do build. O diretório tem 1,2 GB e não está no git.<code>rm -rf build/ dist/ .cache/</code></div>
+          <div class="aa"><button class="btn primary sm"><i data-lucide="check"></i><span>Aprovar</span></button><button class="btn sm"><i data-lucide="pencil"></i><span>Editar comando</span></button><button class="btn ghost sm" style="color:var(--danger)"><span>Negar</span></button></div>
+        </div>
+        <div class="rule" style="margin-top:14px"><i data-lucide="message-square-text"></i><div><b>Motivo antes do comando.</b> A primeira linha diz por quê em linguagem de gente; o comando vem num bloco mono, copiável, exatamente como vai rodar.</div></div>
+        <div class="rule"><i data-lucide="timer"></i><div><b>Expira e vira "não respondida".</b> Sem resposta em 10 min a tarefa pausa e o cartão fica na coluna Agora com selo neutro; nunca aprova por omissão.</div></div>
+        <div class="rule"><i data-lucide="bell-ring"></i><div><b>Chega em três lugares.</b> Toast rosa persistente, ping rosa no sino da topbar e o cartão no topo de Agora.</div></div>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Linha do tempo da tarefa #128</span><span class="badge live">executando</span></div>
+        <div class="timeline">
+          <div class="ev" data-kind="plan"><span class="ed"><i data-lucide="list"></i></span><div class="eh"><b>Plano criado</b><span class="hint">6 passos</span><span class="et mono">10:02</span></div><div class="eb">Ler config atual → instalar vitest → converter setup → reescrever mocks → rodar suíte → abrir PR.</div></div>
+          <div class="ev" data-kind="ok"><span class="ed"><i data-lucide="check"></i></span><div class="eh"><b>Passos 1 a 3 concluídos</b><span class="et mono">10:09</span></div><div class="tools-row"><span class="tool"><i data-lucide="file-search"></i>read ×4</span><span class="tool bash"><i data-lucide="terminal"></i>npm i -D vitest</span><span class="tool edit"><i data-lucide="file-pen"></i>vitest.config.ts</span></div></div>
+          <div class="ev" data-kind="run"><span class="ed"><i data-lucide="loader-circle" class="spin"></i></span><div class="eh"><b>Passo 4 · reescrevendo mocks</b><span class="et mono">agora</span></div><div class="eb">3 de 7 arquivos convertidos. Encontrou <span class="code">jest.mock</span> com fábrica assíncrona em <span class="code">api.test.ts</span>.</div></div>
+          <div class="ev" data-kind="ask"><span class="ed"><i data-lucide="hand"></i></span><div class="eh"><b>Vai perguntar</b><span class="et mono">em breve</span></div><div class="eb">Se pode remover o Jest do <span class="code">package.json</span> ao final.</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="card-head" style="padding:20px 22px 0"><span class="card-title">Registro de execução</span><span class="hint">o que o agente digitou e viu</span></div>
+        <div class="term" style="margin:12px 16px 16px;border-radius:var(--radius-lg)">
+          <div class="term-head"><span class="dots"><i></i><i></i><i></i></span><span class="fn">#128 · migrar-testes</span><button class="btn xs ghost" style="color:#9AA0A6"><i data-lucide="copy"></i><span>Copiar</span></button></div>
+          <div class="term-body" id="term-body">
+            <div class="ln think"><span class="t">10:09:12</span><span>preciso ver como o setup do jest está montado antes de converter</span></div>
+            <div class="ln call"><span class="t">10:09:13</span><span>read  src/test/setup.ts</span></div>
+            <div class="ln cmd"><span class="t">10:09:20</span><span>npx vitest run --reporter=dot</span></div>
+            <div class="ln dim"><span class="t"></span><span>RUN v2.1.4  /home/hermes/app</span></div>
+            <div class="ln ok"><span class="t"></span><span>✓ src/utils (14 tests) 212ms</span></div>
+            <div class="ln err"><span class="t"></span><span>✗ src/api (3 tests | 1 failed) 1.4s</span></div>
+            <div class="ln warn"><span class="t"></span><span>  jest.mock with async factory is not supported in vitest</span></div>
+            <div class="ln think"><span class="t">10:09:31</span><span>converto para vi.mock com import dinâmico</span></div>
+            <div class="ln call"><span class="t">10:09:32</span><span>edit  src/api/api.test.ts  (+6 −4)</span></div>
+            <div class="ln cmd"><span class="t">10:09:40</span><span>npx vitest run src/api<span class="cursor"></span></span></div>
+          </div>
+        </div>
+        <p class="hint" style="padding:0 22px 18px">Fundo #131314 (preto suave), mono 12.5/1.6. Cores do registro: azul claro para comando, verde para passou, vermelho para falhou, âmbar para aviso, roxo itálico para o raciocínio, teal para chamada de ferramenta, cinza para saída crua. O cursor pisca só na linha viva.</p>
+      </div>
+    </div>
+
+    <div class="grid cols-3" style="margin-top:16px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Tarefas por dia</span><span class="hint">últimos 14 dias</span></div>
+        <div class="bars" data-bars aria-label="Tarefas concluídas por dia, 14 dias"><i data-h="40" data-v="4"></i><i data-h="62" data-v="6"></i><i data-h="48" data-v="5"></i><i data-h="75" data-v="7"></i><i data-h="58" data-v="6"></i><i data-h="20" data-v="2"></i><i data-h="10" data-v="1"></i><i data-h="66" data-v="6"></i><i data-h="94" data-v="9"></i><i data-h="52" data-v="5"></i><i data-h="70" data-v="7"></i><i data-h="60" data-v="6"></i><i data-h="82" data-v="8"></i><i data-h="50" data-v="5" class="today"></i></div>
+        <div class="bars-x"><span>29</span><span>30</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>hoje</span></div>
+        <p class="hint" style="margin-top:10px">Uma série, um azul; hoje em gradiente. Barras de até 24px, canto de 4px só no topo, valor no hover e na tabela.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Contexto da sessão</span><button class="btn xs" data-replay="#meter-demo"><i data-lucide="refresh-cw"></i></button></div>
+        <div class="meter" id="meter-demo">
+          <div class="mh"><span>84k de 200k tokens</span><b>42%</b></div>
+          <div class="mt" data-meter><i class="sys" data-w="6"></i><i class="hist" data-w="22"></i><i class="tools" data-w="11"></i><i class="out" data-w="3"></i></div>
+          <div class="ml"><span><i style="background:var(--accent-purple)"></i>sistema 12k</span><span><i style="background:var(--primary)"></i>conversa 44k</span><span><i style="background:var(--accent-teal)"></i>ferramentas 22k</span><span><i style="background:var(--accent-amber)"></i>saída 6k</span></div>
+        </div>
+        <div class="meter" style="margin-top:18px">
+          <div class="mh"><span>Custo da sessão · US$ 1,84 de 5,00</span><b>37%</b></div>
+          <div class="mt"><i class="hist" style="width:37%"></i></div>
+        </div>
+        <p class="hint" style="margin-top:12px">Segmentos com 2px de respiro na cor da superfície. Acima de 85% o medidor inteiro fica vermelho e o painel sugere compactar.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Conversa com o agente</span></div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="msg user"><span class="mv">RT</span><div class="mb">Migra os testes para vitest e me avisa se precisar tirar o jest.</div></div>
+          <div class="msg agent"><span class="mv"><svg class="spark" style="width:24px;height:24px"><use href="#spark"/></svg></span><div class="mb"><p>Fiz um plano de 6 passos. Já instalei o vitest e converti a configuração; estou nos mocks.</p><p><span class="thinking"><i></i><i></i><i></i>convertendo api.test.ts</span></p></div></div>
+        </div>
+        <div class="prompt" style="margin-top:14px"><textarea rows="1" placeholder="Responder ao Hermes…"></textarea><button class="send" disabled aria-label="Enviar"><i data-lucide="arrow-up"></i></button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEEDBACK ============ -->
+  <section id="feedback">
+    <span class="eyebrow"><i data-lucide="message-square-warning"></i> Feedback</span>
+    <h2 class="h-sec">Toasts, faixas, vazio e skeleton</h2>
+    <p class="sub">Tudo que o agente faz responde em três lugares: o toast (agora), a linha do tempo (histórico) e o cartão (estado). Falha nunca some sozinha e nunca chega em vocabulário de API.</p>
+
+    <div class="grid cols-2" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Toasts</span><span class="badge outline">canto inferior direito · acima do rodapé</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="toast" data-tom="ok"><span class="tic"><i data-lucide="circle-check"></i></span><div class="tbody"><p class="ttl">PR #43 aberto</p><p class="top">Migrar testes para vitest · #128</p><p class="tsb">6 passos concluídos, suíte verde em 8,2 s.</p></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="ask"><span class="tic"><i data-lucide="hand"></i></span><div class="tbody"><p class="ttl">Hermes precisa da sua aprovação</p><p class="top">Limpar artefatos de build · #126</p><p class="tsb">Quer executar rm -rf build/ dist/ .cache/</p><button class="btn primary xs">Ver pedido</button></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="warn"><span class="tic"><i data-lucide="triangle-alert"></i></span><div class="tbody"><p class="ttl">Contexto em 86%</p><p class="tsb">O agente vai começar a resumir a conversa. Peça para compactar agora se quiser escolher o que fica.</p><button class="btn ghost xs">Compactar</button></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+          <div class="toast" data-tom="err"><span class="tic"><i data-lucide="ban"></i></span><div class="tbody"><p class="ttl">A tarefa foi interrompida</p><p class="top">Atualizar dependências · #125</p><p class="tsb">3 pacotes têm mudanças incompatíveis. Retome escolhendo quais atualizar.</p><button class="btn ghost xs">Ver na linha do tempo</button></div><button class="btn ghost xs tx" aria-label="Dispensar aviso"><i data-lucide="x"></i></button></div>
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn sm" data-toast="ok"><span>ok</span></button>
+          <button class="btn sm" data-toast="info"><span>info</span></button>
+          <button class="btn sm" data-toast="ask"><span>aprovação</span></button>
+          <button class="btn sm" data-toast="warn"><span>warn</span></button>
+          <button class="btn sm" data-toast="err"><span>err</span></button>
+          <button class="btn sm primary" data-toast="run"><i data-lucide="play"></i><span>Simular tarefa</span></button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Regras do toast</span></div>
+        <div class="rule"><i data-lucide="clock"></i><div><b>ok e info expiram em 8 s.</b> Aprovação, err e warn ficam até a pessoa agir; aprovação ainda pulsa o sino.</div></div>
+        <div class="rule"><i data-lucide="layers"></i><div><b>Uma caixa por tarefa.</b> Identificada pelo id da tarefa: "começou", "pediu aprovação" e "terminou" evoluem no mesmo toast em vez de empilhar três.</div></div>
+        <div class="rule"><i data-lucide="hourglass"></i><div><b>Tarefa em andamento não expira.</b> Quem tira o toast é o desfecho ou a pessoa.</div></div>
+        <div class="rule"><i data-lucide="tag"></i><div><b>Linha de contexto com o nome da tarefa e o número.</b> Nunca o nome da ferramenta ou o JSON da chamada.</div></div>
+        <div class="rule"><i data-lucide="shapes"></i><div><b>Tom com borda e ícone.</b> ok = <span class="code">circle-check</span>, aprovação = <span class="code">hand</span>, err = <span class="code">ban</span>, warn = <span class="code">triangle-alert</span>, info = <span class="code">info</span>; a pilha é <span class="code">aria-live="polite"</span>.</div></div>
+        <div class="rule"><i data-lucide="key-round"></i><div><b>Segredo nunca no toast.</b> Tokens e chaves que o agente encontrar ficam só no registro, mascarados.</div></div>
+        <div class="card-head" style="margin:22px 0 12px"><span class="card-title">Faixas e estado vazio</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="ia info"><span class="ic"><i data-lucide="lightbulb"></i></span><div><strong>Modo "pergunta antes de agir"</strong>O Hermes pede aprovação para comandos destrutivos, rede e escrita fora do projeto.</div><a class="btn sm" href="#componentes">Mudar</a></div>
+          <div class="ia ask" role="status"><span class="ic"><i data-lucide="hand"></i></span><div><strong>1 pedido aguardando você</strong>A tarefa #126 está pausada até a resposta.</div><a class="btn primary sm" href="#agente">Ver</a></div>
+          <div class="vazio"><svg class="spark"><use href="#spark"/></svg><b>O Hermes está ocioso</b>Nada em execução. Peça algo ou agende uma tarefa para depois.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Skeleton · a silhueta do conteúdo</span><div class="row"><span class="badge outline">role="status" · "Carregando"</span><button class="btn sm" id="sk-toggle"><i data-lucide="refresh-cw"></i><span>Simular carregamento</span></button></div></div>
+      <p class="hint" style="margin:-8px 0 14px">Larguras cicladas por índice, nunca sorteadas. O <span class="code">aria-busy</span> fica no contêiner que recebe o conteúdo, não na silhueta.</p>
+      <div class="grid cols-3" id="sk-stage" style="align-items:start">
+        <div>
+          <div class="label" style="margin-bottom:8px">tabela de execuções</div>
+          <div class="sk" data-sk role="status" aria-label="Carregando"><span class="sr">Carregando</span>
+            <div class="sk-th" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:72%"></span><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:84%"></span><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span><span class="sk-bloco" style="width:90%"></span></div>
+            <div class="sk-tr" style="grid-template-columns:repeat(4,minmax(0,1fr))"><span class="sk-bloco" style="width:48%"></span><span class="sk-bloco" style="width:64%"></span><span class="sk-bloco" style="width:90%"></span><span class="sk-bloco" style="width:40%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <table class="tbl"><thead><tr><th>Tarefa</th><th>Ferr.</th><th>Custo</th><th>Estado</th></tr></thead><tbody><tr><td><b style="font-weight:500">#128</b></td><td>bash</td><td class="mono">0,84</td><td><span class="badge live">exec.</span></td></tr><tr><td><b style="font-weight:500">#127</b></td><td>github</td><td class="mono">0,22</td><td><span class="badge success dot">ok</span></td></tr><tr><td><b style="font-weight:500">#125</b></td><td>bash</td><td class="mono">2,10</td><td><span class="badge err dot">falhou</span></td></tr></tbody></table>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">cartão de tarefa</div>
+          <div class="sk" data-sk aria-hidden="true">
+            <div class="sk-cartao"><span class="sk-bloco rot" style="width:40%"></span><span class="sk-bloco val" style="width:55%"></span><span class="sk-bloco sub2" style="width:70%"></span></div>
+            <div class="sk-linha" style="margin-top:12px"><span class="sk-bloco" style="width:72%"></span><span class="sk-bloco" style="width:56%"></span><span class="sk-bloco" style="width:84%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <div class="mini-card"><div class="mc-label">Em execução</div><div class="mc-val">3 <span class="mc-unit">tarefas</span></div><div class="mc-sub">1 aguarda aprovação</div><div class="bar grad"><span class="bar-fill" data-alvo-bar="62"></span></div></div>
+            <div style="margin-top:12px;font-size:13px;display:flex;flex-direction:column;gap:6px"><span>PR #43 aberto</span><span>Changelog gerado</span><span>Issue #311 respondida</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:8px">resposta do agente</div>
+          <div class="sk" data-sk aria-hidden="true">
+            <div class="sk-linha"><span class="sk-bloco" style="width:92%"></span><span class="sk-bloco" style="width:78%"></span><span class="sk-bloco" style="width:85%"></span><span class="sk-bloco" style="width:40%"></span></div>
+          </div>
+          <div data-sk-content hidden>
+            <div class="msg agent"><span class="mv"><svg class="spark" style="width:24px;height:24px"><use href="#spark"/></svg></span><div class="mb"><p>Terminei. A suíte roda em 8,2 s com vitest, contra 21 s antes. Abri o PR #43 com o diff e deixei o Jest instalado até você aprovar a remoção.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRESSO ============ -->
+  <section id="progresso">
+    <span class="eyebrow"><i data-lucide="hourglass"></i> Progresso</span>
+    <h2 class="h-sec">Barras, anéis e a trilha da tarefa</h2>
+    <p class="sub">Duas famílias: <b style="color:var(--fg);font-weight:500">medição</b> (contexto, custo, progresso do plano: sempre com número, sobem do zero a cada carregamento) e <b style="color:var(--fg);font-weight:500">operação</b> (tarefa em curso: barra indeterminada, trilha de etapas, pensando). Percentual só quando o agente o tem.</p>
+
+    <div class="grid cols-3" style="margin-top:22px;align-items:start">
+      <div class="card">
+        <div class="card-head"><span class="card-title">Barras de medição</span><button class="btn xs" data-replay="#uso-demo"><i data-lucide="refresh-cw"></i></button></div>
+        <div id="uso-demo" style="display:flex;flex-direction:column;gap:14px">
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Contexto · sessão 14</span></div><span class="rb" style="display:flex" data-alvo="91"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Orçamento do dia</span></div><span class="rb" style="display:flex" data-alvo="67"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Plano · tarefa #128</span></div><span class="rb" style="display:flex" data-alvo="62" data-tone="plan"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Plano · tarefa #130 recém-criada</span></div><span class="rb" style="display:flex" data-alvo="0.4" data-tone="plan"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+          <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="label">Sem consumo</span></div><span class="rb" style="display:flex" data-alvo="0"><span class="rt"><span class="rf"></span></span><span class="rp mono">0%</span></span></div>
+        </div>
+        <p class="hint" style="margin-top:14px">650 ms, ease-out cúbico; azul até 70%, âmbar até 85%, vermelho depois. <span class="code">aria-valuenow</span> leva o valor medido, nunca o intermediário.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Anéis</span><button class="btn xs" data-replay="#ring-demo"><i data-lucide="refresh-cw"></i></button></div>
+        <div id="ring-demo">
+          <div class="row" style="justify-content:center;margin:6px 0 18px">
+            <span class="ring xl" data-alvo="62" data-ring data-tone="brand"><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.4"/><circle class="arc" cx="18" cy="18" r="15.5" fill="none" stroke-width="3.4"/></svg><span class="n mono">0</span></span>
+          </div>
+          <div class="row" style="justify-content:center;gap:16px">
+            <div class="health-pill"><span class="ring" data-alvo="42" data-ring data-tone="brand"><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Contexto</div><div class="health-sub" style="color:var(--primary)">folgado</div></div></div>
+            <div class="health-pill"><span class="ring" data-alvo="91" data-ring data-tone="brand"><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/><circle class="arc" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">0</span></span><div><div class="health-label">Contexto</div><div class="health-sub" style="color:var(--danger)">compactar</div></div></div>
+            <div class="health-pill"><span class="ring hm-atencao"><svg viewBox="0 0 30 30"><circle class="track" cx="15" cy="15" r="12" fill="none" stroke-width="3"/></svg><span class="n mono">n/d</span></span><div><div class="health-label">Contexto</div><div class="health-sub">sem leitura</div></div></div>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:14px">SVG gira -90° para começar no topo. Sem leitura, o número é "n/d" e o anel fica vazio: nada de inventar 0.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Tarefa em curso</span></div>
+        <div class="label" style="margin-bottom:6px">pensando · sem plano ainda</div>
+        <div class="bar indet" role="progressbar" aria-label="Progresso" aria-valuetext="em andamento"><span class="bar-fill"></span></div>
+        <div class="label" style="margin:18px 0 6px">plano · "passo 4 de 6"</div>
+        <div class="bar grad" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100"><span class="bar-fill" data-alvo-bar="62"></span></div>
+        <div class="label" style="margin:18px 0 6px">trilha da tarefa</div>
+        <div class="trilha" id="trilha-demo">
+          <ol>
+            <li class="etapa" data-state="ok"><span class="ei"><i data-lucide="circle-check"></i></span>Planejado<span class="es">concluída</span></li>
+            <li class="etapa" data-state="atual"><span class="ei"><i data-lucide="loader-circle" class="spin"></i></span>Executando<span class="es">em andamento</span></li>
+            <li class="etapa" data-state="pendente"><span class="ei"><i data-lucide="circle"></i></span>Revisando<span class="es">pendente</span></li>
+            <li class="etapa" data-state="pendente"><span class="ei"><i data-lucide="circle"></i></span>Concluído<span class="es">pendente</span></li>
+          </ol>
+          <div class="bar indet" role="progressbar" aria-label="Progresso"><span class="bar-fill"></span></div>
+        </div>
+        <div class="row" style="margin-top:12px"><button class="btn xs" data-trilha="ok"><span>concluiu</span></button><button class="btn xs" data-trilha="ask"><span>pediu aprovação</span></button><button class="btn xs" data-trilha="erro"><span>falhou</span></button><button class="btn xs" data-trilha="andamento"><span>reiniciar</span></button></div>
+        <p class="hint" style="margin-top:12px">Quatro marcos observáveis: planejado, executando, revisando (o agente confere o próprio trabalho), concluído. "Aguardando aprovação" é um estado da etapa executando, não uma etapa.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><span class="card-title">Regras de progresso</span></div>
+      <div class="grid cols-2" style="gap:0 32px">
+        <div class="rule"><i data-lucide="list-checks"></i><div><b>Progresso vem do plano.</b> Passos concluídos ÷ passos do plano que o próprio agente escreveu. Sem plano, barra indeterminada; o painel nunca estima.</div></div>
+        <div class="rule"><i data-lucide="gauge"></i><div><b>Contexto e custo sempre visíveis.</b> No cartão de sessão da sidebar e no anel da topbar; acima de 85% o tom vira vermelho e o toast sugere compactar.</div></div>
+        <div class="rule"><i data-lucide="rotate-ccw"></i><div><b>Retoma após F5.</b> Tarefa "executando" no histórico é reconsultada na montagem; sem isso ficaria executando para sempre.</div></div>
+        <div class="rule"><i data-lucide="bar-chart-3"></i><div><b>Barra de medição sempre parte do zero.</b> A cor vem do valor final: um contexto em 90% não pisca azul e âmbar antes do vermelho.</div></div>
+        <div class="rule"><i data-lucide="accessibility"></i><div><b><span class="code">role="progressbar"</span> sempre.</b> Determinada com <span class="code">aria-valuenow</span>; indeterminada só com <span class="code">aria-valuetext="em andamento"</span>.</div></div>
+        <div class="rule"><i data-lucide="brain"></i><div><b>"Pensando" é estado, não enfeite.</b> Os três pontos aparecem só enquanto há tokens de raciocínio chegando; param no primeiro tool call.</div></div>
+      </div>
+    </div>
+  </section>
